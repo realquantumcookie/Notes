@@ -29,3 +29,6 @@ Those are note archives as well as very well-structured final review docs I made
   - [Note 19 - Geometric and Poisson Distribution](Annotated/20211123%20n19%20Geometric%20and%20Poisson%20Distribution.pdf)
   - [Note 20 - Estimation](Annotated/20211123%20n20%20Estimation.pdf)
   - [Note 21 - Continuous Probability](Annotated/20211123%20n21%20Continuous%20Probability%20Distributions.pdf)
+- Videos
+  - [Inverse Modulo n](https://youtu.be/15oQQbAnr3Q)
+  - [Inverse Modulo n examples](https://youtu.be/uPFh9_nLw1c)
