@@ -9,3 +9,4 @@ This repository is brought to you by [Yunhao Cao](https://github.com/ToiletComma
 - [CS61C](CS61C/)
 - [EECS16B](EECS16B/)
 - [CS70](CS70/)
+- [Deep Learning Specialization Ep. 4 CNN - Ended in Week 3](DLSpecialization_4_CNN/index.html)
