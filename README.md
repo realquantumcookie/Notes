@@ -5,9 +5,12 @@ This repository is brought to you by [Yunhao Cao](https://github.com/ToiletComma
 
 ## Course Lists
 
-- [CS61B](CS61B/)
-- [CS61C](CS61C/)
-- [EECS16B](EECS16B/)
-- [CS70](CS70/)
-- [Deep Learning Specialization Ep. 4 CNN - Ended in Week 3](DLSpecialization_4_CNN/index.html)
-- [STAT134](STAT134/README.md)
+- Berkeley Courses
+  - [CS61B(FA21)](CS61B/)
+  - [CS61C(FA21)](CS61C/)
+  - [EECS16B(FA21)](EECS16B/)
+  - [CS70(FA21)](CS70/)
+  - [STAT134(SP22)](STAT134/)
+- Non-Berkeley Courses
+  - DeepLearning.AI
+    - [Deep Learning Specialization](DLSPecialization/)
