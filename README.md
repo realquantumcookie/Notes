@@ -13,4 +13,4 @@ This repository is brought to you by [Yunhao Cao](https://github.com/ToiletComma
   - [STAT134(SP22)](STAT134/)
 - Non-Berkeley Courses
   - DeepLearning.AI
-    - [Deep Learning Specialization](DLSPecialization/)
+    - [Deep Learning Specialization](DLSpecialization/)
