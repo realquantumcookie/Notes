@@ -33,5 +33,5 @@ Those are note archives as well as very well-structured final review docs I made
 - Videos
   - [SVD on MIT OpenCourseWave](https://youtu.be/mBcLRGuAFUk)
   - [What is Fourier Transform by 3b1b](https://youtu.be/spUNpyF58BY)
-  - [20:30 傅里叶转换|核磁共振为何知道](https://www.bilibili.com/video/BV1di4y1y7au)
+  - [20:30 傅里叶转换 \| 核磁共振为何知道](https://www.bilibili.com/video/BV1di4y1y7au)
   - [Discrete Fourier Transform by Simon Xu](https://youtu.be/mkGsMWi_j4Q)
