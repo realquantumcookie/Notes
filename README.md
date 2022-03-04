@@ -11,6 +11,7 @@ This repository is brought to you by [Yunhao Cao](https://github.com/ToiletComma
   - [EECS16B(FA21)](EECS16B/)
   - [CS70(FA21)](CS70/)
   - [STAT134(SP22)](STAT134/)
+  - [CS189(SP22)](CS189/)
 - Non-Berkeley Courses
   - DeepLearning.AI
     - [Deep Learning Specialization](DLSpecialization/)
