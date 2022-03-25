@@ -6,5 +6,5 @@ This is the [course](https://www.deeplearning.ai/program/deep-learning-specializ
 
 ## Resource List
 
-- [Course 4: Convolution Neural Networks(CNN) Notes](Notes/4_CNN/)
+- [Course 4: Convolution Neural Networks(CNN) Notes](Notes/4-CNN/)
 - [Course 5: Sequence Models(RNN,GRU,LSTM,Transformer) Notes](Notes/5-RNN/)
