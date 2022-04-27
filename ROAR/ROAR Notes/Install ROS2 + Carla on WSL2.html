@@ -1,0 +1,719 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>Install ROS2 + Carla on WSL2</title><style>
+/* cspell:disable-file */
+/* webkit printing magic: print all background colors */
+html {
+	-webkit-print-color-adjust: exact;
+}
+* {
+	box-sizing: border-box;
+	-webkit-print-color-adjust: exact;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+@media only screen {
+	body {
+		margin: 2em auto;
+		max-width: 900px;
+		color: rgb(55, 53, 47);
+	}
+}
+
+body {
+	line-height: 1.5;
+	white-space: pre-wrap;
+}
+
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+h1 {
+	font-size: 1.875rem;
+	margin-top: 1.875rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+	margin-top: 1.25rem;
+}
+
+.source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 3px;
+	padding: 1rem;
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.column-list {
+	display: flex;
+	justify-content: space-between;
+}
+
+.column {
+	padding: 0 1em;
+}
+
+.column:first-child {
+	padding-left: 0;
+}
+
+.column:last-child {
+	padding-right: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding: 0.125rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+	border-collapse: collapse;
+}
+
+table {
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	text-indent: -1.7em;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+.simple-table {
+	margin-top: 1em;
+	font-size: 0.875rem;
+	empty-cells: show;
+}
+.simple-table td {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table th {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table-header-color {
+	background: rgb(247, 246, 243);
+	color: black;
+}
+.simple-table-header {
+	font-weight: 500;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-block;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	max-height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	transform: scale(1.5);
+	margin-right: 0.6em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code-wrap {
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1.25em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+.bookmark {
+	text-decoration: none;
+	max-height: 8em;
+	padding: 0;
+	display: flex;
+	width: 100%;
+	align-items: stretch;
+}
+
+.bookmark-title {
+	font-size: 0.85em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 1.75em;
+	white-space: nowrap;
+}
+
+.bookmark-text {
+	display: flex;
+	flex-direction: column;
+}
+
+.bookmark-info {
+	flex: 4 1 180px;
+	padding: 12px 14px 14px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.bookmark-image {
+	width: 33%;
+	flex: 1 1 180px;
+	display: block;
+	position: relative;
+	object-fit: cover;
+	border-radius: 1px;
+}
+
+.bookmark-description {
+	color: rgba(55, 53, 47, 0.6);
+	font-size: 0.75em;
+	overflow: hidden;
+	max-height: 4.5em;
+	word-break: break-word;
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	margin-top: 0.25em;
+}
+
+.sans { font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, ui-serif, serif; }
+.mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
+.pdf .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK JP'; }
+.pdf:lang(zh-CN) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC'; }
+.pdf:lang(zh-TW) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK TC'; }
+.pdf:lang(ko-KR) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK KR'; }
+.pdf .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK JP'; }
+.pdf:lang(zh-CN) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK SC'; }
+.pdf:lang(zh-TW) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK TC'; }
+.pdf:lang(ko-KR) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK KR'; }
+.pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.highlight-default {
+	color: rgba(55, 53, 47, 1);
+}
+.highlight-gray {
+	color: rgba(120, 119, 116, 1);
+	fill: rgba(120, 119, 116, 1);
+}
+.highlight-brown {
+	color: rgba(159, 107, 83, 1);
+	fill: rgba(159, 107, 83, 1);
+}
+.highlight-orange {
+	color: rgba(217, 115, 13, 1);
+	fill: rgba(217, 115, 13, 1);
+}
+.highlight-yellow {
+	color: rgba(203, 145, 47, 1);
+	fill: rgba(203, 145, 47, 1);
+}
+.highlight-teal {
+	color: rgba(68, 131, 97, 1);
+	fill: rgba(68, 131, 97, 1);
+}
+.highlight-blue {
+	color: rgba(51, 126, 169, 1);
+	fill: rgba(51, 126, 169, 1);
+}
+.highlight-purple {
+	color: rgba(144, 101, 176, 1);
+	fill: rgba(144, 101, 176, 1);
+}
+.highlight-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.highlight-red {
+	color: rgba(212, 76, 71, 1);
+	fill: rgba(212, 76, 71, 1);
+}
+.highlight-gray_background {
+	background: rgba(241, 241, 239, 1);
+}
+.highlight-brown_background {
+	background: rgba(244, 238, 238, 1);
+}
+.highlight-orange_background {
+	background: rgba(251, 236, 221, 1);
+}
+.highlight-yellow_background {
+	background: rgba(251, 243, 219, 1);
+}
+.highlight-teal_background {
+	background: rgba(237, 243, 236, 1);
+}
+.highlight-blue_background {
+	background: rgba(231, 243, 248, 1);
+}
+.highlight-purple_background {
+	background: rgba(244, 240, 247, 0.8);
+}
+.highlight-pink_background {
+	background: rgba(249, 238, 243, 0.8);
+}
+.highlight-red_background {
+	background: rgba(253, 235, 236, 1);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(120, 119, 116, 1);
+	fill: rgba(120, 119, 116, 1);
+}
+.block-color-brown {
+	color: rgba(159, 107, 83, 1);
+	fill: rgba(159, 107, 83, 1);
+}
+.block-color-orange {
+	color: rgba(217, 115, 13, 1);
+	fill: rgba(217, 115, 13, 1);
+}
+.block-color-yellow {
+	color: rgba(203, 145, 47, 1);
+	fill: rgba(203, 145, 47, 1);
+}
+.block-color-teal {
+	color: rgba(68, 131, 97, 1);
+	fill: rgba(68, 131, 97, 1);
+}
+.block-color-blue {
+	color: rgba(51, 126, 169, 1);
+	fill: rgba(51, 126, 169, 1);
+}
+.block-color-purple {
+	color: rgba(144, 101, 176, 1);
+	fill: rgba(144, 101, 176, 1);
+}
+.block-color-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.block-color-red {
+	color: rgba(212, 76, 71, 1);
+	fill: rgba(212, 76, 71, 1);
+}
+.block-color-gray_background {
+	background: rgba(241, 241, 239, 1);
+}
+.block-color-brown_background {
+	background: rgba(244, 238, 238, 1);
+}
+.block-color-orange_background {
+	background: rgba(251, 236, 221, 1);
+}
+.block-color-yellow_background {
+	background: rgba(251, 243, 219, 1);
+}
+.block-color-teal_background {
+	background: rgba(237, 243, 236, 1);
+}
+.block-color-blue_background {
+	background: rgba(231, 243, 248, 1);
+}
+.block-color-purple_background {
+	background: rgba(244, 240, 247, 0.8);
+}
+.block-color-pink_background {
+	background: rgba(249, 238, 243, 0.8);
+}
+.block-color-red_background {
+	background: rgba(253, 235, 236, 1);
+}
+.select-value-color-pink { background-color: rgba(245, 224, 233, 1); }
+.select-value-color-purple { background-color: rgba(232, 222, 238, 1); }
+.select-value-color-green { background-color: rgba(219, 237, 219, 1); }
+.select-value-color-gray { background-color: rgba(227, 226, 224, 1); }
+.select-value-color-opaquegray { background-color: rgba(255, 255, 255, 0.0375); }
+.select-value-color-orange { background-color: rgba(250, 222, 201, 1); }
+.select-value-color-brown { background-color: rgba(238, 224, 218, 1); }
+.select-value-color-red { background-color: rgba(255, 226, 221, 1); }
+.select-value-color-yellow { background-color: rgba(253, 236, 200, 1); }
+.select-value-color-blue { background-color: rgba(211, 229, 239, 1); }
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+	
+</style></head><body><article id="b4b5b931-5076-4daf-b8b1-0f1d352e4dc6" class="page sans"><header><h1 class="page-title">Install ROS2 + Carla on WSL2</h1></header><div class="page-body"><p id="7fe7de3d-e442-4f79-93ef-1b13384375d2" class="">Author: <a href="https://github.com/ToiletCommander">Yunhao Cao</a></p><p id="e682c658-f449-48ed-b797-5ff6cd55812f" class="">In this article I will be describing how to install a Ubuntu Image on WSL2 and how to install ROS2 and connect to a native running instance of Carla on Windows 10 / 11.</p><p id="ace53c84-dcd9-419d-abb8-60d7cc37d8f1" class="">Reference: <a href="https://docs.google.com/document/d/1Q_P6zMBUanapOC2U1oSCSh_adWSEsXSmkyNKCr39F6s/edit">ROAR ROS Setup Doc</a></p><figure class="block-color-gray_background callout" style="white-space:pre-wrap;display:flex" id="111222ca-e433-4e96-bead-3e5a35a91058"><div style="font-size:1.5em"><span class="icon">📎</span></div><div style="width:100%">The solution we developed here is pretty efficient as virtualization of graphics card is not used and Carla is directly using d3d12 to render. But it is also due to Windows currently not offering Vulkan API on WSL subsystem.</div></figure><figure class="block-color-gray_background callout" style="white-space:pre-wrap;display:flex" id="668c6a23-95be-4841-9e43-79370b92bb07"><div style="font-size:1.5em"><span class="icon">⚠️</span></div><div style="width:100%">Windows Terminal App from Windows Store is highly recommended before this tutorial is proceeded, it provides tab feature to any terminal applications and I found it really useful.</div></figure><p id="b1fef4aa-7e4f-4e9b-8c32-d9f2a89f09e3" class="">Preview:</p><figure id="b45912d7-6ecc-40f0-9225-5b7134b18591" class="image"><a href="Install%20ROS2%20+%20Carla%20on%20WSL2/9250a986eb16aa3d726c0e03e744b3c.png"><img style="width:2347px" src="Install%20ROS2%20+%20Carla%20on%20WSL2/9250a986eb16aa3d726c0e03e744b3c.png"/></a><figcaption>ROS-Carla-Bridge in WSL connected to a native Carla UE4 Instance on WSL Host</figcaption></figure><figure id="8d51047a-cd49-41ef-9724-c8a7a7089071" class="image"><a href="Install%20ROS2%20+%20Carla%20on%20WSL2/76b347b5c126bc877ecd7eb9b044e58.png"><img style="width:2560px" src="Install%20ROS2%20+%20Carla%20on%20WSL2/76b347b5c126bc877ecd7eb9b044e58.png"/></a><figcaption>Other ROS Foxy Simulator GUIs ran in WSL but actually displayed in host Windows OS through WSLg (GPU Accelerated Graphics through Virtual GPU, support OpenGL 3.1-3.3 and OpenGL ES 3 Standard)</figcaption></figure><h1 id="1de800c8-7bb2-40f5-8510-9ec51716a229" class="">Install WSL</h1><p id="e62feb90-4480-46bb-aaa3-d05e8e44f015" class="">Fire up a new terminal and hit the following demand to see if you have a valid WSL setup</p><pre id="0a2ca70d-81ae-4836-9d0c-9f44ec98b37a" class="code"><code>wsl --install</code></pre><p id="ea4e7d07-7e93-495b-a7c3-0e577b9fd445" class="">Then we want to make sure we’re using WSL2, and also make sure that the WSL runtime is updated to the newest version</p><pre id="ecc2fec1-8126-425f-a6f1-1f9da88035ad" class="code"><code>wsl --update
+wsl --set-default-version 2</code></pre><p id="040d03e7-253d-4f84-889d-74fc2018549e" class="">Now we’re ready to install the ubuntu distro. Make sure you have at least 5GB of space in your C:\ disk. You can move your WSL image to a new disk later on.</p><pre id="2ae87443-59d1-4290-9408-91bff05e78e5" class="code"><code>wsl --install -d Ubuntu</code></pre><p id="017c7d6a-578d-4015-8ccf-f23bb83570a4" class="">You will be prompted to enter a username and password for the default user.</p><p id="0c52a220-aabb-4470-8dc8-961e5ed6e3d9" class="">
+</p><p id="08382ade-d3c4-44eb-bea1-7cc9a275550a" class="">After installing, runnning</p><pre id="29a36ed4-6aa1-4940-b09c-50e5c177e1c5" class="code"><code>wsl -l -v</code></pre><p id="6d31cc1a-bb01-4dda-bd5f-4c7cc3b8b916" class="">should show the following</p><pre id="af554d4a-3cb4-47b1-8dd2-a92addc1d901" class="code"><code>  NAME                   STATE           VERSION
+* Ubuntu                 Stopped         2</code></pre><p id="ef41e382-4ac1-454c-81a6-194c04d887dc" class="">Make sure your VERSION of Ubuntu Distro says 2. The star(*) symbol can be missing here. We just need to run the following command to make it the default distro.</p><pre id="971400f0-4159-4930-8ba3-3e02be7b08dc" class="code"><code>wsl -s Ubuntu</code></pre><p id="41d272f8-f0d2-4c99-8eba-20d466d2ecc6" class="">
+</p><p id="880c6484-1d16-4c3a-af23-239dfc407c78" class="">Now you’ve done WSL installable, you can follow this step to move WSL to another drive if wanted.</p><figure id="e18de3b4-3b5a-41a0-a193-94934b5a3229"><a href="https://dev.to/equiman/move-wsl-file-system-to-another-drive-2a3d" class="bookmark source"><div class="bookmark-info"><div class="bookmark-text"><div class="bookmark-title">Move WSL File System to another Drive</div><div class="bookmark-description">Language: [🇪🇸] Español - [🇺🇸] English If the C: drive is running out of space or do you like to have your files in a different disk than your Operating System, we can move our WSL2 file system to another drive in a few steps.</div></div><div class="bookmark-href"><img src="https://res.cloudinary.com/practicaldev/image/fetch/s--lrmEcD2H--/c_limit,f_png,fl_progressive,q_80,w_128/https://practicaldev-herokuapp-com.freetls.fastly.net/assets/devlogo-pwa-512.png" class="icon bookmark-icon"/>https://dev.to/equiman/move-wsl-file-system-to-another-drive-2a3d</div></div><img src="https://res.cloudinary.com/practicaldev/image/fetch/s--545voLD3--/c_imagga_scale,f_auto,fl_progressive,h_500,q_auto,w_1000/https://dev-to-uploads.s3.amazonaws.com/uploads/articles/9yfspal7p7pv2xe41bnq.png" class="bookmark-image"/></a></figure><p id="5c03240a-1c0a-4d6a-9b8b-8631e42b5152" class="">
+</p><h1 id="9c625f58-23e0-44df-9114-c166a87477b3" class="">Install Carla On Windows</h1><p id="6e98683e-94a2-499b-99f7-8f6aba4ff715" class="">This step assumes that you have installed appropriate graphics drivers for your GPU. Since it is easy to install GPU in a Windows setup, the steps will not be covered.</p><p id="13a6e844-41ed-40d1-beca-fc402a94aa01" class="">Then <a href="https://github.com/carla-simulator/carla/releases">download </a>Carla for Windows (you don’t need to build it yourself, as on the github page they usually ship with Windows Binaries) </p><figure id="1fa946db-4ef5-4cbf-a094-05d1b61f4bb3" class="image"><a href="Install%20ROS2%20+%20Carla%20on%20WSL2/58a8136c67aac008d6739acf385f7f1.png"><img style="width:480px" src="Install%20ROS2%20+%20Carla%20on%20WSL2/58a8136c67aac008d6739acf385f7f1.png"/></a></figure><figure class="block-color-gray_background callout" style="white-space:pre-wrap;display:flex" id="0dff4eee-aaa4-4eb4-8275-d23ef7a2d548"><div style="font-size:1.5em"><span class="icon">⚠️</span></div><div style="width:100%">ROAR requires you to download CARLA 0.9.12, not 0.9.13.</div></figure><p id="ae135bd6-1f09-42fb-890b-9b79d4290a36" class="">Then fire up CarlaUE4.exe, it will automatically start listening to 0.0.0.0:2000, and 0.0.0.0:2001, I added the following param to boost performance since my GPU is a trash MX350</p><pre id="aaf46fa4-a173-48b3-8b19-746a8aaafa07" class="code"><code>CarlaUE4.exe -quality-level=Low -fps=5 -windowed -ResX=300 -ResY=200</code></pre><figure class="block-color-gray_background callout" style="white-space:pre-wrap;display:flex" id="fb92ac28-85a3-4529-b579-7142dd19b3da"><div style="font-size:1.5em"><span class="icon">📢</span></div><div style="width:100%">Also make sure you allow Carla to access your local network in your firewall settings</div></figure><p id="fb072dc8-d1c7-462e-95db-bfe0e8ed52bb" class="">
+</p><h1 id="9143768d-f886-4d72-9289-f0f873ca0217" class="">Install ROS on WSL</h1><p id="32ef9dc3-60b7-44ea-82be-9cf6a1f8d882" class="">Fire up WSL prompt, and follow the instructions to install WSL using Debian Packages</p><figure id="0f26c6b1-1833-4b19-9285-aefea786a609"><a href="https://docs.ros.org/en/foxy/Installation/Ubuntu-Install-Debians.html" class="bookmark source"><div class="bookmark-info"><div class="bookmark-text"><div class="bookmark-title">Installing ROS 2 via Debian Packages - ROS 2 Documentation: Foxy documentation</div><div class="bookmark-description">Installing University or Evaluation versions of RTI Connext DDS</div></div><div class="bookmark-href"><img src="https://docs.ros.org/en/foxy/_static/favicon.ico" class="icon bookmark-icon"/>https://docs.ros.org/en/foxy/Installation/Ubuntu-Install-Debians.html</div></div><img src="https://docs.ros.org/en/foxy/_static/foxy-small.png" class="bookmark-image"/></a></figure><p id="a12f5a51-f6a5-438e-a308-231b6920ccf1" class="">
+</p><h1 id="4a5e19a3-b842-4f98-a8b4-3092d2094f40" class="">Install Carla on WSL</h1><p id="ff0388d0-bc2f-4b43-8607-22f328e00dfb" class="">The reason we want to install Carla is because we want the PythonAPI provided by the Carla installation, we don’t actually need to fire up Carla in our WSL environment.</p><p id="608aac6c-d094-4883-9706-f612270c7775" class="">Plus in the near future if Vulkan API is supported by Dozen in Mesa3D, we could potentially potentially fire up Carla in the WSL environment.</p><figure id="a89916aa-0f46-4e44-8937-0785162e6eab"><a href="https://carla.readthedocs.io/en/0.9.12/start_quickstart/" class="bookmark source"><div class="bookmark-info"><div class="bookmark-text"><div class="bookmark-title">Quick start package installation</div><div class="bookmark-description">This guide shows how to download and install the packaged version of CARLA. The package includes the CARLA server and two options for the client library. There are additional assets that can be downloaded and imported into the package.</div></div><div class="bookmark-href"><img src="https://carla.readthedocs.io/en/0.9.12/img/favicon.ico" class="icon bookmark-icon"/>https://carla.readthedocs.io/en/0.9.12/start_quickstart/</div></div></a></figure><figure class="block-color-gray_background callout" style="white-space:pre-wrap;display:flex" id="b14b4ed1-72be-4f45-ac04-2465d91a28dd"><div style="font-size:1.5em"><span class="icon">📢</span></div><div style="width:100%">If you need to install older version of carla, execute <code>sudo apt install carla-simulator=0.9.12</code> by specifying a version</div></figure><p id="9726e124-0eb2-4e56-b2d7-51c5c3fb74d3" class="">
+</p><h1 id="b8a67e65-70ca-444d-9a9f-febe2949fc19" class="">Install ROS Bridge for CARLA</h1><figure class="block-color-gray_background callout" style="white-space:pre-wrap;display:flex" id="04887129-c57a-4a3b-bd1c-3a7770d1c604"><div style="font-size:1.5em"><span class="icon">📢</span></div><div style="width:100%">You can optionally follow the guide to export the environment for <code>CARLA_HOME</code> and <code>PYTHON_PATH</code> if you want, but its not required since we will use a special script to fire up the bridge later.</div></figure><figure id="1228a7fe-8564-467a-a2ab-3851295f57b5"><a href="https://carla.readthedocs.io/projects/ros-bridge/en/latest/ros_installation_ros2/" class="bookmark source"><div class="bookmark-info"><div class="bookmark-text"><div class="bookmark-title">Install ROS Bridge for ROS 2 - CARLA Simulator</div><div class="bookmark-description">This section is a guide on how to install the ROS bridge on Linux for use with ROS 2. You will find the prerequisites, installation steps, how to run a basic package to make sure everything is working well and commands to run tests. Important ROS is still experimental for Windows.</div></div><div class="bookmark-href"><img src="https://carla.readthedocs.io/projects/ros-bridge/en/latest/img/favicon.ico" class="icon bookmark-icon"/>https://carla.readthedocs.io/projects/ros-bridge/en/latest/ros_installation_ros2/</div></div></a></figure><p id="de556521-f98b-4e2e-936b-6ad1d3168113" class="">
+</p><h1 id="e4a3b650-1b56-4410-8f8b-0da4f13956b7" class="">Firing up ROS Bridge</h1><p id="81e99fbe-3f5d-43f4-9561-e5c84c049970" class="">First you need to open up Carla on your host OS.</p><p id="3abb616a-7a52-4163-9672-948062658caa" class="">Then add a new file under home(~) directory called launchROSBridge.sh</p><p id="2485e7b2-5659-4b6c-8178-2c4e4cc0f950" class="">Here below should be the content you add to the shell file.</p><pre id="c4d748ae-f96a-46c4-98ce-60aa5a343c7f" class="code"><code>parent_host=`grep -oP &#x27;(?&lt;=nameserver ).+&#x27; /etc/resolv.conf`
+echo Exporting Environmental Variables
+export CARLA_ROOT=/opt/carla-simulator
+export PYTHONPATH=$PYTHONPATH:$CARLA_ROOT/PythonAPI/carla/dist/carla-0.9.12-py3.7-linux-x86_64.egg:$CARLA_ROOT/PythonAPI/carla
+echo Launching...Parent Host is $parent_host
+
+ros2 launch carla_ros_bridge carla_ros_bridge.launch.py host:=$parent_host timeout:=5000</code></pre><p id="a5d27bb4-5562-4b1f-81b1-c7bd25fdea92" class="">In this script, <code>parent_host</code> variable is obtained by grepping contents of the <code>/etc/resolv.conf</code> file, and we can use this IP to connect to our host OS’s listening ports.</p><p id="e98674b7-d70a-45f8-bb02-6ba1b8ff5155" class="">
+</p><h1 id="af69d1df-27b2-4778-82b6-cfcaef878368" class="">Sanity Check for OpenGL/Vulkan</h1><p id="f9f776dc-9141-4e36-935c-a2cbd2ee8dac" class="">To run OpenGL / Vulkan APPs in your WSL environment, you want to run the following scripts</p><pre id="d0c1073b-475e-4d47-a048-469142bfea28" class="code"><code>export DISPLAY=:0 #this makes the graphics output go to our host os</code></pre><p id="f7832a95-32e3-456e-a19f-44ec3666efe6" class="">And runing <code>glxinfo -B</code> should export something similar to the following</p><pre id="6d26ab7e-7d70-48a3-885f-8f950b5e007a" class="code"><code>name of display: :0
+display: :0  screen: 0
+direct rendering: Yes
+Extended renderer info (GLX_MESA_query_renderer):
+    Vendor: Microsoft Corporation (0xffffffff)
+    Device: D3D12 (NVIDIA GeForce MX350) (0xffffffff)
+    Version: 22.0.2
+    Accelerated: yes
+    Video memory: 10086MB
+    Unified memory: no
+    Preferred profile: core (0x1)
+    Max core profile version: 3.3
+    Max compat profile version: 3.3
+    Max GLES1 profile version: 1.1
+    Max GLES[23] profile version: 3.1
+OpenGL vendor string: Microsoft Corporation
+OpenGL renderer string: D3D12 (NVIDIA GeForce MX350)
+OpenGL core profile version string: 3.3 (Core Profile) Mesa 22.0.2 - kisak-mesa PPA
+OpenGL core profile shading language version string: 3.30
+OpenGL core profile context flags: (none)
+OpenGL core profile profile mask: core profile
+
+OpenGL version string: 3.3 (Compatibility Profile) Mesa 22.0.2 - kisak-mesa PPA
+OpenGL shading language version string: 3.30
+OpenGL context flags: (none)
+OpenGL profile mask: compatibility profile
+
+OpenGL ES profile version string: OpenGL ES 3.1 Mesa 22.0.2 - kisak-mesa PPA
+OpenGL ES profile shading language version string: OpenGL ES GLSL ES 3.10</code></pre><p id="06d6c712-7d1a-4ec6-9bc8-aacd9cf03078" class="">If you have your physical graphics card name displaying here, you are in good shape. Also you want to update your driver by running the following</p><pre id="e4c1a446-0e90-45ae-ad38-83b0241e67e0" class="code"><code>sudo add-apt-repository ppa:kisak/kisak-mesa
+sudo apt-get update</code></pre><figure id="b3db8513-e5f9-408e-8144-f935d1b00f1f"><a href="https://launchpad.net/~kisak/+archive/ubuntu/kisak-mesa" class="bookmark source"><div class="bookmark-info"><div class="bookmark-text"><div class="bookmark-title">kisak-mesa fresh : kisak</div><div class="bookmark-description">The goal of this PPA is to provide the latest point release of Mesa plus select non-invasive early backports. Deviations from upstream packages are listed on the package details page. --- Support status --- Bionic (18.04) - Supported (Please use the HWE X and kernel or equivalent) Focal (20.04) - Supported Impish (21.10) - Supported Note: Please report any issues to mesa.</div></div><div class="bookmark-href"><img src="https://launchpad.net/@@/launchpad.png" class="icon bookmark-icon"/>https://launchpad.net/~kisak/+archive/ubuntu/kisak-mesa</div></div></a></figure><p id="57233804-8b92-4130-b818-6acaec9169fd" class="">
+</p><p id="41fc8375-267b-4b98-9896-a9eda8255637" class="">To verify that WSLg is working, run the following</p><pre id="820e895e-710e-4b40-88be-51b2b24837c8" class="code"><code>sudo apt install mesa-utils vulkan-tools
+glxgears
+vkcube</code></pre><p id="c35a96ca-bf04-4249-9dbe-03b5d446ef42" class="">running <code>glxgears</code> and <code>vkcube</code> should each pop up a window in your host OS.</p><p id="c97d08a8-01da-43b8-a1b1-003bb28ae405" class="">
+</p><h1 id="5f0ade67-6ca1-4a09-928b-8cd7dd36f9df" class="">Further Readings</h1><h2 id="d289512b-0008-462a-8b4e-306e24ee45ed" class="">ML Acceleration using CUDA and DirectML on WSL2</h2><figure id="a929a970-2209-43ef-bba5-e644b47f4402"><a href="https://docs.microsoft.com/en-us/windows/ai/directml/gpu-accelerated-training" class="bookmark source"><div class="bookmark-info"><div class="bookmark-text"><div class="bookmark-title">GPU acceleration in WSL</div><div class="bookmark-description">This documentation covers setting up GPU accelerated machine learning (ML) training scenarios for the Windows Subsystem for Linux (WSL) and native Windows. This functionality supports both professional and beginner scenarios. Below you&#x27;ll find pointers to step-by-step guides on how to get your system set up depending on your level of expertise in ML, your GPU vendor, and the software library that you intend to use.</div></div><div class="bookmark-href"><img src="https://docs.microsoft.com/favicon.ico" class="icon bookmark-icon"/>https://docs.microsoft.com/en-us/windows/ai/directml/gpu-accelerated-training</div></div><img src="https://docs.microsoft.com/en-us/media/logos/logo-ms-social.png" class="bookmark-image"/></a></figure><p id="dcc18b9a-e4f1-4b1f-999f-ba0ed4a62ca9" class="">
+</p></div></article></body></html>

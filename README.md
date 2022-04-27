@@ -4,7 +4,8 @@ Those are note archives as well as very well-structured final review docs I made
 This repository is brought to you by [Yunhao Cao](https://github.com/ToiletCommander).
 
 ## Course Lists
-
+- Berkeley Research
+  - [ROAR](ROAR/)
 - Berkeley Courses
   - [CS61B(FA21)](CS61B/)
   - [CS61C(FA21)](CS61C/)
