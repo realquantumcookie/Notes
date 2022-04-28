@@ -13,6 +13,7 @@ This repository is brought to you by [Yunhao Cao](https://github.com/ToiletComma
   - [CS70(FA21)](CS70/)
   - [STAT134(SP22)](STAT134/)
   - [CS189(SP22)](CS189/)
+  - [UGBA102A(SP22)](UGBA102A/)
 - Non-Berkeley Courses
   - DeepLearning.AI
     - [Deep Learning Specialization](DLSpecialization/)
