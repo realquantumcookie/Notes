@@ -5,4 +5,4 @@ Those are note archives as well as very well-structured final review docs I made
 ## Resource List
 
 - [Class Notes](ClassNotes/index.html)
-- [Miniproject - Confidence Intervals using Chebyshev's Inequality](Resources/STAT134_Project_V2.pdf)
+- [Miniproject - Confidence Intervals using Chebyshev's Inequality](Resources/STAT134_Project_V3.pdf)
