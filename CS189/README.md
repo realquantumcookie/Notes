@@ -6,7 +6,7 @@ Those are note archives as well as very well-structured final review docs I made
 ## Resource List
 
 - Notes
-  - Not yet here...
+  - [Final Review Doc by Yunhao](final-review/index.html)
 - Alternative Note
   - [ML Book by former TA Soroush Nasiriany and Garrett Thomas](https://snasiriany.me/files/ml-book.pdf)
 - Resources
