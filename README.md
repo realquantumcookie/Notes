@@ -18,6 +18,7 @@ This repository is brought to you by [Yunhao Cao](https://github.com/ToiletComma
 - Non-Berkeley Courses
   - DeepLearning.AI
     - [Deep Learning Specialization](DLSpecialization/)
+    - [Generative Adversarial Network(GAN) Specialization](GANSpecialization/)
 
 ## Additional Stuffs
 - [ML Resources](MLResources.md)

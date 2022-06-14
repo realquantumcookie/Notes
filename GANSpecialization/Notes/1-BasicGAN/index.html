@@ -1,0 +1,867 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>GAN 1: Basic GAN Networks</title><style>
+/* cspell:disable-file */
+/* webkit printing magic: print all background colors */
+html {
+	-webkit-print-color-adjust: exact;
+}
+* {
+	box-sizing: border-box;
+	-webkit-print-color-adjust: exact;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+@media only screen {
+	body {
+		margin: 2em auto;
+		max-width: 900px;
+		color: rgb(55, 53, 47);
+	}
+}
+
+body {
+	line-height: 1.5;
+	white-space: pre-wrap;
+}
+
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+h1 {
+	font-size: 1.875rem;
+	margin-top: 1.875rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+	margin-top: 1.25rem;
+}
+
+.source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 3px;
+	padding: 1rem;
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.column-list {
+	display: flex;
+	justify-content: space-between;
+}
+
+.column {
+	padding: 0 1em;
+}
+
+.column:first-child {
+	padding-left: 0;
+}
+
+.column:last-child {
+	padding-right: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding: 0.125rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+	border-collapse: collapse;
+}
+
+table {
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	text-indent: -1.7em;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+.simple-table {
+	margin-top: 1em;
+	font-size: 0.875rem;
+	empty-cells: show;
+}
+.simple-table td {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table th {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table-header-color {
+	background: rgb(247, 246, 243);
+	color: black;
+}
+.simple-table-header {
+	font-weight: 500;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-block;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	max-height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	transform: scale(1.5);
+	margin-right: 0.6em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code-wrap {
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1.25em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+.bookmark {
+	text-decoration: none;
+	max-height: 8em;
+	padding: 0;
+	display: flex;
+	width: 100%;
+	align-items: stretch;
+}
+
+.bookmark-title {
+	font-size: 0.85em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 1.75em;
+	white-space: nowrap;
+}
+
+.bookmark-text {
+	display: flex;
+	flex-direction: column;
+}
+
+.bookmark-info {
+	flex: 4 1 180px;
+	padding: 12px 14px 14px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.bookmark-image {
+	width: 33%;
+	flex: 1 1 180px;
+	display: block;
+	position: relative;
+	object-fit: cover;
+	border-radius: 1px;
+}
+
+.bookmark-description {
+	color: rgba(55, 53, 47, 0.6);
+	font-size: 0.75em;
+	overflow: hidden;
+	max-height: 4.5em;
+	word-break: break-word;
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	margin-top: 0.25em;
+}
+
+.sans { font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, ui-serif, serif; }
+.mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
+.pdf .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK JP'; }
+.pdf:lang(zh-CN) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC'; }
+.pdf:lang(zh-TW) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK TC'; }
+.pdf:lang(ko-KR) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK KR'; }
+.pdf .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK JP'; }
+.pdf:lang(zh-CN) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK SC'; }
+.pdf:lang(zh-TW) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK TC'; }
+.pdf:lang(ko-KR) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK KR'; }
+.pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.highlight-default {
+	color: rgba(55, 53, 47, 1);
+}
+.highlight-gray {
+	color: rgba(120, 119, 116, 1);
+	fill: rgba(120, 119, 116, 1);
+}
+.highlight-brown {
+	color: rgba(159, 107, 83, 1);
+	fill: rgba(159, 107, 83, 1);
+}
+.highlight-orange {
+	color: rgba(217, 115, 13, 1);
+	fill: rgba(217, 115, 13, 1);
+}
+.highlight-yellow {
+	color: rgba(203, 145, 47, 1);
+	fill: rgba(203, 145, 47, 1);
+}
+.highlight-teal {
+	color: rgba(68, 131, 97, 1);
+	fill: rgba(68, 131, 97, 1);
+}
+.highlight-blue {
+	color: rgba(51, 126, 169, 1);
+	fill: rgba(51, 126, 169, 1);
+}
+.highlight-purple {
+	color: rgba(144, 101, 176, 1);
+	fill: rgba(144, 101, 176, 1);
+}
+.highlight-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.highlight-red {
+	color: rgba(212, 76, 71, 1);
+	fill: rgba(212, 76, 71, 1);
+}
+.highlight-gray_background {
+	background: rgba(241, 241, 239, 1);
+}
+.highlight-brown_background {
+	background: rgba(244, 238, 238, 1);
+}
+.highlight-orange_background {
+	background: rgba(251, 236, 221, 1);
+}
+.highlight-yellow_background {
+	background: rgba(251, 243, 219, 1);
+}
+.highlight-teal_background {
+	background: rgba(237, 243, 236, 1);
+}
+.highlight-blue_background {
+	background: rgba(231, 243, 248, 1);
+}
+.highlight-purple_background {
+	background: rgba(244, 240, 247, 0.8);
+}
+.highlight-pink_background {
+	background: rgba(249, 238, 243, 0.8);
+}
+.highlight-red_background {
+	background: rgba(253, 235, 236, 1);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(120, 119, 116, 1);
+	fill: rgba(120, 119, 116, 1);
+}
+.block-color-brown {
+	color: rgba(159, 107, 83, 1);
+	fill: rgba(159, 107, 83, 1);
+}
+.block-color-orange {
+	color: rgba(217, 115, 13, 1);
+	fill: rgba(217, 115, 13, 1);
+}
+.block-color-yellow {
+	color: rgba(203, 145, 47, 1);
+	fill: rgba(203, 145, 47, 1);
+}
+.block-color-teal {
+	color: rgba(68, 131, 97, 1);
+	fill: rgba(68, 131, 97, 1);
+}
+.block-color-blue {
+	color: rgba(51, 126, 169, 1);
+	fill: rgba(51, 126, 169, 1);
+}
+.block-color-purple {
+	color: rgba(144, 101, 176, 1);
+	fill: rgba(144, 101, 176, 1);
+}
+.block-color-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.block-color-red {
+	color: rgba(212, 76, 71, 1);
+	fill: rgba(212, 76, 71, 1);
+}
+.block-color-gray_background {
+	background: rgba(241, 241, 239, 1);
+}
+.block-color-brown_background {
+	background: rgba(244, 238, 238, 1);
+}
+.block-color-orange_background {
+	background: rgba(251, 236, 221, 1);
+}
+.block-color-yellow_background {
+	background: rgba(251, 243, 219, 1);
+}
+.block-color-teal_background {
+	background: rgba(237, 243, 236, 1);
+}
+.block-color-blue_background {
+	background: rgba(231, 243, 248, 1);
+}
+.block-color-purple_background {
+	background: rgba(244, 240, 247, 0.8);
+}
+.block-color-pink_background {
+	background: rgba(249, 238, 243, 0.8);
+}
+.block-color-red_background {
+	background: rgba(253, 235, 236, 1);
+}
+.select-value-color-pink { background-color: rgba(245, 224, 233, 1); }
+.select-value-color-purple { background-color: rgba(232, 222, 238, 1); }
+.select-value-color-green { background-color: rgba(219, 237, 219, 1); }
+.select-value-color-gray { background-color: rgba(227, 226, 224, 1); }
+.select-value-color-opaquegray { background-color: rgba(255, 255, 255, 0.0375); }
+.select-value-color-orange { background-color: rgba(250, 222, 201, 1); }
+.select-value-color-brown { background-color: rgba(238, 224, 218, 1); }
+.select-value-color-red { background-color: rgba(255, 226, 221, 1); }
+.select-value-color-yellow { background-color: rgba(253, 236, 200, 1); }
+.select-value-color-blue { background-color: rgba(211, 229, 239, 1); }
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+	
+</style></head><body><article id="21af554b-cf05-4023-98fa-a4ecd2fe7e90" class="page sans"><header><h1 class="page-title">GAN 1: Basic GAN Networks</h1></header><div class="page-body"><p id="7beccd3c-66aa-4e4e-8381-916021ffff29" class="">Some notes of GAN(Generative Adversarial Network) Specialization Course by Yunhao Cao(Github@<a href="https://github.com/ToiletCommander/">ToiletCommander</a>)</p><figure class="block-color-gray_background callout" style="white-space:pre-wrap;display:flex" id="3399114e-1a33-42b4-b18d-6779db7a2b46"><div style="font-size:1.5em"><span class="icon">👉</span></div><div style="width:100%">Note: This note has content including week 1-4 (version as of 2022/6/14)</div></figure><p id="c8e66235-1cbe-47be-a7bd-46d9f40e61b4" class="">This work is licensed under a <a href="http://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License</a>.</p><p id="a84b1a5b-0258-4a28-8085-e6e948cdac48" class="">Acknowledgements: Some of the resources(images, animations) are taken from:</p><ol type="1" id="7905fe19-79c0-40c9-abed-f5cd69f7a75b" class="numbered-list" start="1"><li>Sharon Zhou &amp; Andrew Ng and <a href="http://DeepLearning.AI">DeepLearning.AI</a>’s GAN Specialization Course Track</li></ol><ol type="1" id="9680d8f5-d825-42ec-9284-a69b3cd25782" class="numbered-list" start="2"><li>articles on towardsdatascience.com</li></ol><ol type="1" id="e1800b0e-018b-4de0-9e6c-06187217d562" class="numbered-list" start="3"><li>images from google image search(from other online sources)</li></ol><p id="811276e3-03ea-4da2-9542-1f849aefa7c5" class="">Since this article is not for commercial use, please let me know if you would like your resource taken off from here by creating an issue on my github repository.</p><blockquote id="6b17ee89-5e55-4687-b306-dc3323702e31" class="">Last updated: 2022/6/14 15:07 CST</blockquote><p id="20545f2b-9071-49bc-a844-7f8afc2a4757" class="">
+</p><h1 id="00d91e11-1a20-460c-8310-ce2842eb2f06" class="">Generative Models</h1><figure id="91a0b120-e078-44cd-80c4-bee2859877c8" class="image"><a href="GAN%201%20Basic%20GAN%20Networks%2091a0b120e07844cd80c4bee2859877c8/9D602082-BCDA-4C87-B5A6-C1F231C01A3A.jpeg"><img style="width:2642px" src="GAN%201%20Basic%20GAN%20Networks%2091a0b120e07844cd80c4bee2859877c8/9D602082-BCDA-4C87-B5A6-C1F231C01A3A.jpeg"/></a></figure><figure class="block-color-gray_background callout" style="white-space:pre-wrap;display:flex" id="401496fc-01a0-4a89-9b85-44df70082c60"><div style="font-size:1.5em"><span class="icon">💡</span></div><div style="width:100%">Generative Models accepts noise and class inputs to produce features (or outputs that are huge in dimensions) while discriminative models only accept huge dimensions of inputs (features) and determine the classes or labels of those features.</div></figure><h2 id="5e297210-85a2-454b-9b36-eb225cce5b91" class="">Different Generative Models</h2><div id="22dad678-a979-448e-ab0a-873223c84423" class="column-list"><div id="2a6cc936-7c5c-4ca2-babc-37a21348e200" style="width:50%" class="column"><figure id="9c129e97-fc51-4b63-bd3a-b1b3fe45bf5f" class="image"><a href="GAN%201%20Basic%20GAN%20Networks%2091a0b120e07844cd80c4bee2859877c8/C13A7285-231E-438C-BB1B-A64E2E29160A.jpeg"><img style="width:1368px" src="GAN%201%20Basic%20GAN%20Networks%2091a0b120e07844cd80c4bee2859877c8/C13A7285-231E-438C-BB1B-A64E2E29160A.jpeg"/></a></figure><p id="7c039057-4a16-4bed-b16a-7199e62bac8f" class="">In a VAE model, two models, the encoder and the decoder is trained. The encoder tries to find a good representation of the image in the vector space (and hopefully same class rests in a cluster). </p><p id="71fc9ea7-1f18-4c85-8ae7-1e32081dc570" class=""><strong>Variant</strong>: produce a linear subspace by the encoder, pick a random point from the subspace and feed it to decoder to kind of kick in the randomness of the image. The decoder’s job is to produce an image given a vector representation in the vector space.</p><p id="3216d25a-48c0-4114-bb4b-d19db5d75cde" class=""><strong>During production</strong>, only the decoder is used. We take random point from the vector space and feed it to the decoder.</p></div><div id="8e0cb629-56ea-4521-835f-bf32e6115b24" style="width:50%" class="column"><figure id="b5febe80-14c5-4be9-a132-f77ed424fded" class="image"><a href="GAN%201%20Basic%20GAN%20Networks%2091a0b120e07844cd80c4bee2859877c8/72CB865B-35C2-45F6-B8C9-AB265E8E4A80.jpeg"><img style="width:1356px" src="GAN%201%20Basic%20GAN%20Networks%2091a0b120e07844cd80c4bee2859877c8/72CB865B-35C2-45F6-B8C9-AB265E8E4A80.jpeg"/></a></figure><p id="06aa5332-dbd6-43d9-94a1-e32b003762b9" class="">In a GAN model, two models, generator, and discriminator, are trained. Generator is used to generate fake images and try to fool the discriminator, while the goal of the discriminator is to train to recognize of two images which is the fake image generated by the generator.</p><p id="cbe191f7-eb94-4cbf-8cda-82adbc5500a8" class="">Generator fights with discriminator and they competes with each other. Therefore the “adversarial” word is used to describe the model.</p><p id="948c094c-eaea-4d1e-8ede-47bcca45f9bb" class=""><strong>During production</strong>, the discriminator is removed and only the generator is used.</p><p id="6eb17dee-06d9-47bf-ad38-d35121fc1006" class="">
+</p></div></div><blockquote id="1ae78bfd-cfec-4a9b-9cc7-d5d1baeac27f" class="">Therefore, the <strong>goal </strong>of GAN is to optimize the following problem:</blockquote><figure id="80abb8d3-19ef-426b-8921-863ba5ea0359" class="equation"><style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.13.2/katex.min.css')</style><div class="equation-container"><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><munder><mrow><mi>min</mi><mo>⁡</mo></mrow><mi>d</mi></munder><munder><mrow><mi>max</mi><mo>⁡</mo></mrow><mi>g</mi></munder><mi>J</mi><mo stretchy="false">(</mo><mi>y</mi><mo separator="true">,</mo><mover accent="true"><mi>y</mi><mo>^</mo></mover><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">\min_d \max_g J(y,\hat{y})</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.586108em;vertical-align:-0.8361080000000001em;"></span><span class="mop op-limits"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.66786em;"><span style="top:-2.347892em;margin-left:0em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">d</span></span></span><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span><span class="mop">min</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.7521079999999999em;"><span></span></span></span></span></span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mop op-limits"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.4305599999999999em;"><span style="top:-2.4em;margin-left:0em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.03588em;">g</span></span></span><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span><span class="mop">max</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.8361080000000001em;"><span></span></span></span></span></span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord mathnormal" style="margin-right:0.09618em;">J</span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.03588em;">y</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord accent"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.69444em;"><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord mathnormal" style="margin-right:0.03588em;">y</span></span><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="accent-body" style="left:-0.19444em;"><span class="mord">^</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.19444em;"><span></span></span></span></span></span><span class="mclose">)</span></span></span></span></span></div></figure><h1 id="db3308be-baf4-4fe6-8dd1-ebc2938d427f" class="">Training A Basic GAN Network</h1><figure id="f2fa0b5f-833f-4002-b4bb-27539e58e25b" class="image"><a href="GAN%201%20Basic%20GAN%20Networks%2091a0b120e07844cd80c4bee2859877c8/43927AE1-B754-4D8F-96E5-DD281BA6C824.jpeg"><img style="width:2665px" src="GAN%201%20Basic%20GAN%20Networks%2091a0b120e07844cd80c4bee2859877c8/43927AE1-B754-4D8F-96E5-DD281BA6C824.jpeg"/></a><figcaption>Training the Discriminator of the GAN. Update the parameters with discriminator only.</figcaption></figure><p id="6d1d0bfd-ce9e-4e97-99fd-ffc07ba3833a" class="">
+</p><figure id="e94e3a5c-7fa0-48db-841a-1d9966fc417f" class="image"><a href="GAN%201%20Basic%20GAN%20Networks%2091a0b120e07844cd80c4bee2859877c8/F5C794A3-04FB-4305-863B-EFB932BD93E3.jpeg"><img style="width:2641px" src="GAN%201%20Basic%20GAN%20Networks%2091a0b120e07844cd80c4bee2859877c8/F5C794A3-04FB-4305-863B-EFB932BD93E3.jpeg"/></a><figcaption>Training the Generator of the GAN. Update the parameters with generator only. Feed in fake images only.</figcaption></figure><figure class="block-color-gray_background callout" style="white-space:pre-wrap;display:flex" id="dc217a77-06e5-411e-bd7d-ca4a221bdae1"><div style="font-size:1.5em"><span class="icon">💡</span></div><div style="width:100%">During training, the generator and the discriminator is each trained several times, alternating between the process.</div></figure><figure class="block-color-gray_background callout" style="white-space:pre-wrap;display:flex" id="a670b987-d6fc-43fe-a127-bae8d36b8a47"><div style="font-size:1.5em"><span class="icon">🚧</span></div><div style="width:100%">Here the class(label) of the generated image is not shown in the architecture, in practice it is good to input the class into the generator model.</div></figure><h2 id="a940e6fd-bdcc-4525-9679-3c56731aae35" class="">BCE Loss (Binary Classification Entropy Loss)</h2><figure id="eca1798a-a331-465f-a9c0-4a7f998cbfad" class="equation"><style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.13.2/katex.min.css')</style><div class="equation-container"><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>J</mi><mo stretchy="false">(</mo><mover accent="true"><mi>y</mi><mo>^</mo></mover><mo separator="true">,</mo><mi>y</mi><mo stretchy="false">)</mo><mo>=</mo><mo>−</mo><mfrac><mn>1</mn><mi>m</mi></mfrac><munderover><mo>∑</mo><mrow><mi>i</mi><mo>=</mo><mn>1</mn></mrow><mi>m</mi></munderover><msup><mi>y</mi><mrow><mo stretchy="false">(</mo><mi>i</mi><mo stretchy="false">)</mo></mrow></msup><mo>⋅</mo><mi>l</mi><mi>o</mi><mi>g</mi><mo stretchy="false">(</mo><msup><mover accent="true"><mi>y</mi><mo>^</mo></mover><mrow><mo stretchy="false">(</mo><mi>i</mi><mo stretchy="false">)</mo></mrow></msup><mo>+</mo><mo stretchy="false">(</mo><mn>1</mn><mo>−</mo><msup><mi>y</mi><mrow><mo stretchy="false">(</mo><mi>i</mi><mo stretchy="false">)</mo></mrow></msup><mo stretchy="false">)</mo><mo>⋅</mo><mi>l</mi><mi>o</mi><mi>g</mi><mo stretchy="false">(</mo><mn>1</mn><mo>−</mo><msup><mover accent="true"><mi>y</mi><mo>^</mo></mover><mrow><mo stretchy="false">(</mo><mi>i</mi><mo stretchy="false">)</mo></mrow></msup><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">J(\hat{y},y)=-\frac{1}{m}\sum_{i=1}^m y^{(i)} \cdot log(\hat{y}^{(i)}+(1-y^{(i)}) \cdot log(1-\hat{y}^{(i)})</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.09618em;">J</span><span class="mopen">(</span><span class="mord accent"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.69444em;"><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord mathnormal" style="margin-right:0.03588em;">y</span></span><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="accent-body" style="left:-0.19444em;"><span class="mord">^</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.19444em;"><span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord mathnormal" style="margin-right:0.03588em;">y</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:2.929066em;vertical-align:-1.277669em;"></span><span class="mord">−</span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.32144em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathnormal">m</span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.686em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mop op-limits"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.6513970000000002em;"><span style="top:-1.872331em;margin-left:0em;"><span class="pstrut" style="height:3.05em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">i</span><span class="mrel mtight">=</span><span class="mord mtight">1</span></span></span></span><span style="top:-3.050005em;"><span class="pstrut" style="height:3.05em;"></span><span><span class="mop op-symbol large-op">∑</span></span></span><span style="top:-4.3000050000000005em;margin-left:0em;"><span class="pstrut" style="height:3.05em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">m</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:1.277669em;"><span></span></span></span></span></span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.03588em;">y</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.938em;"><span style="top:-3.113em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mopen mtight">(</span><span class="mord mathnormal mtight">i</span><span class="mclose mtight">)</span></span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">⋅</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1.188em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.01968em;">l</span><span class="mord mathnormal">o</span><span class="mord mathnormal" style="margin-right:0.03588em;">g</span><span class="mopen">(</span><span class="mord"><span class="mord accent"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.69444em;"><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord mathnormal" style="margin-right:0.03588em;">y</span></span><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="accent-body" style="left:-0.19444em;"><span class="mord">^</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.19444em;"><span></span></span></span></span></span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.938em;"><span style="top:-3.113em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mopen mtight">(</span><span class="mord mathnormal mtight">i</span><span class="mclose mtight">)</span></span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord">1</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1.188em;vertical-align:-0.25em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.03588em;">y</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.938em;"><span style="top:-3.113em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mopen mtight">(</span><span class="mord mathnormal mtight">i</span><span class="mclose mtight">)</span></span></span></span></span></span></span></span></span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">⋅</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.01968em;">l</span><span class="mord mathnormal">o</span><span class="mord mathnormal" style="margin-right:0.03588em;">g</span><span class="mopen">(</span><span class="mord">1</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1.188em;vertical-align:-0.25em;"></span><span class="mord"><span class="mord accent"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.69444em;"><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord mathnormal" style="margin-right:0.03588em;">y</span></span><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="accent-body" style="left:-0.19444em;"><span class="mord">^</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.19444em;"><span></span></span></span></span></span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.938em;"><span style="top:-3.113em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mopen mtight">(</span><span class="mord mathnormal mtight">i</span><span class="mclose mtight">)</span></span></span></span></span></span></span></span></span><span class="mclose">)</span></span></span></span></span></div></figure><p id="38c49353-85c3-449c-92da-b75d1455630f" class="">It is better than squared error because the loss is significantly higher when you misclassified the points, which helps to optimize the NN much faster.</p><p id="ce683790-89cc-47d4-aa02-7373ed338be0" class="">Therefore, the goal is to optimize</p><figure id="b95c8cf1-fbba-4724-a86a-9ab4e413214f" class="equation"><style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.13.2/katex.min.css')</style><div class="equation-container"><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><munder><mrow><mi>min</mi><mo>⁡</mo></mrow><mi>d</mi></munder><munder><mrow><mi>max</mi><mo>⁡</mo></mrow><mi>g</mi></munder><mo>−</mo><mo stretchy="false">[</mo><mi mathvariant="double-struck">E</mi><mo stretchy="false">[</mo><mi>l</mi><mi>o</mi><mi>g</mi><mo stretchy="false">(</mo><mi>d</mi><mo stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo><mo stretchy="false">)</mo><mo stretchy="false">]</mo><mo stretchy="false">]</mo></mrow><annotation encoding="application/x-tex">\min_d \max_g -[\mathbb{E}[log(d(x))]]</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.586108em;vertical-align:-0.8361080000000001em;"></span><span class="mop op-limits"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.66786em;"><span style="top:-2.347892em;margin-left:0em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">d</span></span></span><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span><span class="mop">min</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.7521079999999999em;"><span></span></span></span></span></span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mop op-limits"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.4305599999999999em;"><span style="top:-2.4em;margin-left:0em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.03588em;">g</span></span></span><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span><span class="mop">max</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.8361080000000001em;"><span></span></span></span></span></span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord">−</span><span class="mopen">[</span><span class="mord mathbb">E</span><span class="mopen">[</span><span class="mord mathnormal" style="margin-right:0.01968em;">l</span><span class="mord mathnormal">o</span><span class="mord mathnormal" style="margin-right:0.03588em;">g</span><span class="mopen">(</span><span class="mord mathnormal">d</span><span class="mopen">(</span><span class="mord mathnormal">x</span><span class="mclose">))]]</span></span></span></span></span></div></figure><h1 id="d5194814-0973-4f75-b3cf-b4a5f8dbdcc2" class="">DCGAN - Deep Convolution GAN</h1><figure id="82659b30-1df5-4ea5-ada7-3c699aee27bf"><a href="https://arxiv.org/pdf/1511.06434v1.pdf" class="bookmark source"><div class="bookmark-info"><div class="bookmark-text"><div class="bookmark-title"></div></div><div class="bookmark-href"><img src="https://arxiv.org/favicon.ico" class="icon bookmark-icon"/>https://arxiv.org/pdf/1511.06434v1.pdf</div></div></a></figure><figure id="70faea23-bff2-47bc-ae08-030bcaf55fac" class="image"><a href="GAN%201%20Basic%20GAN%20Networks%2091a0b120e07844cd80c4bee2859877c8/Untitled.png"><img style="width:2706px" src="GAN%201%20Basic%20GAN%20Networks%2091a0b120e07844cd80c4bee2859877c8/Untitled.png"/></a><figcaption>Generator of DCGAN</figcaption></figure><h2 id="fceb86a6-50ef-4b2a-aea6-517cb33220eb" class="">Generator</h2><h3 id="25318812-602d-4f11-9a16-0085016ee438" class="">Basic Building Blocks</h3><p id="3c85d2de-d0f2-4287-af9d-67b4216a75a0" class=""><strong>Generator Block</strong>:</p><p id="ad82451c-f2d9-481c-972b-09dcad6ceeab" class="">ConvTranspose2D ⇒ BatchNorm ⇒ Relu</p><p id="fab2b605-0345-4894-8026-5723ba96bb25" class=""><strong>Last layer for Generator Block</strong>:</p><p id="972bc99d-1374-4136-b5c7-6f5a7d256973" class="">ConvTranspose2D ⇒ TanH</p><h3 id="5b375863-068d-4f96-9ff8-8b5bca44f66d" class="">Architecture</h3><p id="cc905ae2-643e-4259-be3e-e4990bee0b2a" class="">Unsqeeze noise vector ⇒ 4 Generator Blocks, Upscaling Layers then Downscaling Layers, The Height and Width is always increasing since we’re doing transpose conv at every node.</p><h3 id="c5d4147f-b8ff-41c2-9bca-a91f11b21572" class="">Code</h3><pre id="9c3e671e-33ff-4a7e-9be9-679dd48c51ee" class="code"><code>class Generator(nn.Module):
+    &#x27;&#x27;&#x27;
+    Generator Class
+    Values:
+        z_dim: the dimension of the noise vector, a scalar
+        im_chan: the number of channels in the images, fitted for the dataset used, a scalar
+              (MNIST is black-and-white, so 1 channel is your default)
+        hidden_dim: the inner dimension, a scalar
+    &#x27;&#x27;&#x27;
+    def __init__(self, z_dim=10, im_chan=1, hidden_dim=64):
+        super(Generator, self).__init__()
+        self.z_dim = z_dim
+        # Build the neural network
+        self.gen = nn.Sequential(
+            self.make_gen_block(z_dim, hidden_dim * 4),
+            self.make_gen_block(hidden_dim * 4, hidden_dim * 2, kernel_size=4, stride=1),
+            self.make_gen_block(hidden_dim * 2, hidden_dim),
+            self.make_gen_block(hidden_dim, im_chan, kernel_size=4, final_layer=True),
+        )
+
+    def make_gen_block(self, input_channels, output_channels, kernel_size=3, stride=2, final_layer=False):
+        &#x27;&#x27;&#x27;
+        Function to return a sequence of operations corresponding to a generator block of DCGAN, 
+        corresponding to a transposed convolution, a batchnorm (except for in the last layer), and an activation.
+        Parameters:
+            input_channels: how many channels the input feature representation has
+            output_channels: how many channels the output feature representation should have
+            kernel_size: the size of each convolutional filter, equivalent to (kernel_size, kernel_size)
+            stride: the stride of the convolution
+            final_layer: a boolean, true if it is the final layer and false otherwise 
+                      (affects activation and batchnorm)
+        &#x27;&#x27;&#x27;
+
+        #     Steps:
+        #       1) Do a transposed convolution using the given parameters.
+        #       2) Do a batchnorm, except for the last layer.
+        #       3) Follow each batchnorm with a ReLU activation.
+        #       4) If its the final layer, use a Tanh activation after the deconvolution.
+
+        # Build the neural block
+        if not final_layer:
+            return nn.Sequential(
+                #### START CODE HERE ####
+                nn.ConvTranspose2d(input_channels,output_channels,kernel_size,stride),
+                nn.BatchNorm2d(output_channels),
+                nn.ReLU()
+                #### END CODE HERE ####
+            )
+        else: # Final Layer
+            return nn.Sequential(
+                #### START CODE HERE ####
+                nn.ConvTranspose2d(input_channels,output_channels,kernel_size,stride),
+                nn.Tanh()
+                #### END CODE HERE ####
+            )
+
+    def unsqueeze_noise(self, noise):
+        &#x27;&#x27;&#x27;
+        Function for completing a forward pass of the generator: Given a noise tensor, 
+        returns a copy of that noise with width and height = 1 and channels = z_dim.
+        Parameters:
+            noise: a noise tensor with dimensions (n_samples, z_dim)
+        &#x27;&#x27;&#x27;
+        return noise.view(len(noise), self.z_dim, 1, 1)
+
+    def forward(self, noise):
+        &#x27;&#x27;&#x27;
+        Function for completing a forward pass of the generator: Given a noise tensor, 
+        returns generated images.
+        Parameters:
+            noise: a noise tensor with dimensions (n_samples, z_dim)
+        &#x27;&#x27;&#x27;
+        x = self.unsqueeze_noise(noise)
+        return self.gen(x)
+
+def get_noise(n_samples, z_dim, device=&#x27;cpu&#x27;):
+    &#x27;&#x27;&#x27;
+    Function for creating noise vectors: Given the dimensions (n_samples, z_dim)
+    creates a tensor of that shape filled with random numbers from the normal distribution.
+    Parameters:
+        n_samples: the number of samples to generate, a scalar
+        z_dim: the dimension of the noise vector, a scalar
+        device: the device type
+    &#x27;&#x27;&#x27;
+    return torch.randn(n_samples, z_dim, device=device)</code></pre><p id="c544af51-37e6-437c-983e-5e1ca62f6d1a" class="">
+</p><h2 id="c600ae41-03d5-47bd-81d9-5b6ac1cce4ce" class="">Discriminator</h2><h3 id="6be07359-b17f-4dcc-ad8a-0507bc57f320" class="">Basic Building Block</h3><p id="01a45193-b59a-4e5a-b02e-a32fe813fc4d" class=""><strong>Discriminator Block</strong>:</p><p id="d42b0ea6-f39e-4cb8-af62-7d4c7e4c7512" class="">Conv2D ⇒ BatchNorm ⇒ LeakyReLU(0.2)</p><p id="bdad667a-c5a9-41f2-bf67-d2974c579e58" class=""><strong>Last Layer of Discriminator Block</strong>:</p><p id="6f560fa3-bb6f-4d0b-bcfd-61df8a256b0a" class="">Conv2D ⇒ 1x1x1 ⇒ Sigmoid</p><h3 id="3ed02085-00ee-4d33-8430-25666f5fbf36" class="">Architecture</h3><p id="99c18724-f894-4642-972b-997c990e6ac2" class="">Input Image ⇒ Discriminator Block * 3 (Upscaling # layers in the first and second block, downscaling to 1 layer in the third block)</p><h3 id="214cd2e2-6180-4329-9723-28280c814935" class="">Code</h3><figure class="block-color-gray_background callout" style="white-space:pre-wrap;display:flex" id="fd70b487-c267-41ec-91f0-0e5244dc9594"><div style="font-size:1.5em"><span class="icon">📢</span></div><div style="width:100%">Note: The Sigmoid Layer is not added since we used BCEWithLogitsLost in PyTorch</div></figure><pre id="c3923859-f5a0-4ef4-9d97-7b2c19ff827d" class="code"><code># UNQ_C3 (UNIQUE CELL IDENTIFIER, DO NOT EDIT)
+# GRADED FUNCTION: Discriminator
+class Discriminator(nn.Module):
+    &#x27;&#x27;&#x27;
+    Discriminator Class
+    Values:
+        im_chan: the number of channels in the images, fitted for the dataset used, a scalar
+              (MNIST is black-and-white, so 1 channel is your default)
+    hidden_dim: the inner dimension, a scalar
+    &#x27;&#x27;&#x27;
+    def __init__(self, im_chan=1, hidden_dim=16):
+        super(Discriminator, self).__init__()
+        self.disc = nn.Sequential(
+            self.make_disc_block(im_chan, hidden_dim),
+            self.make_disc_block(hidden_dim, hidden_dim * 2),
+            self.make_disc_block(hidden_dim * 2, 1, final_layer=True),
+        )
+
+    def make_disc_block(self, input_channels, output_channels, kernel_size=4, stride=2, final_layer=False):
+        &#x27;&#x27;&#x27;
+        Function to return a sequence of operations corresponding to a discriminator block of DCGAN, 
+        corresponding to a convolution, a batchnorm (except for in the last layer), and an activation.
+        Parameters:
+            input_channels: how many channels the input feature representation has
+            output_channels: how many channels the output feature representation should have
+            kernel_size: the size of each convolutional filter, equivalent to (kernel_size, kernel_size)
+            stride: the stride of the convolution
+            final_layer: a boolean, true if it is the final layer and false otherwise 
+                      (affects activation and batchnorm)
+        &#x27;&#x27;&#x27;
+        #     Steps:
+        #       1) Add a convolutional layer using the given parameters.
+        #       2) Do a batchnorm, except for the last layer.
+        #       3) Follow each batchnorm with a LeakyReLU activation with slope 0.2.
+        #       Note: Don&#x27;t use an activation on the final layer
+        
+        # Build the neural block
+        if not final_layer:
+            return nn.Sequential(
+                #### START CODE HERE ####
+                nn.Conv2d(input_channels,output_channels,kernel_size,stride),
+                nn.BatchNorm2d(output_channels),
+                nn.LeakyReLU(0.2)
+                #### END CODE HERE ####
+            )
+        else: # Final Layer
+            return nn.Sequential(
+                #### START CODE HERE ####
+                nn.Conv2d(input_channels,output_channels,kernel_size,stride)
+                #### END CODE HERE ####
+            )
+
+    def forward(self, image):
+        &#x27;&#x27;&#x27;
+        Function for completing a forward pass of the discriminator: Given an image tensor, 
+        returns a 1-dimension tensor representing fake/real.
+        Parameters:
+            image: a flattened image tensor with dimension (im_dim)
+        &#x27;&#x27;&#x27;
+        disc_pred = self.disc(image)
+        return disc_pred.view(len(disc_pred), -1)</code></pre><p id="e83b9129-0c1f-4e5a-90ba-dcfba6c10895" class="">
+</p><h1 id="17924e12-2b77-440a-b56d-245d2864a6ce" class="">Mode Collapse</h1><h2 id="ae4257a4-5829-48ee-8ca8-16a9114f158c" class="">Mode Definition</h2><figure id="347e5ff7-01e1-4058-a587-a24fdaf6e4a5" class="image"><a href="GAN%201%20Basic%20GAN%20Networks%2091a0b120e07844cd80c4bee2859877c8/Untitled%201.png"><img style="width:576px" src="GAN%201%20Basic%20GAN%20Networks%2091a0b120e07844cd80c4bee2859877c8/Untitled%201.png"/></a><figcaption>Mode for different Probability Density Functions</figcaption></figure><p id="789650c3-5790-4782-a7a0-d6f473bc8cba" class="">Mode is the area where PDF is max, it marks the value on which <style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.13.2/katex.min.css')</style><span data-token-index="0" contenteditable="false" class="notion-text-equation-token" style="user-select:all;-webkit-user-select:all;-moz-user-select:all"><span></span><span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>P</mi><mo stretchy="false">(</mo><mi>X</mi><mo>∈</mo><mi>d</mi><mi>x</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">P(X \in dx)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.13889em;">P</span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.07847em;">X</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">∈</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal">d</span><span class="mord mathnormal">x</span><span class="mclose">)</span></span></span></span></span><span>﻿</span></span> is max (the most frequent number).</p><h2 id="fe68a5a7-be7d-429e-9208-54298f2a8c94" class="">Mode Collapse Problem</h2><p id="b1cc01b8-51db-4348-b4d3-291395608b86" class="">Think about in high dimensional space, each class has a normal distribution with some values concentrated at its modes, like below.</p><figure id="987a0e0b-c132-4f37-bccb-dc95fffb9ea4" class="image"><a href="GAN%201%20Basic%20GAN%20Networks%2091a0b120e07844cd80c4bee2859877c8/Untitled%202.png"><img style="width:2243px" src="GAN%201%20Basic%20GAN%20Networks%2091a0b120e07844cd80c4bee2859877c8/Untitled%202.png"/></a></figure><p id="698a3891-edf5-4dcc-8587-a23db907fc14" class="">Think about a <strong>discriminator</strong> that has been trained pretty well but just does not determine well enough on some of the classes (in this case, 1 and 7).</p><p id="79f0785b-6f58-4ae7-8c7d-46c34fc66bdb" class="">This means the <span style="border-bottom:0.05em solid">discriminator is probably stuck in a local minima</span>.</p><figure id="702b8359-11e8-4075-8c28-e9db2397ed47" class="image"><a href="GAN%201%20Basic%20GAN%20Networks%2091a0b120e07844cd80c4bee2859877c8/Untitled%203.png"><img style="width:480px" src="GAN%201%20Basic%20GAN%20Networks%2091a0b120e07844cd80c4bee2859877c8/Untitled%203.png"/></a></figure><p id="abefe8e2-5bb9-4022-bb7e-5d17268fe2c6" class="">Now the generator knows that <strong>generating the classes of images that the discriminator is weak at</strong> will help fool the discriminator.</p><p id="6bc5c211-7359-45ab-a73f-8c006c69e011" class="">So therefore the Generator outputs those classes of images</p><figure id="cab6f959-ef86-4ffd-9131-80bd4dcb6662" class="image"><a href="GAN%201%20Basic%20GAN%20Networks%2091a0b120e07844cd80c4bee2859877c8/Untitled%204.png"><img style="width:288px" src="GAN%201%20Basic%20GAN%20Networks%2091a0b120e07844cd80c4bee2859877c8/Untitled%204.png"/></a></figure><p id="a0e02267-aa23-4f2d-a56f-930de4cb8538" class="">Since the discriminator is <strong>stuck in a local optima</strong>, it keeps telling generator that the generated images are “real”, though there might be little difference in its ability to determine one class from other among those weak classes (in this case 7 &gt; 1).</p><p id="c682a7fd-77eb-4ed0-a559-9d6c3883ccec" class="">Therefore the <strong>generator</strong> learns to produce classes of images of only 1s ⇒ <strong>The Generator is stuck in one mode</strong>, therefore it is called mode collapse.</p><figure class="block-color-gray_background callout" style="white-space:pre-wrap;display:flex" id="4d0be776-4db7-48e7-9a87-b6b15ed373de"><div style="font-size:1.5em"><span class="icon">📢</span></div><div style="width:100%">The discriminator will eventually learn to differentiate the generator&#x27;s fakes if there is mode collapse and outskill it, but it will take a long time, and mode collapse into other modes is still possible in future iterations.</div></figure><p id="3a8376d3-f299-4a28-8761-d4be60a09cf5" class="">
+</p><h1 id="297aff16-2f69-403d-a351-90504cf8a2f2" class="">Vanishing Gradient Problem for BCE Loss</h1><figure id="872ed60e-e847-45eb-a3d2-cc5a17d11b2b"><a href="https://arxiv.org/pdf/1701.04862.pdf" class="block-color-pink bookmark source"><div class="bookmark-info"><div class="bookmark-text"><div class="bookmark-title"></div></div><div class="bookmark-href"><img src="https://arxiv.org/favicon.ico" class="icon bookmark-icon"/>https://arxiv.org/pdf/1701.04862.pdf</div></div></a><figcaption>See research paper describing the vanishing gradient in GAN.</figcaption></figure><p id="7f6d7f9b-a729-492f-85f3-0e037b9a136f" class="">Reminder:</p><figure id="2fa347a0-111f-484a-bf6a-16fad1761fe3" class="equation"><style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.13.2/katex.min.css')</style><div class="equation-container"><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>L</mi><mi>o</mi><mi>s</mi><msub><mi>s</mi><mrow><mi>B</mi><mi>C</mi><mi>E</mi></mrow></msub><mo stretchy="false">(</mo><mi>y</mi><mo separator="true">,</mo><mover accent="true"><mi>y</mi><mo>^</mo></mover><mo stretchy="false">)</mo><mo>=</mo><mo>−</mo><mfrac><mn>1</mn><mi>m</mi></mfrac><munderover><mo>∑</mo><mrow><mi>i</mi><mo>=</mo><mn>1</mn></mrow><mi>m</mi></munderover><mi>y</mi><mo>⋅</mo><mi>l</mi><mi>o</mi><mi>g</mi><mo stretchy="false">(</mo><mover accent="true"><mi>y</mi><mo>^</mo></mover><mo stretchy="false">)</mo><mo>+</mo><mo stretchy="false">(</mo><mn>1</mn><mo>−</mo><mi>y</mi><mo stretchy="false">)</mo><mo>⋅</mo><mi>l</mi><mi>o</mi><mi>g</mi><mo stretchy="false">(</mo><mn>1</mn><mo>−</mo><mover accent="true"><mi>y</mi><mo>^</mo></mover><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">Loss_{BCE}(y,\hat{y})=-\frac{1}{m}\sum_{i=1}^m y \cdot log(\hat{y})+(1-y) \cdot log(1-\hat{y})</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal">L</span><span class="mord mathnormal">os</span><span class="mord"><span class="mord mathnormal">s</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.32833099999999993em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.05764em;">BCE</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.03588em;">y</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord accent"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.69444em;"><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord mathnormal" style="margin-right:0.03588em;">y</span></span><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="accent-body" style="left:-0.19444em;"><span class="mord">^</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.19444em;"><span></span></span></span></span></span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:2.929066em;vertical-align:-1.277669em;"></span><span class="mord">−</span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.32144em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathnormal">m</span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.686em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mop op-limits"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.6513970000000002em;"><span style="top:-1.872331em;margin-left:0em;"><span class="pstrut" style="height:3.05em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">i</span><span class="mrel mtight">=</span><span class="mord mtight">1</span></span></span></span><span style="top:-3.050005em;"><span class="pstrut" style="height:3.05em;"></span><span><span class="mop op-symbol large-op">∑</span></span></span><span style="top:-4.3000050000000005em;margin-left:0em;"><span class="pstrut" style="height:3.05em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">m</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:1.277669em;"><span></span></span></span></span></span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord mathnormal" style="margin-right:0.03588em;">y</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">⋅</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.01968em;">l</span><span class="mord mathnormal">o</span><span class="mord mathnormal" style="margin-right:0.03588em;">g</span><span class="mopen">(</span><span class="mord accent"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.69444em;"><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord mathnormal" style="margin-right:0.03588em;">y</span></span><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="accent-body" style="left:-0.19444em;"><span class="mord">^</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.19444em;"><span></span></span></span></span></span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord">1</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.03588em;">y</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">⋅</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.01968em;">l</span><span class="mord mathnormal">o</span><span class="mord mathnormal" style="margin-right:0.03588em;">g</span><span class="mopen">(</span><span class="mord">1</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord accent"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.69444em;"><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord mathnormal" style="margin-right:0.03588em;">y</span></span><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="accent-body" style="left:-0.19444em;"><span class="mord">^</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.19444em;"><span></span></span></span></span></span><span class="mclose">)</span></span></span></span></span></div></figure><p id="de9d2776-917f-4385-8521-4cbf44d624c3" class=""><strong>Goal of generator</strong>:</p><p id="715a3fc8-860a-49cc-87de-8ca8fe66e8c0" class="">Approximate real distribution</p><figure id="0983ce97-5f1a-4ccc-9799-1fdb626393d6" class="image"><a href="GAN%201%20Basic%20GAN%20Networks%2091a0b120e07844cd80c4bee2859877c8/Untitled%205.png"><img style="width:432px" src="GAN%201%20Basic%20GAN%20Networks%2091a0b120e07844cd80c4bee2859877c8/Untitled%205.png"/></a></figure><p id="e378dad1-11a5-4a6f-96c7-5f705d714c97" class=""><strong>However, Goal of Discriminator</strong>:</p><p id="ee535524-51ac-4d1e-9df2-c6a8e42a174a" class="">Given x, tell apart whether x belongs to the generated distribution or the real distribution.</p><p id="df8fc979-9bea-43df-977b-c8691c2ddc8d" class="">
+</p><p id="6cce7e02-933e-4fe0-852f-ca026c7c687c" class="">Well, looks like they are pretty clear &amp; straight forward optimization problems, what is the problem here?</p><figure class="block-color-gray_background callout" style="white-space:pre-wrap;display:flex" id="1abedd1b-b634-468e-80b2-d553c444fe2e"><div style="font-size:1.5em"><span class="icon">🤦</span></div><div style="width:100%">The problem is that the <strong>task of the discriminator is easier</strong> so discriminator gets better and better quicker over time.</div></figure><p id="5a504c76-6493-45ee-af21-120edc17725b" class="">As discriminator is more and more powerful, the descriminator with BCE Loss provides less and less gradient to the generator to optimize. And we have the problem of <strong>vanishing gradient</strong> in the end.</p><figure id="103c2b64-c497-4211-b082-50de3532e604" class="image"><a href="GAN%201%20Basic%20GAN%20Networks%2091a0b120e07844cd80c4bee2859877c8/Untitled%206.png"><img style="width:384px" src="GAN%201%20Basic%20GAN%20Networks%2091a0b120e07844cd80c4bee2859877c8/Untitled%206.png"/></a></figure><figure id="af950db2-1e87-4841-8735-605df22f194c" class="equation"><style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.13.2/katex.min.css')</style><div class="equation-container"><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mfrac><mrow><mi mathvariant="normal">∂</mi><mi>J</mi></mrow><mrow><mi mathvariant="normal">∂</mi><mover accent="true"><mi>y</mi><mo>^</mo></mover></mrow></mfrac><mo>=</mo><mfrac><mn>1</mn><mi>m</mi></mfrac><mo>⋅</mo><mfrac><mrow><mover accent="true"><mi>y</mi><mo>^</mo></mover><mo>−</mo><mi>y</mi></mrow><mrow><mover accent="true"><mi>y</mi><mo>^</mo></mover><mo>−</mo><mover accent="true"><mi>y</mi><mo>^</mo></mover><mo>⊙</mo><mover accent="true"><mi>y</mi><mo>^</mo></mover></mrow></mfrac></mrow><annotation encoding="application/x-tex">\frac{\partial J}{\partial \hat{y}}=\frac{1}{m} \cdot \frac{\hat{y}-y}{\hat{y}-\hat{y} \odot \hat{y}}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:2.25188em;vertical-align:-0.8804400000000001em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.37144em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord" style="margin-right:0.05556em;">∂</span><span class="mord accent"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.69444em;"><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord mathnormal" style="margin-right:0.03588em;">y</span></span><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="accent-body" style="left:-0.19444em;"><span class="mord">^</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.19444em;"><span></span></span></span></span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord" style="margin-right:0.05556em;">∂</span><span class="mord mathnormal" style="margin-right:0.09618em;">J</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.8804400000000001em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:2.00744em;vertical-align:-0.686em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.32144em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathnormal">m</span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.686em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">⋅</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:2.25188em;vertical-align:-0.8804400000000001em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.3714399999999998em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord accent"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.69444em;"><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord mathnormal" style="margin-right:0.03588em;">y</span></span><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="accent-body" style="left:-0.19444em;"><span class="mord">^</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.19444em;"><span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mord accent"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.69444em;"><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord mathnormal" style="margin-right:0.03588em;">y</span></span><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="accent-body" style="left:-0.19444em;"><span class="mord">^</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.19444em;"><span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">⊙</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mord accent"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.69444em;"><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord mathnormal" style="margin-right:0.03588em;">y</span></span><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="accent-body" style="left:-0.19444em;"><span class="mord">^</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.19444em;"><span></span></span></span></span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord accent"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.69444em;"><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord mathnormal" style="margin-right:0.03588em;">y</span></span><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="accent-body" style="left:-0.19444em;"><span class="mord">^</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.19444em;"><span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mord mathnormal" style="margin-right:0.03588em;">y</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.8804400000000001em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span></span></span></span></span></div></figure><p id="3c790ec0-c958-4913-9d63-bfff7f802754" class="">Where <style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.13.2/katex.min.css')</style><span data-token-index="0" contenteditable="false" class="notion-text-equation-token" style="user-select:all;-webkit-user-select:all;-moz-user-select:all"><span></span><span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>a</mi><mo>⊙</mo><mi>b</mi></mrow><annotation encoding="application/x-tex">a \odot b</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.66666em;vertical-align:-0.08333em;"></span><span class="mord mathnormal">a</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">⊙</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.69444em;vertical-align:0em;"></span><span class="mord mathnormal">b</span></span></span></span></span><span>﻿</span></span> denotes the element-wise product of a and b</p><h1 id="eeec93c4-e007-429f-b8da-c555800782fc" class="">Earth Mover’s Distance</h1><div id="9ac6e9c6-36c8-4d4b-a76e-4a584be5974e" class="column-list"><div id="7c6ca619-0695-4797-a109-47677164b655" style="width:56.25%" class="column"><figure id="5d2fe405-6901-47b0-9800-ee0d522d2969" class="image"><a href="GAN%201%20Basic%20GAN%20Networks%2091a0b120e07844cd80c4bee2859877c8/Untitled%207.png"><img style="width:336px" src="GAN%201%20Basic%20GAN%20Networks%2091a0b120e07844cd80c4bee2859877c8/Untitled%207.png"/></a></figure></div><div id="e3cb505d-bb29-4bbd-bf0f-5094982f9c77" style="width:43.74999999999999%" class="column"><figure id="e5e37bcc-15e5-4662-9202-a8ad08d5d893" class="image"><a href="GAN%201%20Basic%20GAN%20Networks%2091a0b120e07844cd80c4bee2859877c8/Untitled%208.png"><img style="width:288px" src="GAN%201%20Basic%20GAN%20Networks%2091a0b120e07844cd80c4bee2859877c8/Untitled%208.png"/></a></figure></div></div><p id="4e3f4cf2-1e1a-4d36-be0f-9443657d891b" class="">Earth Mover’s Distance describes the <strong>Effort needed</strong> to make the generated distribution to the real distribution.</p><figure class="block-color-gray_background callout" style="white-space:pre-wrap;display:flex" id="ee7fb77c-cb9b-4bcb-aeb7-20f2bee7e787"><div style="font-size:1.5em"><span class="icon">🔥</span></div><div style="width:100%">Intuitively, how much work would it require to move the pile of dirt given by the generated distribution and mold it into the shape of real distribution. <strong>Depends on distance and amount moved.</strong></div></figure><figure class="block-color-gray_background callout" style="white-space:pre-wrap;display:flex" id="30a350c5-82f3-4033-8f0f-ce9b6120e213"><div style="font-size:1.5em"><span class="icon">⚠️</span></div><div style="width:100%">However due to the form of the function it is approximated by, its not actually used in ML. We will use alternative ways to approximate this distance.</div></figure><p id="2737ce09-ad41-479d-8329-9f0430641cd8" class="">
+</p><h2 id="caef125f-989d-46ee-b5d8-fdb5c0c06fc7" class="">Wassertain Loss</h2><p id="778e9e71-11e9-4249-bd44-f815900d6571" class="">Approximates Earth Mover’s Distance</p><figure class="block-color-gray_background callout" style="white-space:pre-wrap;display:flex" id="7007ab7f-9601-4004-ac1e-db282e4faee5"><div style="font-size:1.5em"><span class="icon">🔥</span></div><div style="width:100%">Instead of requiring a sigmoid layer at the end of the discriminator, the Wassertain Loss(W-Loss) makes the last layer of the discriminator possible to be linear.</div></figure><p id="2071f740-9b5e-434f-8143-88db475671de" class="">
+</p><p id="126e3eca-19b3-44ff-81b1-64686689a825" class="">Before we introduce the W-Loss, we will see GAN as a min-max game</p><figure id="b3079864-2da1-4604-b116-ac7ab00c834e" class="equation"><style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.13.2/katex.min.css')</style><div class="equation-container"><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><munder><mrow><mi>max</mi><mo>⁡</mo></mrow><mi>g</mi></munder><munder><mrow><mi>min</mi><mo>⁡</mo></mrow><mi>d</mi></munder><mi mathvariant="double-struck">E</mi><mo stretchy="false">(</mo><mi>J</mi><mo stretchy="false">(</mo><mi>g</mi><mo separator="true">,</mo><mi>d</mi><mo stretchy="false">)</mo><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">\max_{g} \min_{d} \mathbb{E}(J(g,d))</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.586108em;vertical-align:-0.8361080000000001em;"></span><span class="mop op-limits"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.4305599999999999em;"><span style="top:-2.4em;margin-left:0em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.03588em;">g</span></span></span></span><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span><span class="mop">max</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.8361080000000001em;"><span></span></span></span></span></span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mop op-limits"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.66786em;"><span style="top:-2.347892em;margin-left:0em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">d</span></span></span></span><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span><span class="mop">min</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.7521079999999999em;"><span></span></span></span></span></span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord mathbb">E</span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.09618em;">J</span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.03588em;">g</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord mathnormal">d</span><span class="mclose">))</span></span></span></span></span></div></figure><p id="5dd8b355-2535-49b4-a702-aa39b349a194" class="">Where <style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.13.2/katex.min.css')</style><span data-token-index="0" contenteditable="false" class="notion-text-equation-token" style="user-select:all;-webkit-user-select:all;-moz-user-select:all"><span></span><span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>g</mi><mo stretchy="false">(</mo><mo>⋅</mo><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">g(\cdot)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.03588em;">g</span><span class="mopen">(</span><span class="mord">⋅</span><span class="mclose">)</span></span></span></span></span><span>﻿</span></span> is the generator function, and <style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.13.2/katex.min.css')</style><span data-token-index="0" contenteditable="false" class="notion-text-equation-token" style="user-select:all;-webkit-user-select:all;-moz-user-select:all"><span></span><span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>d</mi><mo stretchy="false">(</mo><mo>⋅</mo><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">d(\cdot)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal">d</span><span class="mopen">(</span><span class="mord">⋅</span><span class="mclose">)</span></span></span></span></span><span>﻿</span></span> is the discriminator function.</p><p id="e1fbf095-f42f-47de-b53f-25ac718ca0c1" class="">
+</p><p id="bd0106eb-019f-45cc-83c5-573f55bf61f1" class="">Instead of the logarithm in the cost function <style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.13.2/katex.min.css')</style><span data-token-index="0" contenteditable="false" class="notion-text-equation-token" style="user-select:all;-webkit-user-select:all;-moz-user-select:all"><span></span><span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>J</mi></mrow><annotation encoding="application/x-tex">J</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord mathnormal" style="margin-right:0.09618em;">J</span></span></span></span></span><span>﻿</span></span>, the W-Loss is formulated as:</p><figure id="a7952f63-d679-46c6-b265-977831bd2860" class="equation"><style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.13.2/katex.min.css')</style><div class="equation-container"><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>J</mi><mo stretchy="false">(</mo><mi>g</mi><mo separator="true">,</mo><mi>d</mi><mo stretchy="false">)</mo><mo>=</mo><mo>−</mo><mo stretchy="false">(</mo><mi mathvariant="double-struck">E</mi><mo stretchy="false">[</mo><mi>d</mi><mo stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo><mo stretchy="false">]</mo><mo>−</mo><mi mathvariant="double-struck">E</mi><mo stretchy="false">[</mo><mi>d</mi><mo stretchy="false">(</mo><mi>g</mi><mo stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo><mo stretchy="false">)</mo><mo stretchy="false">]</mo><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">J(g,d)=-(\mathbb{E}[d(x)]-\mathbb{E}[d(g(x))])</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.09618em;">J</span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.03588em;">g</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord mathnormal">d</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">−</span><span class="mopen">(</span><span class="mord mathbb">E</span><span class="mopen">[</span><span class="mord mathnormal">d</span><span class="mopen">(</span><span class="mord mathnormal">x</span><span class="mclose">)]</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathbb">E</span><span class="mopen">[</span><span class="mord mathnormal">d</span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.03588em;">g</span><span class="mopen">(</span><span class="mord mathnormal">x</span><span class="mclose">))])</span></span></span></span></span></div></figure><figure id="47b97f11-9a2f-4450-a34f-97259981ef47" class="equation"><style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.13.2/katex.min.css')</style><div class="equation-container"><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><munder><mrow><mi>min</mi><mo>⁡</mo></mrow><mi>g</mi></munder><munder><mrow><mi>max</mi><mo>⁡</mo></mrow><mi>d</mi></munder><mi mathvariant="double-struck">E</mi><mo stretchy="false">[</mo><mi>d</mi><mo stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo><mo stretchy="false">]</mo><mo>−</mo><mi mathvariant="double-struck">E</mi><mo stretchy="false">[</mo><mi>d</mi><mo stretchy="false">(</mo><mi>g</mi><mo stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo><mo stretchy="false">)</mo><mo stretchy="false">]</mo></mrow><annotation encoding="application/x-tex">\min_{g} \max_{d} \mathbb{E}[d(x)]-\mathbb{E}[d(g(x))]</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.5861079999999999em;vertical-align:-0.836108em;"></span><span class="mop op-limits"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.66786em;"><span style="top:-2.4000000000000004em;margin-left:0em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.03588em;">g</span></span></span></span><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span><span class="mop">min</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.836108em;"><span></span></span></span></span></span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mop op-limits"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.43055999999999994em;"><span style="top:-2.347892em;margin-left:0em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">d</span></span></span></span><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span><span class="mop">max</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.752108em;"><span></span></span></span></span></span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord mathbb">E</span><span class="mopen">[</span><span class="mord mathnormal">d</span><span class="mopen">(</span><span class="mord mathnormal">x</span><span class="mclose">)]</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathbb">E</span><span class="mopen">[</span><span class="mord mathnormal">d</span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.03588em;">g</span><span class="mopen">(</span><span class="mord mathnormal">x</span><span class="mclose">))]</span></span></span></span></span></div></figure><figure id="0eba04ae-3b64-442f-a859-6aa626cdaa0c" class="image"><a href="GAN%201%20Basic%20GAN%20Networks%2091a0b120e07844cd80c4bee2859877c8/Screenshot_2022-06-07_at_10.34.05_AM.png"><img style="width:2509px" src="GAN%201%20Basic%20GAN%20Networks%2091a0b120e07844cd80c4bee2859877c8/Screenshot_2022-06-07_at_10.34.05_AM.png"/></a><figcaption>Left: BCE Loss, Right: W-Loss</figcaption></figure><p id="dae6d00b-0606-4550-bb43-ff3cafddf0cd" class="">
+</p><p id="34e6b392-1b64-428a-b39d-79cd546afa6b" class="">
+</p><h3 id="25793615-d14b-475f-b9d2-dc7da5083918" class="">Conditioning on W-Loss</h3><ol type="1" id="e31f9bcb-9ce4-40e6-9c82-e020b1cb69d0" class="numbered-list" start="1"><li>has to be 1-Lipschitz continuous.<ol type="a" id="9240d5a4-d0d1-4f70-bb76-3803ab4f4561" class="numbered-list" start="1"><li>Norm of the gradient has to always be <style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.13.2/katex.min.css')</style><span data-token-index="0" contenteditable="false" class="notion-text-equation-token" style="user-select:all;-webkit-user-select:all;-moz-user-select:all"><span></span><span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>≤</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">\le 1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7719400000000001em;vertical-align:-0.13597em;"></span><span class="mrel">≤</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">1</span></span></span></span></span><span>﻿</span></span>: <style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.13.2/katex.min.css')</style><span data-token-index="0" contenteditable="false" class="notion-text-equation-token" style="user-select:all;-webkit-user-select:all;-moz-user-select:all"><span></span><span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="normal">∀</mi><mi>x</mi><mo separator="true">,</mo><mi mathvariant="normal">∣</mi><mi mathvariant="normal">∣</mi><mi mathvariant="normal">∇</mi><mi>f</mi><mo stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo><mi mathvariant="normal">∣</mi><msub><mi mathvariant="normal">∣</mi><mn>2</mn></msub><mo>≤</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">\forall x, ||\nabla f(x)||_2 \le 1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">∀</span><span class="mord mathnormal">x</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord">∣∣∇</span><span class="mord mathnormal" style="margin-right:0.10764em;">f</span><span class="mopen">(</span><span class="mord mathnormal">x</span><span class="mclose">)</span><span class="mord">∣</span><span class="mord"><span class="mord">∣</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.30110799999999993em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">≤</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">1</span></span></span></span></span><span>﻿</span></span></li></ol></li></ol><p id="7b5e55f4-e9fb-4009-bf6d-867525955e20" class="">
+</p><figure id="a519eeda-ee08-4c10-9d29-d4cd72a56bd8" class="image"><a href="GAN%201%20Basic%20GAN%20Networks%2091a0b120e07844cd80c4bee2859877c8/Screenshot_2022-06-07_at_10.40.31_AM.png"><img style="width:1407px" src="GAN%201%20Basic%20GAN%20Networks%2091a0b120e07844cd80c4bee2859877c8/Screenshot_2022-06-07_at_10.40.31_AM.png"/></a><figcaption>Technique: Draw two lines, one at gradient = 1 and one at gradient = -1, see if the function fits in between those two lines.</figcaption></figure><h3 id="446dfab3-33c0-4db8-b762-a035860ea4c8" class="">1-L Continuous Enforcement</h3><p id="7eb61296-90e4-442b-ae36-0a52c8da1a1a" class="">Weight Clipping</p><ol type="1" id="74c81cdf-903c-44c8-881e-3a79c544b251" class="numbered-list" start="1"><li>However, may limit the ability to learn.</li></ol><ol type="1" id="0677b76a-3d8d-4021-beed-74e6cb6939c3" class="numbered-list" start="2"><li>Regularization<ol type="a" id="7ca08919-b0f7-438e-b085-920d8cc18e9e" class="numbered-list" start="1"><li>Change the min-max to</li></ol><ol type="a" id="851eebed-da76-4bad-9d25-8391ab71358c" class="numbered-list" start="2"><li><style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.13.2/katex.min.css')</style><span data-token-index="0" contenteditable="false" class="notion-text-equation-token" style="user-select:all;-webkit-user-select:all;-moz-user-select:all"><span></span><span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mrow><mi>min</mi><mo>⁡</mo></mrow><mi>g</mi></msub><msub><mrow><mi>max</mi><mo>⁡</mo></mrow><mi>d</mi></msub><mi mathvariant="double-struck">E</mi><mo stretchy="false">[</mo><mi>d</mi><mo stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo><mo stretchy="false">]</mo><mo>−</mo><mi mathvariant="double-struck">E</mi><mo stretchy="false">[</mo><mi>d</mi><mo stretchy="false">(</mo><mi>g</mi><mo stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo><mo stretchy="false">)</mo><mo stretchy="false">]</mo><mo>+</mo><mi>λ</mi><mi>r</mi><mi>e</mi><mi>g</mi></mrow><annotation encoding="application/x-tex">\min_{g} \max_{d} \mathbb{E}[d(x)]-\mathbb{E}[d(g(x))] + \lambda reg</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.036108em;vertical-align:-0.286108em;"></span><span class="mop"><span class="mop">min</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.15139200000000003em;"><span style="top:-2.5500000000000003em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.03588em;">g</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.286108em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mop"><span class="mop">max</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.33610799999999996em;"><span style="top:-2.5500000000000003em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">d</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord mathbb">E</span><span class="mopen">[</span><span class="mord mathnormal">d</span><span class="mopen">(</span><span class="mord mathnormal">x</span><span class="mclose">)]</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathbb">E</span><span class="mopen">[</span><span class="mord mathnormal">d</span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.03588em;">g</span><span class="mopen">(</span><span class="mord mathnormal">x</span><span class="mclose">))]</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.8888799999999999em;vertical-align:-0.19444em;"></span><span class="mord mathnormal">λ</span><span class="mord mathnormal">re</span><span class="mord mathnormal" style="margin-right:0.03588em;">g</span></span></span></span></span><span>﻿</span></span>, where <style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.13.2/katex.min.css')</style><span data-token-index="0" contenteditable="false" class="notion-text-equation-token" style="user-select:all;-webkit-user-select:all;-moz-user-select:all"><span></span><span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>r</mi><mi>e</mi><mi>g</mi></mrow><annotation encoding="application/x-tex">reg</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.625em;vertical-align:-0.19444em;"></span><span class="mord mathnormal">re</span><span class="mord mathnormal" style="margin-right:0.03588em;">g</span></span></span></span></span><span>﻿</span></span> is the regularization term</li></ol><ol type="a" id="898d3f2b-aab5-4bda-8a91-056a6af14780" class="numbered-list" start="3"><li>tends to work better</li></ol><p id="a5c37d3e-b09f-42af-9ccb-f8002a6e1d79" class="">
+</p></li></ol><p id="393fbf1c-e76d-48fb-b2e0-75b630fd3b22" class="">Regularization Term is done by…</p><p id="5840d129-1a17-4b4b-842e-4ee7476c700f" class="">first interpolating a <style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.13.2/katex.min.css')</style><span data-token-index="0" contenteditable="false" class="notion-text-equation-token" style="user-select:all;-webkit-user-select:all;-moz-user-select:all"><span></span><span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover accent="true"><mi>x</mi><mo>^</mo></mover></mrow><annotation encoding="application/x-tex">\hat{x}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.69444em;vertical-align:0em;"></span><span class="mord accent"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.69444em;"><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord mathnormal">x</span></span><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="accent-body" style="left:-0.22222em;"><span class="mord">^</span></span></span></span></span></span></span></span></span></span></span><span>﻿</span></span> by applying a <style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.13.2/katex.min.css')</style><span data-token-index="0" contenteditable="false" class="notion-text-equation-token" style="user-select:all;-webkit-user-select:all;-moz-user-select:all"><span></span><span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>ϵ</mi></mrow><annotation encoding="application/x-tex">\epsilon</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.43056em;vertical-align:0em;"></span><span class="mord mathnormal">ϵ</span></span></span></span></span><span>﻿</span></span> and <style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.13.2/katex.min.css')</style><span data-token-index="0" contenteditable="false" class="notion-text-equation-token" style="user-select:all;-webkit-user-select:all;-moz-user-select:all"><span></span><span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>1</mn><mo>−</mo><mi>ϵ</mi></mrow><annotation encoding="application/x-tex">1 - \epsilon</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.72777em;vertical-align:-0.08333em;"></span><span class="mord">1</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.43056em;vertical-align:0em;"></span><span class="mord mathnormal">ϵ</span></span></span></span></span><span>﻿</span></span> to real and fake images</p><p id="47e39c7a-124c-4223-b132-fd917c101978" class="">
+</p><figure id="900e8ae9-4761-4f6c-aa08-399d11d981bf" class="image"><a href="GAN%201%20Basic%20GAN%20Networks%2091a0b120e07844cd80c4bee2859877c8/Screenshot_2022-06-07_at_10.49.12_AM.png"><img style="width:2414px" src="GAN%201%20Basic%20GAN%20Networks%2091a0b120e07844cd80c4bee2859877c8/Screenshot_2022-06-07_at_10.49.12_AM.png"/></a></figure><p id="13569b84-5cc2-4d5f-91b0-89313def29fb" class="">Then</p><figure id="00400486-272a-4583-bc18-67f07bbd568b" class="equation"><style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.13.2/katex.min.css')</style><div class="equation-container"><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>r</mi><mi>e</mi><mi>g</mi><mo>=</mo><mi mathvariant="double-struck">E</mi><mo stretchy="false">(</mo><mi mathvariant="normal">∣</mi><mi mathvariant="normal">∣</mi><mi mathvariant="normal">∇</mi><mi>d</mi><mo stretchy="false">(</mo><mover accent="true"><mi>x</mi><mo>^</mo></mover><mo stretchy="false">)</mo><mi mathvariant="normal">∣</mi><msub><mi mathvariant="normal">∣</mi><mn>2</mn></msub><mo>−</mo><mn>1</mn><msup><mo stretchy="false">)</mo><mn>2</mn></msup></mrow><annotation encoding="application/x-tex">reg = \mathbb{E}(||\nabla d(\hat{x})||_2 - 1)^2</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.625em;vertical-align:-0.19444em;"></span><span class="mord mathnormal">re</span><span class="mord mathnormal" style="margin-right:0.03588em;">g</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathbb">E</span><span class="mopen">(</span><span class="mord">∣∣∇</span><span class="mord mathnormal">d</span><span class="mopen">(</span><span class="mord accent"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.69444em;"><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord mathnormal">x</span></span><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="accent-body" style="left:-0.22222em;"><span class="mord">^</span></span></span></span></span></span></span><span class="mclose">)</span><span class="mord">∣</span><span class="mord"><span class="mord">∣</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.30110799999999993em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1.1141079999999999em;vertical-align:-0.25em;"></span><span class="mord">1</span><span class="mclose"><span class="mclose">)</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8641079999999999em;"><span style="top:-3.113em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span></span></span></span></span></div></figure><p id="f310c6d8-fdc1-4bfe-8dc8-8fca5a02f37d" class="">
+</p><h1 id="43bb0575-6d05-439c-ace2-83a56c47f112" class="">Conditional GAN</h1><p id="16a96782-f8dd-4a89-b5c5-86539a210ddc" class="">All Above models are unconditional GANs</p><p id="654bae2f-beb0-4e27-8781-7afe6d522166" class="">Now we want to be able to secify which type of product to generate, so we train the GAN with labeled dataset.</p><div id="a87111b2-f80f-4a45-ab02-5f68f808b1b1" class="column-list"><div id="468c6538-2c0f-4dc1-8597-30d4904461ea" style="width:50%" class="column"><figure id="11ecd8e5-2749-4427-a528-1d2c0bcd0b87" class="image"><a href="GAN%201%20Basic%20GAN%20Networks%2091a0b120e07844cd80c4bee2859877c8/Untitled%209.png"><img style="width:2109px" src="GAN%201%20Basic%20GAN%20Networks%2091a0b120e07844cd80c4bee2859877c8/Untitled%209.png"/></a></figure></div><div id="407a7cab-97ba-4348-b51f-a24353e2bd37" style="width:50%" class="column"><figure id="2a2c3801-41d4-45f9-b5fb-5acacae4aee0" class="image"><a href="GAN%201%20Basic%20GAN%20Networks%2091a0b120e07844cd80c4bee2859877c8/Untitled%2010.png"><img style="width:2188px" src="GAN%201%20Basic%20GAN%20Networks%2091a0b120e07844cd80c4bee2859877c8/Untitled%2010.png"/></a></figure></div></div><p id="72b0f88d-321d-4104-b9cd-c08bf2c0f760" class="">In the previous networks we had a noise vector as the input to the generator, we will now add an one-hot vector to the generator. For the discriminator give images as well as a label (one-hot as additional channels) and the discriminator will still output a probability. </p><p id="d9ddbad0-0c8b-4690-817a-ff21aeb74b1a" class="">There are ways to compress data in the discriminator input. But this uncompressed way definitely work. </p><p id="614d29b0-349c-41c7-9d58-650f009b86c8" class="">
+</p><h1 id="c914b9f9-8485-4885-9fb5-9dd538a02a28" class="">Controllable Generation</h1><p id="2a922964-6849-47a7-92fe-aa6c9573273f" class="">It’s different from conditional generation</p><ol type="1" id="d9d25143-bbbc-4a1f-9cea-c4784549d5ad" class="numbered-list" start="1"><li>Now we control the feature, not the class</li></ol><ol type="1" id="523081f1-9d21-4b74-9127-7f1d19bd78b2" class="numbered-list" start="2"><li>We don’t have to modify the network structures</li></ol><ol type="1" id="aed79606-3324-4cd8-a5d1-545c9274ec95" class="numbered-list" start="3"><li>Training dataset doesn’t need to be labeled</li></ol><ol type="1" id="90e6c8bd-439a-439a-a8b2-f7ab24df8ac3" class="numbered-list" start="4"><li>Tweaking the noise vector <style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.13.2/katex.min.css')</style><span data-token-index="0" contenteditable="false" class="notion-text-equation-token" style="user-select:all;-webkit-user-select:all;-moz-user-select:all"><span></span><span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover accent="true"><mi>z</mi><mo>⃗</mo></mover></mrow><annotation encoding="application/x-tex">\vec{z}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.714em;vertical-align:0em;"></span><span class="mord accent"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.714em;"><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord mathnormal" style="margin-right:0.04398em;">z</span></span><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="accent-body" style="left:-0.17994em;"><span class="overlay" style="height:0.714em;width:0.471em;"><svg width='0.471em' height='0.714em' style='width:0.471em' viewBox='0 0 471 714' preserveAspectRatio='xMinYMin'><path d='M377 20c0-5.333 1.833-10 5.5-14S391 0 397 0c4.667 0 8.667 1.667 12 5
+3.333 2.667 6.667 9 10 19 6.667 24.667 20.333 43.667 41 57 7.333 4.667 11
+10.667 11 18 0 6-1 10-3 12s-6.667 5-14 9c-28.667 14.667-53.667 35.667-75 63
+-1.333 1.333-3.167 3.5-5.5 6.5s-4 4.833-5 5.5c-1 .667-2.5 1.333-4.5 2s-4.333 1
+-7 1c-4.667 0-9.167-1.833-13.5-5.5S337 184 337 178c0-12.667 15.667-32.333 47-59
+H213l-171-1c-8.667-6-13-12.333-13-19 0-4.667 4.333-11.333 13-20h359
+c-16-25.333-24-45-24-59z'/></svg></span></span></span></span></span></span></span></span></span></span></span><span>﻿</span></span> to change feature, while conditional generation alters the model input.</li></ol><figure id="fd23af86-01d3-45c5-b370-479d4f4dad37" class="image"><a href="GAN%201%20Basic%20GAN%20Networks%2091a0b120e07844cd80c4bee2859877c8/Untitled%2011.png"><img style="width:2288px" src="GAN%201%20Basic%20GAN%20Networks%2091a0b120e07844cd80c4bee2859877c8/Untitled%2011.png"/></a></figure><p id="6806536e-1878-4c6d-aebf-3555544d7e7d" class="">After training, observe the output of two z space vectors <style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.13.2/katex.min.css')</style><span data-token-index="0" contenteditable="false" class="notion-text-equation-token" style="user-select:all;-webkit-user-select:all;-moz-user-select:all"><span></span><span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>v</mi><mn>1</mn></msub></mrow><annotation encoding="application/x-tex">v_1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.58056em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.03588em;">v</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.30110799999999993em;"><span style="top:-2.5500000000000003em;margin-left:-0.03588em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span></span><span>﻿</span></span> and <style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.13.2/katex.min.css')</style><span data-token-index="0" contenteditable="false" class="notion-text-equation-token" style="user-select:all;-webkit-user-select:all;-moz-user-select:all"><span></span><span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>v</mi><mn>2</mn></msub></mrow><annotation encoding="application/x-tex">v_2</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.58056em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.03588em;">v</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.30110799999999993em;"><span style="top:-2.5500000000000003em;margin-left:-0.03588em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span></span><span>﻿</span></span>, and we can interpolate the vectors and get an intermediate result (we can do linear interpolation but there are also other interpolation methods)</p><figure class="block-color-gray_background callout" style="white-space:pre-wrap;display:flex" id="c25b09b0-aa80-49d5-bf21-121e50c1b3bc"><div style="font-size:1.5em"><span class="icon">🔥</span></div><div style="width:100%">Now we can control some features of produced images, we want to find a direction that we can just alter one exact feature. The technique of finding such directions are important.</div></figure><h2 id="29a8d77b-2e36-43ad-b7ef-a952dc628f67" class="">Problems</h2><h3 id="c1ade4c9-b3c0-4a74-9e75-06e2d158467f" class="">Feature Correlation</h3><p id="f111aa8c-8f83-490e-b754-61169347bad5" class="">Sometimes we will want to alter a feature that has high correlation with other features, for example adding a beard. But beard might be tied to masculinity so it might be possible to not be able to just change the beard without changing the degree of masculinity.</p><h3 id="712c4455-8e29-4aa4-a5af-aae44197cef8" class="">Z-Space Entanglement</h3><figure id="36ceb6f7-a652-4c72-add4-e5dbae4b4927" class="image"><a href="GAN%201%20Basic%20GAN%20Networks%2091a0b120e07844cd80c4bee2859877c8/Untitled%2012.png"><img style="width:2220px" src="GAN%201%20Basic%20GAN%20Networks%2091a0b120e07844cd80c4bee2859877c8/Untitled%2012.png"/></a></figure><p id="b5343dc7-b03c-4095-b6da-f89afbffd65c" class="">Sometimes modifying a direction in noise vector we might change multiple features at the same time. This usually happens when z-space don’t have enough dimensions to map one feature at a time.</p><h2 id="6974190d-8aa8-44af-a796-919f661b0fbf" class="">Classifier Gradients as a method of finding z-space direciton to change a feature</h2><p id="3ee469c7-2bd9-419e-8184-cfc2a93c3d02" class="">We use a trained classifier to classify a generated image, <style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.13.2/katex.min.css')</style><span data-token-index="0" contenteditable="false" class="notion-text-equation-token" style="user-select:all;-webkit-user-select:all;-moz-user-select:all"><span></span><span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>g</mi><mo stretchy="false">(</mo><mover accent="true"><mi>z</mi><mo>⃗</mo></mover><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">g(\vec{z})</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.03588em;">g</span><span class="mopen">(</span><span class="mord accent"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.714em;"><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord mathnormal" style="margin-right:0.04398em;">z</span></span><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="accent-body" style="left:-0.17994em;"><span class="overlay" style="height:0.714em;width:0.471em;"><svg width='0.471em' height='0.714em' style='width:0.471em' viewBox='0 0 471 714' preserveAspectRatio='xMinYMin'><path d='M377 20c0-5.333 1.833-10 5.5-14S391 0 397 0c4.667 0 8.667 1.667 12 5
+3.333 2.667 6.667 9 10 19 6.667 24.667 20.333 43.667 41 57 7.333 4.667 11
+10.667 11 18 0 6-1 10-3 12s-6.667 5-14 9c-28.667 14.667-53.667 35.667-75 63
+-1.333 1.333-3.167 3.5-5.5 6.5s-4 4.833-5 5.5c-1 .667-2.5 1.333-4.5 2s-4.333 1
+-7 1c-4.667 0-9.167-1.833-13.5-5.5S337 184 337 178c0-12.667 15.667-32.333 47-59
+H213l-171-1c-8.667-6-13-12.333-13-19 0-4.667 4.333-11.333 13-20h359
+c-16-25.333-24-45-24-59z'/></svg></span></span></span></span></span></span></span><span class="mclose">)</span></span></span></span></span><span>﻿</span></span> produced by the generator, and we use the classifier to classify if the image contains the feature of not, given by <style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.13.2/katex.min.css')</style><span data-token-index="0" contenteditable="false" class="notion-text-equation-token" style="user-select:all;-webkit-user-select:all;-moz-user-select:all"><span></span><span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>d</mi><mo stretchy="false">(</mo><mi>g</mi><mo stretchy="false">(</mo><mover accent="true"><mi>z</mi><mo>⃗</mo></mover><mo stretchy="false">)</mo><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">d(g(\vec{z}))</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal">d</span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.03588em;">g</span><span class="mopen">(</span><span class="mord accent"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.714em;"><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord mathnormal" style="margin-right:0.04398em;">z</span></span><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="accent-body" style="left:-0.17994em;"><span class="overlay" style="height:0.714em;width:0.471em;"><svg width='0.471em' height='0.714em' style='width:0.471em' viewBox='0 0 471 714' preserveAspectRatio='xMinYMin'><path d='M377 20c0-5.333 1.833-10 5.5-14S391 0 397 0c4.667 0 8.667 1.667 12 5
+3.333 2.667 6.667 9 10 19 6.667 24.667 20.333 43.667 41 57 7.333 4.667 11
+10.667 11 18 0 6-1 10-3 12s-6.667 5-14 9c-28.667 14.667-53.667 35.667-75 63
+-1.333 1.333-3.167 3.5-5.5 6.5s-4 4.833-5 5.5c-1 .667-2.5 1.333-4.5 2s-4.333 1
+-7 1c-4.667 0-9.167-1.833-13.5-5.5S337 184 337 178c0-12.667 15.667-32.333 47-59
+H213l-171-1c-8.667-6-13-12.333-13-19 0-4.667 4.333-11.333 13-20h359
+c-16-25.333-24-45-24-59z'/></svg></span></span></span></span></span></span></span><span class="mclose">))</span></span></span></span></span><span>﻿</span></span>. We can repeat this process until the feature is present in the image by continuously modifying the noise vector <style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.13.2/katex.min.css')</style><span data-token-index="0" contenteditable="false" class="notion-text-equation-token" style="user-select:all;-webkit-user-select:all;-moz-user-select:all"><span></span><span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover accent="true"><mi>z</mi><mo>⃗</mo></mover></mrow><annotation encoding="application/x-tex">\vec{z}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.714em;vertical-align:0em;"></span><span class="mord accent"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.714em;"><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord mathnormal" style="margin-right:0.04398em;">z</span></span><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="accent-body" style="left:-0.17994em;"><span class="overlay" style="height:0.714em;width:0.471em;"><svg width='0.471em' height='0.714em' style='width:0.471em' viewBox='0 0 471 714' preserveAspectRatio='xMinYMin'><path d='M377 20c0-5.333 1.833-10 5.5-14S391 0 397 0c4.667 0 8.667 1.667 12 5
+3.333 2.667 6.667 9 10 19 6.667 24.667 20.333 43.667 41 57 7.333 4.667 11
+10.667 11 18 0 6-1 10-3 12s-6.667 5-14 9c-28.667 14.667-53.667 35.667-75 63
+-1.333 1.333-3.167 3.5-5.5 6.5s-4 4.833-5 5.5c-1 .667-2.5 1.333-4.5 2s-4.333 1
+-7 1c-4.667 0-9.167-1.833-13.5-5.5S337 184 337 178c0-12.667 15.667-32.333 47-59
+H213l-171-1c-8.667-6-13-12.333-13-19 0-4.667 4.333-11.333 13-20h359
+c-16-25.333-24-45-24-59z'/></svg></span></span></span></span></span></span></span></span></span></span></span><span>﻿</span></span> in the direction of the gradient, <style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.13.2/katex.min.css')</style><span data-token-index="0" contenteditable="false" class="notion-text-equation-token" style="user-select:all;-webkit-user-select:all;-moz-user-select:all"><span></span><span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi mathvariant="normal">∇</mi><mover accent="true"><mi>z</mi><mo>⃗</mo></mover></msub><mi>d</mi><mo stretchy="false">(</mo><mi>g</mi><mo stretchy="false">(</mo><mover accent="true"><mi>z</mi><mo>⃗</mo></mover><mo stretchy="false">)</mo><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">\nabla_{\vec{z}} d(g(\vec{z}))</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord"><span class="mord">∇</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3448em;"><span style="top:-2.5450000000000004em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord accent mtight"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.714em;"><span style="top:-2.714em;"><span class="pstrut" style="height:2.714em;"></span><span class="mord mathnormal mtight" style="margin-right:0.04398em;">z</span></span><span style="top:-2.714em;"><span class="pstrut" style="height:2.714em;"></span><span class="accent-body" style="left:-0.17994em;"><span class="overlay mtight" style="height:0.714em;width:0.471em;"><svg width='0.471em' height='0.714em' style='width:0.471em' viewBox='0 0 471 714' preserveAspectRatio='xMinYMin'><path d='M377 20c0-5.333 1.833-10 5.5-14S391 0 397 0c4.667 0 8.667 1.667 12 5
+3.333 2.667 6.667 9 10 19 6.667 24.667 20.333 43.667 41 57 7.333 4.667 11
+10.667 11 18 0 6-1 10-3 12s-6.667 5-14 9c-28.667 14.667-53.667 35.667-75 63
+-1.333 1.333-3.167 3.5-5.5 6.5s-4 4.833-5 5.5c-1 .667-2.5 1.333-4.5 2s-4.333 1
+-7 1c-4.667 0-9.167-1.833-13.5-5.5S337 184 337 178c0-12.667 15.667-32.333 47-59
+H213l-171-1c-8.667-6-13-12.333-13-19 0-4.667 4.333-11.333 13-20h359
+c-16-25.333-24-45-24-59z'/></svg></span></span></span></span></span></span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15499999999999997em;"><span></span></span></span></span></span></span><span class="mord mathnormal">d</span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.03588em;">g</span><span class="mopen">(</span><span class="mord accent"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.714em;"><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord mathnormal" style="margin-right:0.04398em;">z</span></span><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="accent-body" style="left:-0.17994em;"><span class="overlay" style="height:0.714em;width:0.471em;"><svg width='0.471em' height='0.714em' style='width:0.471em' viewBox='0 0 471 714' preserveAspectRatio='xMinYMin'><path d='M377 20c0-5.333 1.833-10 5.5-14S391 0 397 0c4.667 0 8.667 1.667 12 5
+3.333 2.667 6.667 9 10 19 6.667 24.667 20.333 43.667 41 57 7.333 4.667 11
+10.667 11 18 0 6-1 10-3 12s-6.667 5-14 9c-28.667 14.667-53.667 35.667-75 63
+-1.333 1.333-3.167 3.5-5.5 6.5s-4 4.833-5 5.5c-1 .667-2.5 1.333-4.5 2s-4.333 1
+-7 1c-4.667 0-9.167-1.833-13.5-5.5S337 184 337 178c0-12.667 15.667-32.333 47-59
+H213l-171-1c-8.667-6-13-12.333-13-19 0-4.667 4.333-11.333 13-20h359
+c-16-25.333-24-45-24-59z'/></svg></span></span></span></span></span></span></span><span class="mclose">))</span></span></span></span></span><span>﻿</span></span>. Finally once the classifier says YES, we will use a weighted average of the direction we have stepped through to change the feature later.</p><h2 id="2de554b5-8cbf-4015-8c73-6136aca2e882" class="">Disentanglement Methods</h2><figure id="637dbc38-197e-4c0b-8320-11cd9da13bd8" class="image"><a href="GAN%201%20Basic%20GAN%20Networks%2091a0b120e07844cd80c4bee2859877c8/Untitled%2013.png"><img style="width:2240px" src="GAN%201%20Basic%20GAN%20Networks%2091a0b120e07844cd80c4bee2859877c8/Untitled%2013.png"/></a></figure><figure class="block-color-gray_background callout" style="white-space:pre-wrap;display:flex" id="8179ee4b-bb7c-42c9-8ee0-dc2130d143b9"><div style="font-size:1.5em"><span class="icon">🔥</span></div><div style="width:100%">Disentangled Z-Space (contains latent factors of variation) means every feature takes exactly one direction(and usually they are unit-vector aligned)</div></figure><h3 id="1922e6a2-8207-4036-9102-b249543d38fa" class="">Supervision</h3><ol type="1" id="f1b6bfb1-1cba-4874-b777-85e44c1f70f1" class="numbered-list" start="1"><li>Just like what we did for the conditional GAN, we would add labeled data but this time instead of adding one-hot to the generator the information would be embbeded into the noise vector itself.</li></ol><h3 id="9d3622eb-735b-42e1-acf1-e8400a5af3a6" class="">Loss Function</h3><p id="0f040eb8-3c51-43e2-8a33-3732994ff096" class="">Add a regularization term (BCE or W-Loss) to encourage each index of the noise vector to be associated with some feature.</p><p id="338dbd6d-126c-46d1-a46e-35cb835addec" class="">There are techniques to do this in an unsupervised way.</p><p id="bd776819-3502-4138-ab98-d025f72a263f" class="">
+</p></div></article></body></html>
