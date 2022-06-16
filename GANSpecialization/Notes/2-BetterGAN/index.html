@@ -1,0 +1,714 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>GAN 2: Build Better GANs</title><style>
+/* cspell:disable-file */
+/* webkit printing magic: print all background colors */
+html {
+	-webkit-print-color-adjust: exact;
+}
+* {
+	box-sizing: border-box;
+	-webkit-print-color-adjust: exact;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+@media only screen {
+	body {
+		margin: 2em auto;
+		max-width: 900px;
+		color: rgb(55, 53, 47);
+	}
+}
+
+body {
+	line-height: 1.5;
+	white-space: pre-wrap;
+}
+
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+h1 {
+	font-size: 1.875rem;
+	margin-top: 1.875rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+	margin-top: 1.25rem;
+}
+
+.source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 3px;
+	padding: 1rem;
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.column-list {
+	display: flex;
+	justify-content: space-between;
+}
+
+.column {
+	padding: 0 1em;
+}
+
+.column:first-child {
+	padding-left: 0;
+}
+
+.column:last-child {
+	padding-right: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding: 0.125rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+	border-collapse: collapse;
+}
+
+table {
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	text-indent: -1.7em;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+.simple-table {
+	margin-top: 1em;
+	font-size: 0.875rem;
+	empty-cells: show;
+}
+.simple-table td {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table th {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table-header-color {
+	background: rgb(247, 246, 243);
+	color: black;
+}
+.simple-table-header {
+	font-weight: 500;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-block;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	max-height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	transform: scale(1.5);
+	margin-right: 0.6em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code-wrap {
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1.25em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+.bookmark {
+	text-decoration: none;
+	max-height: 8em;
+	padding: 0;
+	display: flex;
+	width: 100%;
+	align-items: stretch;
+}
+
+.bookmark-title {
+	font-size: 0.85em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 1.75em;
+	white-space: nowrap;
+}
+
+.bookmark-text {
+	display: flex;
+	flex-direction: column;
+}
+
+.bookmark-info {
+	flex: 4 1 180px;
+	padding: 12px 14px 14px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.bookmark-image {
+	width: 33%;
+	flex: 1 1 180px;
+	display: block;
+	position: relative;
+	object-fit: cover;
+	border-radius: 1px;
+}
+
+.bookmark-description {
+	color: rgba(55, 53, 47, 0.6);
+	font-size: 0.75em;
+	overflow: hidden;
+	max-height: 4.5em;
+	word-break: break-word;
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	margin-top: 0.25em;
+}
+
+.sans { font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, ui-serif, serif; }
+.mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
+.pdf .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK JP'; }
+.pdf:lang(zh-CN) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC'; }
+.pdf:lang(zh-TW) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK TC'; }
+.pdf:lang(ko-KR) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK KR'; }
+.pdf .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK JP'; }
+.pdf:lang(zh-CN) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK SC'; }
+.pdf:lang(zh-TW) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK TC'; }
+.pdf:lang(ko-KR) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK KR'; }
+.pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.highlight-default {
+	color: rgba(55, 53, 47, 1);
+}
+.highlight-gray {
+	color: rgba(120, 119, 116, 1);
+	fill: rgba(120, 119, 116, 1);
+}
+.highlight-brown {
+	color: rgba(159, 107, 83, 1);
+	fill: rgba(159, 107, 83, 1);
+}
+.highlight-orange {
+	color: rgba(217, 115, 13, 1);
+	fill: rgba(217, 115, 13, 1);
+}
+.highlight-yellow {
+	color: rgba(203, 145, 47, 1);
+	fill: rgba(203, 145, 47, 1);
+}
+.highlight-teal {
+	color: rgba(68, 131, 97, 1);
+	fill: rgba(68, 131, 97, 1);
+}
+.highlight-blue {
+	color: rgba(51, 126, 169, 1);
+	fill: rgba(51, 126, 169, 1);
+}
+.highlight-purple {
+	color: rgba(144, 101, 176, 1);
+	fill: rgba(144, 101, 176, 1);
+}
+.highlight-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.highlight-red {
+	color: rgba(212, 76, 71, 1);
+	fill: rgba(212, 76, 71, 1);
+}
+.highlight-gray_background {
+	background: rgba(241, 241, 239, 1);
+}
+.highlight-brown_background {
+	background: rgba(244, 238, 238, 1);
+}
+.highlight-orange_background {
+	background: rgba(251, 236, 221, 1);
+}
+.highlight-yellow_background {
+	background: rgba(251, 243, 219, 1);
+}
+.highlight-teal_background {
+	background: rgba(237, 243, 236, 1);
+}
+.highlight-blue_background {
+	background: rgba(231, 243, 248, 1);
+}
+.highlight-purple_background {
+	background: rgba(244, 240, 247, 0.8);
+}
+.highlight-pink_background {
+	background: rgba(249, 238, 243, 0.8);
+}
+.highlight-red_background {
+	background: rgba(253, 235, 236, 1);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(120, 119, 116, 1);
+	fill: rgba(120, 119, 116, 1);
+}
+.block-color-brown {
+	color: rgba(159, 107, 83, 1);
+	fill: rgba(159, 107, 83, 1);
+}
+.block-color-orange {
+	color: rgba(217, 115, 13, 1);
+	fill: rgba(217, 115, 13, 1);
+}
+.block-color-yellow {
+	color: rgba(203, 145, 47, 1);
+	fill: rgba(203, 145, 47, 1);
+}
+.block-color-teal {
+	color: rgba(68, 131, 97, 1);
+	fill: rgba(68, 131, 97, 1);
+}
+.block-color-blue {
+	color: rgba(51, 126, 169, 1);
+	fill: rgba(51, 126, 169, 1);
+}
+.block-color-purple {
+	color: rgba(144, 101, 176, 1);
+	fill: rgba(144, 101, 176, 1);
+}
+.block-color-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.block-color-red {
+	color: rgba(212, 76, 71, 1);
+	fill: rgba(212, 76, 71, 1);
+}
+.block-color-gray_background {
+	background: rgba(241, 241, 239, 1);
+}
+.block-color-brown_background {
+	background: rgba(244, 238, 238, 1);
+}
+.block-color-orange_background {
+	background: rgba(251, 236, 221, 1);
+}
+.block-color-yellow_background {
+	background: rgba(251, 243, 219, 1);
+}
+.block-color-teal_background {
+	background: rgba(237, 243, 236, 1);
+}
+.block-color-blue_background {
+	background: rgba(231, 243, 248, 1);
+}
+.block-color-purple_background {
+	background: rgba(244, 240, 247, 0.8);
+}
+.block-color-pink_background {
+	background: rgba(249, 238, 243, 0.8);
+}
+.block-color-red_background {
+	background: rgba(253, 235, 236, 1);
+}
+.select-value-color-pink { background-color: rgba(245, 224, 233, 1); }
+.select-value-color-purple { background-color: rgba(232, 222, 238, 1); }
+.select-value-color-green { background-color: rgba(219, 237, 219, 1); }
+.select-value-color-gray { background-color: rgba(227, 226, 224, 1); }
+.select-value-color-opaquegray { background-color: rgba(255, 255, 255, 0.0375); }
+.select-value-color-orange { background-color: rgba(250, 222, 201, 1); }
+.select-value-color-brown { background-color: rgba(238, 224, 218, 1); }
+.select-value-color-red { background-color: rgba(255, 226, 221, 1); }
+.select-value-color-yellow { background-color: rgba(253, 236, 200, 1); }
+.select-value-color-blue { background-color: rgba(211, 229, 239, 1); }
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+	
+</style></head><body><article id="30bf2d19-bf1d-434c-99c0-a2069462e36f" class="page sans"><header><h1 class="page-title">GAN 2: Build Better GANs</h1></header><div class="page-body"><p id="ce235a1d-981c-4a66-8365-9ca74550406e" class="">Some notes of GAN(Generative Adversarial Network) Specialization Course by Yunhao Cao(Github@<a href="https://github.com/ToiletCommander/">ToiletCommander</a>)</p><figure class="block-color-gray_background callout" style="white-space:pre-wrap;display:flex" id="96f6cf5b-3c35-4ef3-bdad-996b289da472"><div style="font-size:1.5em"><span class="icon">👉</span></div><div style="width:100%">Note: This note has content including week 1-3 (version as of 2022/6/16)</div></figure><p id="52e67a98-e9ef-496f-b14c-d8925f4b8820" class="">This work is licensed under a <a href="http://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License</a>.</p><p id="d22e8844-60a1-4889-9972-a884b859515c" class="">Acknowledgements: Some of the resources(images, animations) are taken from:</p><ol type="1" id="1dc0c8d7-a257-401c-a5c4-8df7b55a4e28" class="numbered-list" start="1"><li>Sharon Zhou &amp; Andrew Ng and <a href="http://DeepLearning.AI">DeepLearning.AI</a>’s GAN Specialization Course Track</li></ol><ol type="1" id="1b9c3214-5726-4eb4-9336-ff65f59081df" class="numbered-list" start="2"><li>articles on towardsdatascience.com</li></ol><ol type="1" id="b13b88ea-f8fa-49e5-b7a2-d9be14ecdf38" class="numbered-list" start="3"><li>images from google image search(from other online sources)</li></ol><p id="b82eaf79-c1b5-4727-9024-c1bea41a96dc" class="">Since this article is not for commercial use, please let me know if you would like your resource taken off from here by creating an issue on my github repository.</p><blockquote id="0af2946f-2226-4713-bb2c-10a2e36d12a3" class="">Last updated: 2022/6/16 14:15 CST</blockquote><p id="e4923358-8b83-47b2-86b5-401aeeeaaff9" class="">
+</p><h1 id="9800a3d2-55af-46bf-9628-8278606d7489" class="">Evaluating a GAN</h1><h2 id="24a911cc-f8b6-4733-9e68-49b09d0fb2ea" class="">Evaluating is a challenging task because..</h2><ol type="1" id="8b86e4be-03f7-474f-9a34-caa6535987ff" class="numbered-list" start="1"><li>GANs are learning to composing not singing - it is hard to determine if it was right or wrong<ol type="a" id="81adf0da-975c-4b91-9d17-8e834a445fb3" class="numbered-list" start="1"><li>Classifiers have labeled data to compare against</li></ol></li></ol><ol type="1" id="3b961705-d1ea-43e8-b329-f3e147917c74" class="numbered-list" start="2"><li>Although in a GAN there are real or fake images, the discriminators in GAN always overfits to the generators and there’s not a universal discriminator that compares two different generators</li></ol><h2 id="6f498a3d-e31f-4494-a42a-49a8837c0e00" class="">But we can compare images</h2><p id="0d486db6-35b2-4cee-b605-6320ad64cedf" class="">We compare several images generated by GANs in terms of their fidelity and diversity. But it can be challenging. </p><h3 id="3c1ac690-587e-4d87-b3ba-32eb71833992" class="">Pixel Distance</h3><p id="17276fdc-a412-42b2-9cdc-bdbf33304536" class="">Works, but not reliable</p><figure id="c49fb738-5432-4468-9fd2-d7d27afa8bac" class="image"><a href="GAN%202%20Build%20Better%20GANs%20c49fb738543244689fd2d7d27afa8bac/Untitled.png"><img style="width:624px" src="GAN%202%20Build%20Better%20GANs%20c49fb738543244689fd2d7d27afa8bac/Untitled.png"/></a></figure><p id="8a01232c-3e4b-4af6-bb13-28a2496cef4a" class="">Imagine the fake image shifted one pixel to the right, then the whole pixel distance is huge and exaggerated though the two images are similar.</p><p id="38107218-ff95-4abf-aee2-6ab448d10452" class="">
+</p><h3 id="1ee9d4a1-124b-4af6-b68e-731faee90bf0" class="">Feature Distance</h3><p id="2730d2ea-33f8-4241-bbed-235d3b2cb015" class="">Less Sensitive to small shifts,</p><figure id="b75d4864-34df-4f73-b509-364e27e7fc78" class="image"><a href="GAN%202%20Build%20Better%20GANs%20c49fb738543244689fd2d7d27afa8bac/Untitled%201.png"><img style="width:2592px" src="GAN%202%20Build%20Better%20GANs%20c49fb738543244689fd2d7d27afa8bac/Untitled%201.png"/></a></figure><p id="141d0552-2414-4b24-9ec8-0fbc6cd9c29d" class="">Extract information about the real and fake images and then compare the features (high-level semantic information)</p><figure class="block-color-gray_background callout" style="white-space:pre-wrap;display:flex" id="e03054d2-fb7a-4d7c-b148-cba1d00d2d0c"><div style="font-size:1.5em"><span class="icon">🔥</span></div><div style="width:100%">But how do we extract features?
+1. Feature extraction using pre-trained classifiers (maybe just take a middle layer - most commonly the last pooling layer - along the classifier network and each node can act as a feature detector) trained on ImageNet dataset.</div></figure><p id="17152351-e141-4431-b31a-feb1dabde0c9" class="">Usually the classifier we use is Inception network (Sharon mentioned Inception-V3, which has 42 layers deep but very computationally efficient, but I think the newest is now Inception v4)</p><p id="8ba9b6de-5c0f-4c99-a3d8-59176d4e3dd1" class="">
+</p><h2 id="bb554c5a-6adc-4835-8c11-fd0ad7034326" class="">Frechet Distance and Frechet Inception Distance</h2><p id="1f8d43b9-909d-4f47-8fc0-bdeabc28af52" class="">the Frechet Distance is developed to compare distance between curves but can be modified to measure distance between distributions as well. </p><p id="d9a40df0-8855-46ba-a16d-cf3112ac7723" class="">We will use the classic dogwalker schenerio to illustrate this concept</p><figure id="c2a48721-c461-4390-a01a-f3b96a13f125" class="image"><a href="GAN%202%20Build%20Better%20GANs%20c49fb738543244689fd2d7d27afa8bac/Untitled%202.png"><img style="width:480px" src="GAN%202%20Build%20Better%20GANs%20c49fb738543244689fd2d7d27afa8bac/Untitled%202.png"/></a></figure><ol type="1" id="454a07dd-9657-48df-b9e8-588824941f7e" class="numbered-list" start="1"><li>Both the dogwalker and the dog is walking</li></ol><ol type="1" id="8c0a50f4-9663-49f0-bf76-94f56b76cba9" class="numbered-list" start="2"><li>they can run in different speeds</li></ol><ol type="1" id="b25c6cba-ddcb-49f6-bd3b-1443ab27b76f" class="numbered-list" start="3"><li>they can run in different directions</li></ol><ol type="1" id="9409d19c-a02e-4627-881e-8ef9a7f80adb" class="numbered-list" start="4"><li>but neither of them can run backwards</li></ol><p id="58f3a5d4-8475-4b5d-9e5c-ff9d376ad944" class="">
+</p><p id="84510aa4-8055-4a0c-8e76-ecbc2b355ffa" class="">figure out the minimum leash length needed to walk from beginning to end ⇒ what is the minimum leash needed to walk the curves without giving him more slack during the walk.</p><p id="188f5c0b-b140-41f6-b289-5dc14debd10b" class="">
+</p><figure id="c8b5e2c2-4658-4b9e-b40b-73ccc10969ad" class="image"><a href="GAN%202%20Build%20Better%20GANs%20c49fb738543244689fd2d7d27afa8bac/Untitled%203.png"><img style="width:336px" src="GAN%202%20Build%20Better%20GANs%20c49fb738543244689fd2d7d27afa8bac/Untitled%203.png"/></a></figure><p id="23624aa9-e99d-438b-8d91-16067ffb3c1f" class="">We can also determine the Frechet Distance between univariate normal distributions using a similar idea.</p><figure id="8f47490e-1962-4bc9-b068-3c3f81774ce1" class="equation"><style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.13.2/katex.min.css')</style><div class="equation-container"><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>d</mi><mo stretchy="false">(</mo><mi>X</mi><mo separator="true">,</mo><mi>Y</mi><mo stretchy="false">)</mo><mo>=</mo><mo stretchy="false">(</mo><msub><mi>μ</mi><mi>X</mi></msub><mo>−</mo><msub><mi>μ</mi><mi>Y</mi></msub><msup><mo stretchy="false">)</mo><mn>2</mn></msup><mo>+</mo><mo stretchy="false">(</mo><msub><mi>σ</mi><mi>X</mi></msub><mo>−</mo><msub><mi>σ</mi><mi>Y</mi></msub><msup><mo stretchy="false">)</mo><mn>2</mn></msup></mrow><annotation encoding="application/x-tex">d(X,Y)=(\mu_X-\mu_Y)^2+(\sigma_X-\sigma_Y)^2</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal">d</span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.07847em;">X</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord mathnormal" style="margin-right:0.22222em;">Y</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord"><span class="mord mathnormal">μ</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.32833099999999993em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.07847em;">X</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1.1141079999999999em;vertical-align:-0.25em;"></span><span class="mord"><span class="mord mathnormal">μ</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.32833099999999993em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.22222em;">Y</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mclose"><span class="mclose">)</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8641079999999999em;"><span style="top:-3.113em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.03588em;">σ</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.32833099999999993em;"><span style="top:-2.5500000000000003em;margin-left:-0.03588em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.07847em;">X</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1.1141079999999999em;vertical-align:-0.25em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.03588em;">σ</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.32833099999999993em;"><span style="top:-2.5500000000000003em;margin-left:-0.03588em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.22222em;">Y</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mclose"><span class="mclose">)</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8641079999999999em;"><span style="top:-3.113em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span></span></span></span></span></div></figure><p id="7b29dc9c-7c9f-4cf6-9368-785c799cb076" class="">On a multivariate Normal distribution, the Frechet Distance looks like:</p><figure id="c3be8df9-5fd0-4d79-8ab8-0b2b6058280e" class="equation"><style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.13.2/katex.min.css')</style><div class="equation-container"><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>d</mi><mo stretchy="false">(</mo><mi>X</mi><mo separator="true">,</mo><mi>Y</mi><mo stretchy="false">)</mo><mo>=</mo><mi mathvariant="normal">∣</mi><mi mathvariant="normal">∣</mi><msub><mi>μ</mi><mi>X</mi></msub><mo>−</mo><msub><mi>μ</mi><mi>Y</mi></msub><mi mathvariant="normal">∣</mi><msup><mi mathvariant="normal">∣</mi><mn>2</mn></msup><mo>+</mo><mi>T</mi><mi>r</mi><mo stretchy="false">(</mo><msub><mi mathvariant="normal">Σ</mi><mi>X</mi></msub><mo>+</mo><msub><mi mathvariant="normal">Σ</mi><mi>Y</mi></msub><mo>−</mo><mn>2</mn><msqrt><mrow><msub><mi mathvariant="normal">Σ</mi><mi>X</mi></msub><msub><mi mathvariant="normal">Σ</mi><mi>Y</mi></msub></mrow></msqrt><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">d(X,Y)=||\mu_X-\mu_Y||^2+Tr(\Sigma_X+\Sigma_Y-2\sqrt{\Sigma_X \Sigma_Y})</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal">d</span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.07847em;">X</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord mathnormal" style="margin-right:0.22222em;">Y</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">∣∣</span><span class="mord"><span class="mord mathnormal">μ</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.32833099999999993em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.07847em;">X</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1.1141079999999999em;vertical-align:-0.25em;"></span><span class="mord"><span class="mord mathnormal">μ</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.32833099999999993em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.22222em;">Y</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mord">∣</span><span class="mord"><span class="mord">∣</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8641079999999999em;"><span style="top:-3.113em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.13889em;">T</span><span class="mord mathnormal" style="margin-right:0.02778em;">r</span><span class="mopen">(</span><span class="mord"><span class="mord">Σ</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.32833099999999993em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.07847em;">X</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.83333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord">Σ</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.32833099999999993em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.22222em;">Y</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1.25054em;vertical-align:-0.25em;"></span><span class="mord">2</span><span class="mord sqrt"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.00054em;"><span class="svg-align" style="top:-3.2em;"><span class="pstrut" style="height:3.2em;"></span><span class="mord" style="padding-left:1em;"><span class="mord"><span class="mord">Σ</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.32833099999999993em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.07847em;">X</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mord"><span class="mord">Σ</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.32833099999999993em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.22222em;">Y</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span><span style="top:-2.96054em;"><span class="pstrut" style="height:3.2em;"></span><span class="hide-tail" style="min-width:1.02em;height:1.28em;"><svg width='400em' height='1.28em' viewBox='0 0 400000 1296' preserveAspectRatio='xMinYMin slice'><path d='M263,681c0.7,0,18,39.7,52,119
+c34,79.3,68.167,158.7,102.5,238c34.3,79.3,51.8,119.3,52.5,120
+c340,-704.7,510.7,-1060.3,512,-1067
+l0 -0
+c4.7,-7.3,11,-11,19,-11
+H40000v40H1012.3
+s-271.3,567,-271.3,567c-38.7,80.7,-84,175,-136,283c-52,108,-89.167,185.3,-111.5,232
+c-22.3,46.7,-33.8,70.3,-34.5,71c-4.7,4.7,-12.3,7,-23,7s-12,-1,-12,-1
+s-109,-253,-109,-253c-72.7,-168,-109.3,-252,-110,-252c-10.7,8,-22,16.7,-34,26
+c-22,17.3,-33.3,26,-34,26s-26,-26,-26,-26s76,-59,76,-59s76,-60,76,-60z
+M1001 80h400000v40h-400000z'/></svg></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.23946em;"><span></span></span></span></span></span><span class="mclose">)</span></span></span></span></span></div></figure><p id="6e6a9d2b-8f4b-483c-a093-f29c964896e6" class="">Where <style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.13.2/katex.min.css')</style><span data-token-index="0" contenteditable="false" class="notion-text-equation-token" style="user-select:all;-webkit-user-select:all;-moz-user-select:all"><span></span><span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>T</mi><mi>r</mi><mo stretchy="false">(</mo><mo>⋅</mo><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">Tr(\cdot)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.13889em;">T</span><span class="mord mathnormal" style="margin-right:0.02778em;">r</span><span class="mopen">(</span><span class="mord">⋅</span><span class="mclose">)</span></span></span></span></span><span>﻿</span></span> is the trace of a matrix (sum of diagonal terms)</p><p id="d7e5160a-5385-4a9f-9889-ef47cdc44684" class="">And the square root is square root on matrix, not on each element</p><p id="f8a034f2-ad5b-4dd7-a349-4fc8046b4b26" class="">The above formula is also called Frechet Inception Distance (FID), one of the most commonly used matrix to evaluate embeddings of real and fake images. The lower FID is, it means the closer fake image distributions are to the real image distributions.</p><p id="592bf718-b9c0-4c5c-a3fd-80550adbb731" class="">
+</p><h3 id="2555f12c-3df4-4b27-bc8e-edd451c5e7ba" class="">Shortcomings of FID</h3><ol type="1" id="9264b27d-fcfd-409c-a841-ef18eaea2bc1" class="numbered-list" start="1"><li>Uses pre-trained Inception model which may not capture all features</li></ol><ol type="1" id="20aff690-482f-4c18-ab0e-fee7ef8cee4b" class="numbered-list" start="2"><li>Needs a large sample size</li></ol><ol type="1" id="a6d99205-9ee5-47c8-a7f8-f9cbf6c6330c" class="numbered-list" start="3"><li>Slow to run</li></ol><ol type="1" id="dd2227fb-7363-4b97-8ab8-d6ef91d34c3e" class="numbered-list" start="4"><li>Limited statistics used: only mean and sd.</li></ol><p id="cdec352c-93c3-4c0c-bfe1-bf7a88be9075" class="">
+</p><h2 id="bb66d813-ec7f-463d-9a13-7aa1b0879e56" class="">Inception Score</h2><ol type="1" id="7366ff2b-fdee-4c6c-adbd-88212425d23e" class="numbered-list" start="1"><li>Now replaced by FID</li></ol><ol type="1" id="875fd965-e194-4b5c-b2a9-1801df6c874d" class="numbered-list" start="2"><li>But reported in many papers so good to know</li></ol><ol type="1" id="40fbb2c4-359c-4bba-963d-797a278c53ab" class="numbered-list" start="3"><li>Keeps calssifier intact and don’t use any intermediate values<ol type="a" id="d17537b4-a635-4afa-a636-58fbc553391e" class="numbered-list" start="1"><li>Directly see the output of Inception network</li></ol><ol type="a" id="feccd481-625c-4d9d-9bb8-6658d86fa5e3" class="numbered-list" start="2"><li>If a score for an exact class is high <style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.13.2/katex.min.css')</style><span data-token-index="0" contenteditable="false" class="notion-text-equation-token" style="user-select:all;-webkit-user-select:all;-moz-user-select:all"><span></span><span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>P</mi><mo stretchy="false">(</mo><mi>y</mi><mi mathvariant="normal">∣</mi><mi>X</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">P(y|X)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.13889em;">P</span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.03588em;">y</span><span class="mord">∣</span><span class="mord mathnormal" style="margin-right:0.07847em;">X</span><span class="mclose">)</span></span></span></span></span><span>﻿</span></span>, it means the image is arguably high fidelity since it is easier to recognize and resembles features that is closer to one class.</li></ol><ol type="a" id="6b6d2827-3850-4a99-b757-405726ab7653" class="numbered-list" start="3"><li>Look across many samples and see that the generator is generating many different classes or not <style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.13.2/katex.min.css')</style><span data-token-index="0" contenteditable="false" class="notion-text-equation-token" style="user-select:all;-webkit-user-select:all;-moz-user-select:all"><span></span><span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>P</mi><mo stretchy="false">(</mo><mi>y</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">P(y)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.13889em;">P</span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.03588em;">y</span><span class="mclose">)</span></span></span></span></span><span>﻿</span></span></li></ol></li></ol><figure id="f6506b39-7779-426e-82e8-312b1015b073" class="image"><a href="GAN%202%20Build%20Better%20GANs%20c49fb738543244689fd2d7d27afa8bac/Untitled%204.png"><img style="width:624px" src="GAN%202%20Build%20Better%20GANs%20c49fb738543244689fd2d7d27afa8bac/Untitled%204.png"/></a></figure><p id="473131dc-5fe0-4a92-bb04-5782ee946da8" class="">So, single score <strong>KL Divergence</strong></p><figure id="4768a3cb-4dcc-446d-94f9-835c8469f2a7" class="equation"><style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.13.2/katex.min.css')</style><div class="equation-container"><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><msub><mi>D</mi><mrow><mi>K</mi><mi>L</mi></mrow></msub><mo stretchy="false">(</mo><mi>P</mi><mo stretchy="false">(</mo><mi>y</mi><mi mathvariant="normal">∣</mi><mi>X</mi><mo stretchy="false">)</mo><mi mathvariant="normal">∣</mi><mi mathvariant="normal">∣</mi><mi>P</mi><mo stretchy="false">(</mo><mi>y</mi><mo stretchy="false">)</mo><mo stretchy="false">)</mo><mo>=</mo><mi>P</mi><mo stretchy="false">(</mo><mi>y</mi><mi mathvariant="normal">∣</mi><mi>x</mi><mo stretchy="false">)</mo><mi>log</mi><mo>⁡</mo><mo stretchy="false">(</mo><mfrac><mrow><mi>P</mi><mo stretchy="false">(</mo><mi>y</mi><mi mathvariant="normal">∣</mi><mi>X</mi><mo stretchy="false">)</mo></mrow><mrow><mi>P</mi><mo stretchy="false">(</mo><mi>y</mi><mo stretchy="false">)</mo></mrow></mfrac><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">D_{KL}(P(y|X)||P(y)) = P(y|x) \log(\frac{P(y|X)}{P(y)})</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.02778em;">D</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.32833099999999993em;"><span style="top:-2.5500000000000003em;margin-left:-0.02778em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.07153em;">K</span><span class="mord mathnormal mtight">L</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.13889em;">P</span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.03588em;">y</span><span class="mord">∣</span><span class="mord mathnormal" style="margin-right:0.07847em;">X</span><span class="mclose">)</span><span class="mord">∣∣</span><span class="mord mathnormal" style="margin-right:0.13889em;">P</span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.03588em;">y</span><span class="mclose">))</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:2.363em;vertical-align:-0.936em;"></span><span class="mord mathnormal" style="margin-right:0.13889em;">P</span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.03588em;">y</span><span class="mord">∣</span><span class="mord mathnormal">x</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mop">lo<span style="margin-right:0.01389em;">g</span></span><span class="mopen">(</span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.427em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.13889em;">P</span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.03588em;">y</span><span class="mclose">)</span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.13889em;">P</span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.03588em;">y</span><span class="mord">∣</span><span class="mord mathnormal" style="margin-right:0.07847em;">X</span><span class="mclose">)</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.936em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mclose">)</span></span></span></span></span></div></figure><p id="17fa71e8-a911-4a05-b948-68c2a7c33741" class="">Tries to measure how much information you can gain on <style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.13.2/katex.min.css')</style><span data-token-index="0" contenteditable="false" class="notion-text-equation-token" style="user-select:all;-webkit-user-select:all;-moz-user-select:all"><span></span><span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>P</mi><mo stretchy="false">(</mo><mi>y</mi><mi mathvariant="normal">∣</mi><mi>X</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">P(y|X)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.13889em;">P</span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.03588em;">y</span><span class="mord">∣</span><span class="mord mathnormal" style="margin-right:0.07847em;">X</span><span class="mclose">)</span></span></span></span></span><span>﻿</span></span> given just information about <style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.13.2/katex.min.css')</style><span data-token-index="0" contenteditable="false" class="notion-text-equation-token" style="user-select:all;-webkit-user-select:all;-moz-user-select:all"><span></span><span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>P</mi><mo stretchy="false">(</mo><mi>y</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">P(y)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.13889em;">P</span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.03588em;">y</span><span class="mclose">)</span></span></span></span></span><span>﻿</span></span>.</p><p id="5447e907-3825-4893-b10a-646b82641bd4" class="">
+</p><p id="dd291c6e-191d-4c0e-be27-6d6c10658078" class="">So...inception score</p><figure id="3e97dfed-394d-42cc-844d-3bb835d048f6" class="equation"><style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.13.2/katex.min.css')</style><div class="equation-container"><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>I</mi><mi>S</mi><mo>=</mo><mi>exp</mi><mo>⁡</mo><mo stretchy="false">(</mo><msub><mi mathvariant="double-struck">E</mi><mrow><mi>x</mi><mo>∼</mo><msub><mi>p</mi><mi>g</mi></msub></mrow></msub><msub><mi>D</mi><mrow><mi>K</mi><mi>L</mi></mrow></msub><mo stretchy="false">(</mo><mi>P</mi><mo stretchy="false">(</mo><mi>y</mi><mi mathvariant="normal">∣</mi><mi>X</mi><mo stretchy="false">)</mo><mi mathvariant="normal">∣</mi><mi mathvariant="normal">∣</mi><mi>P</mi><mo stretchy="false">(</mo><mi>y</mi><mo stretchy="false">)</mo><mo stretchy="false">)</mo><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">IS = \exp(\mathbb{E}_{x \sim p_g} D_{KL}(P(y|X)||P(y)))</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord mathnormal" style="margin-right:0.07847em;">I</span><span class="mord mathnormal" style="margin-right:0.05764em;">S</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:1.0973199999999999em;vertical-align:-0.34731999999999996em;"></span><span class="mop">exp</span><span class="mopen">(</span><span class="mord"><span class="mord mathbb">E</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.15139200000000003em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">x</span><span class="mrel mtight">∼</span><span class="mord mtight"><span class="mord mathnormal mtight">p</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.16454285714285716em;"><span style="top:-2.357em;margin-left:0em;margin-right:0.07142857142857144em;"><span class="pstrut" style="height:2.5em;"></span><span class="sizing reset-size3 size1 mtight"><span class="mord mathnormal mtight" style="margin-right:0.03588em;">g</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2818857142857143em;"><span></span></span></span></span></span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.34731999999999996em;"><span></span></span></span></span></span></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.02778em;">D</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.32833099999999993em;"><span style="top:-2.5500000000000003em;margin-left:-0.02778em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.07153em;">K</span><span class="mord mathnormal mtight">L</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.13889em;">P</span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.03588em;">y</span><span class="mord">∣</span><span class="mord mathnormal" style="margin-right:0.07847em;">X</span><span class="mclose">)</span><span class="mord">∣∣</span><span class="mord mathnormal" style="margin-right:0.13889em;">P</span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.03588em;">y</span><span class="mclose">)))</span></span></span></span></span></div></figure><p id="38316248-aff6-40b3-bac0-a342107377c2" class="">But</p><ol type="1" id="ebff9389-a953-4d62-974f-a8e958d71034" class="numbered-list" start="1"><li>Can be exploited or gamed<ol type="a" id="f2e7bec4-0514-47c3-8460-77b45a5f7d6e" class="numbered-list" start="1"><li>Generate one realistic image of each class</li></ol></li></ol><ol type="1" id="c165c5cf-b27a-4ccb-b108-4aa911ebb83c" class="numbered-list" start="2"><li>Only looks at fake images<ol type="a" id="38552336-b455-46e7-a331-c4cf05930f74" class="numbered-list" start="1"><li>No comparison to real images</li></ol></li></ol><ol type="1" id="841290f1-fe5f-42c6-882b-2624ce4da955" class="numbered-list" start="3"><li>Can miss useful features<ol type="a" id="ae3ef3e5-cfd1-4799-bda5-32832dc08390" class="numbered-list" start="1"><li>ImageNet isn’t everything</li></ol></li></ol><p id="6c316547-87d6-4264-acea-5bf20a290e85" class="">
+</p><h2 id="f704f2e8-0e11-4e78-b686-cbd4afaa692f" class="">Ways to sample images for comparison</h2><ol type="1" id="2ae57cfa-eb64-40f1-b6a6-05e713723593" class="numbered-list" start="1"><li>For real, we usually just sample uniformly from the data</li></ol><ol type="1" id="a69604e4-007f-4183-8048-5563c8e826df" class="numbered-list" start="2"><li>For fake, since we would use a normal distribution to generate noise vector <style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.13.2/katex.min.css')</style><span data-token-index="0" contenteditable="false" class="notion-text-equation-token" style="user-select:all;-webkit-user-select:all;-moz-user-select:all"><span></span><span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover accent="true"><mi>z</mi><mo>⃗</mo></mover></mrow><annotation encoding="application/x-tex">\vec{z}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.714em;vertical-align:0em;"></span><span class="mord accent"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.714em;"><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord mathnormal" style="margin-right:0.04398em;">z</span></span><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="accent-body" style="left:-0.17994em;"><span class="overlay" style="height:0.714em;width:0.471em;"><svg width='0.471em' height='0.714em' style='width:0.471em' viewBox='0 0 471 714' preserveAspectRatio='xMinYMin'><path d='M377 20c0-5.333 1.833-10 5.5-14S391 0 397 0c4.667 0 8.667 1.667 12 5
+3.333 2.667 6.667 9 10 19 6.667 24.667 20.333 43.667 41 57 7.333 4.667 11
+10.667 11 18 0 6-1 10-3 12s-6.667 5-14 9c-28.667 14.667-53.667 35.667-75 63
+-1.333 1.333-3.167 3.5-5.5 6.5s-4 4.833-5 5.5c-1 .667-2.5 1.333-4.5 2s-4.333 1
+-7 1c-4.667 0-9.167-1.833-13.5-5.5S337 184 337 178c0-12.667 15.667-32.333 47-59
+H213l-171-1c-8.667-6-13-12.333-13-19 0-4.667 4.333-11.333 13-20h359
+c-16-25.333-24-45-24-59z'/></svg></span></span></span></span></span></span></span></span></span></span></span><span>﻿</span></span>s, we can also use the same distribution to generate fakes for comparison, but with some tricks.<ol type="a" id="e46340a2-e37b-45a7-b32d-553faa3ec400" class="numbered-list" start="1"><li>There’s a tradeoff between fidelity and diversity</li></ol><ol type="a" id="25263a61-1445-45e8-87d6-d5ba832d305b" class="numbered-list" start="2"><li>If we sample closer to the middle, we will improve the fidelity of sampled fakes since those are the values that occured more in training, but we lost diversity since we gave up certain regions of <style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.13.2/katex.min.css')</style><span data-token-index="0" contenteditable="false" class="notion-text-equation-token" style="user-select:all;-webkit-user-select:all;-moz-user-select:all"><span></span><span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover accent="true"><mi>z</mi><mo>⃗</mo></mover></mrow><annotation encoding="application/x-tex">\vec{z}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.714em;vertical-align:0em;"></span><span class="mord accent"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.714em;"><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord mathnormal" style="margin-right:0.04398em;">z</span></span><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="accent-body" style="left:-0.17994em;"><span class="overlay" style="height:0.714em;width:0.471em;"><svg width='0.471em' height='0.714em' style='width:0.471em' viewBox='0 0 471 714' preserveAspectRatio='xMinYMin'><path d='M377 20c0-5.333 1.833-10 5.5-14S391 0 397 0c4.667 0 8.667 1.667 12 5
+3.333 2.667 6.667 9 10 19 6.667 24.667 20.333 43.667 41 57 7.333 4.667 11
+10.667 11 18 0 6-1 10-3 12s-6.667 5-14 9c-28.667 14.667-53.667 35.667-75 63
+-1.333 1.333-3.167 3.5-5.5 6.5s-4 4.833-5 5.5c-1 .667-2.5 1.333-4.5 2s-4.333 1
+-7 1c-4.667 0-9.167-1.833-13.5-5.5S337 184 337 178c0-12.667 15.667-32.333 47-59
+H213l-171-1c-8.667-6-13-12.333-13-19 0-4.667 4.333-11.333 13-20h359
+c-16-25.333-24-45-24-59z'/></svg></span></span></span></span></span></span></span></span></span></span></span><span>﻿</span></span>s.</li></ol><ol type="a" id="579be298-1207-4b3c-9d6b-d7f9b4283eff" class="numbered-list" start="3"><li>Truncation Trick</li></ol><figure id="78e55835-b339-4be6-91dc-a45ff7afcd10" class="image"><a href="GAN%202%20Build%20Better%20GANs%20c49fb738543244689fd2d7d27afa8bac/Untitled%205.png"><img style="width:288px" src="GAN%202%20Build%20Better%20GANs%20c49fb738543244689fd2d7d27afa8bac/Untitled%205.png"/></a></figure></li></ol><p id="3e4f4930-94a3-427d-b8e5-b127d4ede5bf" class="">
+</p><h2 id="ac4fdd86-d741-4098-aa2a-dcda023ec972" class="">Precision and Recall</h2><figure id="a3ab7855-833b-4548-a502-5e4a8b2fb5a9" class="image"><a href="GAN%202%20Build%20Better%20GANs%20c49fb738543244689fd2d7d27afa8bac/Untitled%206.png"><img style="width:480px" src="GAN%202%20Build%20Better%20GANs%20c49fb738543244689fd2d7d27afa8bac/Untitled%206.png"/></a></figure><p id="3ba776bc-f2ef-48b6-919a-a9235e909744" class="">In a GAN network, we want the generated image distribution (fake distribution) <style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.13.2/katex.min.css')</style><span data-token-index="0" contenteditable="false" class="notion-text-equation-token" style="user-select:all;-webkit-user-select:all;-moz-user-select:all"><span></span><span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>P</mi><mi>g</mi></msub></mrow><annotation encoding="application/x-tex">P_g</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.969438em;vertical-align:-0.286108em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.13889em;">P</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.15139200000000003em;"><span style="top:-2.5500000000000003em;margin-left:-0.13889em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.03588em;">g</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.286108em;"><span></span></span></span></span></span></span></span></span></span></span><span>﻿</span></span> to match exactly with the distribution of <style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.13.2/katex.min.css')</style><span data-token-index="0" contenteditable="false" class="notion-text-equation-token" style="user-select:all;-webkit-user-select:all;-moz-user-select:all"><span></span><span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>P</mi><mi>r</mi></msub></mrow><annotation encoding="application/x-tex">P_r</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.83333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.13889em;">P</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.151392em;"><span style="top:-2.5500000000000003em;margin-left:-0.13889em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.02778em;">r</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span></span><span>﻿</span></span> (not a subset, not a super-set, but exactly equal)</p><figure id="8a834551-9535-4d43-a102-3318af21a6db" class="image"><a href="GAN%202%20Build%20Better%20GANs%20c49fb738543244689fd2d7d27afa8bac/Untitled%207.png"><img style="width:528px" src="GAN%202%20Build%20Better%20GANs%20c49fb738543244689fd2d7d27afa8bac/Untitled%207.png"/></a></figure><p id="f6223f96-0b14-4d15-9fa7-c153cc0222bb" class=""><strong>Percision</strong>: area of fake distribution overlapping with the real distribution divided by area of fake distribution. <strong>Percentage of fakes that look real ⇒ quality of generated fakes</strong></p><figure id="143ea456-eef3-4e7e-b622-9145d681c2c2" class="image"><a href="GAN%202%20Build%20Better%20GANs%20c49fb738543244689fd2d7d27afa8bac/Untitled%208.png"><img style="width:528px" src="GAN%202%20Build%20Better%20GANs%20c49fb738543244689fd2d7d27afa8bac/Untitled%208.png"/></a></figure><p id="81354453-3acd-4b4f-b46d-cb9d1589a579" class=""><strong>Recall</strong>: Area of real distribution overlapping with the fake distribution divded by area of real distribution. <strong>Percentage of real that can actually be faked ⇒ diversity of generated fakes</strong></p><p id="62018f08-c096-4a0e-b745-3802276c7442" class="">Models tend to be better at recall ⇒ but we can control precision by using truncation methods.</p><p id="12e3e341-e7f0-491a-8a95-8fb438782249" class="">
+</p><h1 id="eb48a62c-beac-4498-9ef9-1c47def7ff8a" class="">Shortcomings of GANs</h1><ol type="1" id="46abc299-9475-4c56-bda6-55f23dae2904" class="numbered-list" start="1"><li>Lack of Intrinsic Evaluation Metrics<ol type="a" id="0456e121-4c58-4428-affa-57c03da277dd" class="numbered-list" start="1"><li>Even with FID distance its not ALWAYS reliable</li></ol></li></ol><ol type="1" id="01fea341-da5b-48d5-8bb4-54cc2cfcdc66" class="numbered-list" start="2"><li>Unstable training<ol type="a" id="8d8e76bc-d0b4-4cc5-8d22-864806042b78" class="numbered-list" start="1"><li>mode collapse</li></ol><ol type="a" id="846fadb2-96fa-48ae-98b4-2e0eb585fe61" class="numbered-list" start="2"><li>is pretty much solved today<ol type="i" id="9e943260-2fcb-4592-a417-4287ce1c612d" class="numbered-list" start="1"><li>by enforcing 1-L continuity through Wassertain Loss + Gradient Penalty, Spectral Norm</li></ol><ol type="i" id="72ae91dc-1720-48bd-9bad-8fea85cd53e2" class="numbered-list" start="2"><li>by Instead of using generator model weights of a certain iteration count <style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.13.2/katex.min.css')</style><span data-token-index="0" contenteditable="false" class="notion-text-equation-token" style="user-select:all;-webkit-user-select:all;-moz-user-select:all"><span></span><span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>θ</mi><mi>i</mi></msub></mrow><annotation encoding="application/x-tex">\theta_i</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.84444em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.02778em;">θ</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.31166399999999994em;"><span style="top:-2.5500000000000003em;margin-left:-0.02778em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span></span><span>﻿</span></span>, <strong>use a weighted average of weights at different iterations</strong> <style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.13.2/katex.min.css')</style><span data-token-index="0" contenteditable="false" class="notion-text-equation-token" style="user-select:all;-webkit-user-select:all;-moz-user-select:all"><span></span><span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover accent="true"><mi>θ</mi><mo>^</mo></mover><mo>=</mo><mfrac><mn>1</mn><mi>n</mi></mfrac><msubsup><mo>∑</mo><mrow><mi>j</mi><mo>=</mo><mn>1</mn></mrow><mi>n</mi></msubsup><msub><mi>θ</mi><mi>j</mi></msub></mrow><annotation encoding="application/x-tex">\hat{\theta} = \frac{1}{n} \sum_{j=1}^n \theta_j</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.9578799999999998em;vertical-align:0em;"></span><span class="mord accent"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.9578799999999998em;"><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">θ</span></span><span style="top:-3.26344em;"><span class="pstrut" style="height:3em;"></span><span class="accent-body" style="left:-0.16666em;"><span class="mord">^</span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:1.280926em;vertical-align:-0.43581800000000004em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.845108em;"><span style="top:-2.6550000000000002em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">n</span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.394em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">1</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.345em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mop"><span class="mop op-symbol small-op" style="position:relative;top:-0.0000050000000000050004em;">∑</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.804292em;"><span style="top:-2.40029em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.05724em;">j</span><span class="mrel mtight">=</span><span class="mord mtight">1</span></span></span></span><span style="top:-3.2029em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">n</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.43581800000000004em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.02778em;">θ</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.311664em;"><span style="top:-2.5500000000000003em;margin-left:-0.02778em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.05724em;">j</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.286108em;"><span></span></span></span></span></span></span></span></span></span></span><span>﻿</span></span>, this helps to smooth out generation.</li></ol><ol type="i" id="697ab7d6-1688-4216-889c-27963129d4a5" class="numbered-list" start="3"><li>progressive growing<ol type="1" id="d3819f9a-57fa-4a11-a761-456541e0e115" class="numbered-list" start="1"><li>see StyleGAN</li></ol></li></ol></li></ol><ol type="a" id="3bfeafa0-4630-4955-96f0-74b310a74995" class="numbered-list" start="3"><li>No density estimation for generated images<ol type="i" id="4f5597b4-dbfe-4a71-9643-261802c83447" class="numbered-list" start="1"><li>Cannot do anomoly detection</li></ol></li></ol><ol type="a" id="7074d5d4-d505-416d-a6f5-1205fb47748e" class="numbered-list" start="4"><li>Inverting is not straightforward<ol type="i" id="ba0dd914-fc00-4f53-b677-19ecd9601bd5" class="numbered-list" start="1"><li>feed an image and find associated noise vector</li></ol><ol type="i" id="90108b91-1b1c-45e6-989e-15dd1f00f573" class="numbered-list" start="2"><li>important for image editing</li></ol></li></ol></li></ol><p id="dafd686f-8a74-4f43-beea-79037b189d80" class="">Because of those shortcomings, we will learn some alternatives to GANs (but will have tradeoffs)</p><p id="72bc3e65-487e-41c6-987f-df7de4e9e032" class="">
+</p><h2 id="13e579bd-06ff-4af1-a425-a9c70cdb50fc" class="">Alternatives to GANs</h2><h3 id="2e7992dc-ab1f-4a5a-b05c-3ec4d480db77" class="">Variational Autoencoders (VAE)</h3><p id="ace6a518-c552-4cc2-8deb-459d5f80f9cf" class="">Has two parts encoder and decoder</p><figure id="a1221d5e-8e44-46d3-b7f8-38c2e43b3926" class="image"><a href="GAN%202%20Build%20Better%20GANs%20c49fb738543244689fd2d7d27afa8bac/Untitled%209.png"><img style="width:528px" src="GAN%202%20Build%20Better%20GANs%20c49fb738543244689fd2d7d27afa8bac/Untitled%209.png"/></a></figure><p id="5c64e56a-9431-49e6-b9b3-955ea43871f3" class="">Encoder takes in images and translates it into a vector in latent space</p><p id="72d53c0f-d393-49a6-946e-6425cc72c79b" class="">Decoder takes in a latent space vector and spits out an image</p><p id="e30da26c-1677-48fc-9ce0-05742b41d213" class="">minimizing the divergence between the input and the output, and only uses decoder portion during production.</p><ol type="1" id="abca5313-e66a-400e-8f1d-674857340963" class="numbered-list" start="1"><li>Has a density estimation</li></ol><ol type="1" id="24a8e016-2ec4-47d2-8724-d37f0d689259" class="numbered-list" start="2"><li>Operation is invertible</li></ol><ol type="1" id="1068d0c7-4f85-487d-bf5f-9d8a63896e5a" class="numbered-list" start="3"><li>Has more stable training since the optimization problem of VAEs are easier</li></ol><ol type="1" id="a4131f55-99ef-479e-bc1b-5ace699d3da4" class="numbered-list" start="4"><li>but produces lower quality results<ol type="a" id="189b8848-ea3a-470b-a0b3-f9a2c13fadea" class="numbered-list" start="1"><li>Lot of work put in to make result better</li></ol></li></ol><h3 id="94e0434b-68cf-4c24-9463-69450cdd7bb4" class="">Autoregressive Models</h3><p id="bc4fb887-cf24-42e4-abb0-f94127632088" class="">Looks at previous pixels to generate new pixels fro a latent representation. It is <strong>supervised</strong> because it requires some pixels to be present first before it can generate.</p><figure id="0c6400fc-5e49-4005-854e-5ea025b3e7b0" class="image"><a href="GAN%202%20Build%20Better%20GANs%20c49fb738543244689fd2d7d27afa8bac/Untitled%2010.png"><img style="width:2323px" src="GAN%202%20Build%20Better%20GANs%20c49fb738543244689fd2d7d27afa8bac/Untitled%2010.png"/></a></figure><h3 id="02dde07f-0e3d-4e86-ad47-92dce0609d1c" class="">FLOW models (Example: Glow)</h3><figure class="block-color-gray_background callout" style="white-space:pre-wrap;display:flex" id="330bb310-5e5d-4027-b01d-1de6bfbdd0c0"><div style="font-size:1.5em"><span class="icon">🔥</span></div><div style="width:100%">New Idea. Uses invertible mapping between latent space and generated images</div></figure><figure id="692aab32-6f15-45dc-a4a3-f47e8c38d6c5" class="image"><a href="GAN%202%20Build%20Better%20GANs%20c49fb738543244689fd2d7d27afa8bac/Untitled%2011.png"><img style="width:624px" src="GAN%202%20Build%20Better%20GANs%20c49fb738543244689fd2d7d27afa8bac/Untitled%2011.png"/></a></figure><h3 id="f91e9c53-ec22-444d-8844-912e1026197d" class="">Hybrid Models</h3><p id="a6e63f08-a213-4e92-bddd-540c2663be2b" class="">e.g. VQ-VAE combines Autoregressive Model with VAE model.</p><p id="ef16e2a2-f306-4db7-ba1d-8c10e9002787" class="">
+</p><h1 id="a4de1bc6-5627-4913-bf29-a774be21618d" class="">Machine Bias</h1><figure id="4b1aa29e-7edc-40df-b6df-6cd71404e687"><a href="https://www.propublica.org/article/machine-bias-risk-assessments-in-criminal-sentencing" class="bookmark source"><div class="bookmark-info"><div class="bookmark-text"><div class="bookmark-title">Machine Bias</div><div class="bookmark-description">On a spring afternoon in 2014, Brisha Borden was running late to pick up her god-sister from school when she spotted an unlocked kid&#x27;s blue Huffy bicycle and a silver Razor scooter. Borden and a friend grabbed the bike and scooter and tried to ride them down the street in the Fort Lauderdale suburb of Coral Springs.</div></div><div class="bookmark-href"><img src="https://assets.propublica.org/static/prod/v4/images/favicon.ico" class="icon bookmark-icon"/>https://www.propublica.org/article/machine-bias-risk-assessments-in-criminal-sentencing</div></div><img src="https://assets-c3.propublica.org/legacy/images/_1200x630_crop_center-center_82_none/20160523-machine-bias-1200x630.jpg?mtime=1581266312" class="bookmark-image"/></a></figure><p id="6586195a-9a80-4eba-a8de-504e74d02600" class="">Machine Bias affects lives and we should be aware of those issues.</p><h2 id="79d7c2f2-6351-4d94-b2e9-a22af0b35143" class="">Defining Fairness</h2><p id="17a84b8c-89c9-469c-9911-f29d86216d74" class="">How to concretely measure how “fair” your model is?</p><ol type="1" id="ac199be4-3e64-4393-9655-f6deee4147d0" class="numbered-list" start="1"><li>Demographics parity<ol type="a" id="31324e14-37c7-4a30-9851-fe5c0302d0e7" class="numbered-list" start="1"><li>Overall predicted distributions should be the same for different classes</li></ol></li></ol><ol type="1" id="b49ea459-bd4d-48bd-8a6f-17b1c0b75427" class="numbered-list" start="2"><li>Outcome that is a representation of actual demographics</li></ol><ol type="1" id="d8808aa4-96ec-483a-bebd-c9e20eba528d" class="numbered-list" start="3"><li>Equality of Odds<ol type="a" id="b5768cb6-56e4-45c4-84a7-eef9bb6187e9" class="numbered-list" start="1"><li>Make False Positive, False Negative EQUAL across classes</li></ol></li></ol><p id="888af530-54ea-459e-bd25-ec9de03a2732" class="">
+</p><h2 id="a21a16cf-105e-4b1f-a0d2-a4fd38d97913" class="">Ways Bias enter into models</h2><ol type="1" id="bb8319b3-53a5-44f2-9b0d-4dbd214842d1" class="numbered-list" start="1"><li>training data<ol type="a" id="fbe5f310-8166-42a3-89ea-497d57dd0672" class="numbered-list" start="1"><li>no variation in data</li></ol><ol type="a" id="2576bd9e-ab49-4280-ac7f-39ee0e9d7103" class="numbered-list" start="2"><li>how data is collected</li></ol><ol type="a" id="eb5a05aa-997e-4ed7-8524-048a26e9ae72" class="numbered-list" start="3"><li>diversity of the labellers</li></ol><ol type="a" id="6f2f05e2-29d3-4487-84a6-f70d394e87fa" class="numbered-list" start="4"><li>“correctness” in culture<ol type="i" id="4e1aba66-74dc-4460-9946-de962067410e" class="numbered-list" start="1"><li>side of the driver in the car</li></ol></li></ol></li></ol><ol type="1" id="ca649c40-3028-4288-9a50-04cdcc275bf1" class="numbered-list" start="2"><li>coders who designed the architecture</li></ol><p id="50011a01-af42-445f-9ce9-c6447906b78a" class="">
+</p><h1 id="8bdaf464-0949-4e45-8dd7-9b50bca527e5" class="">StyleGAN</h1><figure class="block-color-gray_background callout" style="white-space:pre-wrap;display:flex" id="bfa031c0-4117-44bd-98e4-0fe4dbe82083"><div style="font-size:1.5em"><span class="icon">🔥</span></div><div style="width:100%">Ability to generate realistic human faces</div></figure><p id="a97d01e7-eadd-4092-be2e-cfcbe4eebeb2" class="">Goals:</p><ol type="1" id="7b530dd3-8998-4c90-92ac-df5432309d5b" class="numbered-list" start="1"><li>Greater fidelity on high-resolution images</li></ol><ol type="1" id="edab2a9c-9394-4810-b541-a6e5297b2b0e" class="numbered-list" start="2"><li>Increased diversity of outputs</li></ol><ol type="1" id="555c9f39-8dc4-42da-8b7a-377d82024e64" class="numbered-list" start="3"><li>More control over image features</li></ol><ol type="1" id="56e04935-73cd-462d-adac-b9e9e8cc5651" class="numbered-list" start="4"><li>Tried both W-Loss and original GAN loss but found each one worked well with different dataset</li></ol><ol type="1" id="86c6b56e-b6a4-4555-89b8-581f2e4fd2b8" class="numbered-list" start="5"><li>Style can be any variation in the image, from high level to low level.</li></ol><p id="90da6c1b-1610-444d-8b27-2400f3f34752" class="">
+</p><figure id="b9dcc99b-536b-4800-a9f9-4762eed750ab" class="image"><a href="GAN%202%20Build%20Better%20GANs%20c49fb738543244689fd2d7d27afa8bac/Untitled%2012.png"><img style="width:2716px" src="GAN%202%20Build%20Better%20GANs%20c49fb738543244689fd2d7d27afa8bac/Untitled%2012.png"/></a></figure><h2 id="17ea1049-9e86-4715-9431-c5c6fa0eb566" class="">Basic Introduction</h2><figure id="c1c7cdc4-a1c7-4537-896a-c8d356b0fcf5" class="image"><a href="GAN%202%20Build%20Better%20GANs%20c49fb738543244689fd2d7d27afa8bac/Untitled%2013.png"><img style="width:624px" src="GAN%202%20Build%20Better%20GANs%20c49fb738543244689fd2d7d27afa8bac/Untitled%2013.png"/></a></figure><p id="9950ea04-6e6b-41a0-8e9e-aef70ab30870" class="">The <style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.13.2/katex.min.css')</style><span data-token-index="0" contenteditable="false" class="notion-text-equation-token" style="user-select:all;-webkit-user-select:all;-moz-user-select:all"><span></span><span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>w</mi></mrow><annotation encoding="application/x-tex">w</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.43056em;vertical-align:0em;"></span><span class="mord mathnormal" style="margin-right:0.02691em;">w</span></span></span></span></span><span>﻿</span></span> noise is injected multiple times into the StyleGAN Generator through a technique called AdaIN(Adaptive Instance Normalization)</p><p id="77c0b34f-31fd-4b13-946c-522116db9f22" class="">Random noise is added to increase the variance of the generated image</p><h2 id="5c9569a9-9338-4932-88b5-554d94ea9a70" class="">Progressive Growing</h2><p id="d0933300-7d74-49da-a2ed-1486835436a9" class="">Idea: Easier to generate blurry faces and keep growing</p><figure class="block-color-gray_background callout" style="white-space:pre-wrap;display:flex" id="9af65efa-bc29-46d2-ac46-cc88d700f327"><div style="font-size:1.5em"><span class="icon">🔥</span></div><div style="width:100%">Gradually trains the generator from low-res images to high-res images</div></figure><figure id="5fdd69eb-255d-4765-9f88-719698d78c66" class="image"><a href="GAN%202%20Build%20Better%20GANs%20c49fb738543244689fd2d7d27afa8bac/Untitled%2014.png"><img style="width:2405px" src="GAN%202%20Build%20Better%20GANs%20c49fb738543244689fd2d7d27afa8bac/Untitled%2014.png"/></a></figure><div id="9a9b0971-39ce-443b-abeb-f7b5fb05d853" class="column-list"><div id="1228bf00-699b-4da1-9d61-603e5e959fcb" style="width:50%" class="column"><figure id="8c400a59-cb06-41db-9ed7-1a47ff5dea25" class="image"><a href="GAN%202%20Build%20Better%20GANs%20c49fb738543244689fd2d7d27afa8bac/Untitled%2015.png"><img style="width:528px" src="GAN%202%20Build%20Better%20GANs%20c49fb738543244689fd2d7d27afa8bac/Untitled%2015.png"/></a><figcaption>Progressive Sampling for Generator</figcaption></figure></div><div id="110e32d9-ef41-4d22-b0c2-02a17146a55b" style="width:50%" class="column"><figure id="90104492-29f8-4256-88c2-fb4a9522bb2a" class="image"><a href="GAN%202%20Build%20Better%20GANs%20c49fb738543244689fd2d7d27afa8bac/Untitled%2016.png"><img style="width:480px" src="GAN%202%20Build%20Better%20GANs%20c49fb738543244689fd2d7d27afa8bac/Untitled%2016.png"/></a><figcaption>Progressive Downsampling for Discriminator</figcaption></figure></div></div><p id="119d6d13-ad1b-45e9-9188-3d49fad0801a" class="">Say we want to grow the output of the generator from <style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.13.2/katex.min.css')</style><span data-token-index="0" contenteditable="false" class="notion-text-equation-token" style="user-select:all;-webkit-user-select:all;-moz-user-select:all"><span></span><span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>4</mn><mo>×</mo><mn>4</mn></mrow><annotation encoding="application/x-tex">4 \times 4</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.72777em;vertical-align:-0.08333em;"></span><span class="mord">4</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">4</span></span></span></span></span><span>﻿</span></span> to <style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.13.2/katex.min.css')</style><span data-token-index="0" contenteditable="false" class="notion-text-equation-token" style="user-select:all;-webkit-user-select:all;-moz-user-select:all"><span></span><span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>8</mn><mo>×</mo><mn>8</mn></mrow><annotation encoding="application/x-tex">8 \times 8</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.72777em;vertical-align:-0.08333em;"></span><span class="mord">8</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">8</span></span></span></span></span><span>﻿</span></span>, we would put an upsample layer to the previous <style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.13.2/katex.min.css')</style><span data-token-index="0" contenteditable="false" class="notion-text-equation-token" style="user-select:all;-webkit-user-select:all;-moz-user-select:all"><span></span><span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>4</mn><mo>×</mo><mn>4</mn></mrow><annotation encoding="application/x-tex">4 \times 4</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.72777em;vertical-align:-0.08333em;"></span><span class="mord">4</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">4</span></span></span></span></span><span>﻿</span></span> output and the upsample layer then be followed by 99% nearest neighbour interpolation and 1% convolution. We will be able to learn some parameters for the new convolution layer. As time goes on, the percentage owned by the convolution layer would be tuned manually bigger and bigger (until we completely throw away the NN algorithm).</p><p id="08b39bd2-c747-46c2-99ca-7882f87aafe0" class="">The percentage owned by the transpose convolution layer will be described by <style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.13.2/katex.min.css')</style><span data-token-index="0" contenteditable="false" class="notion-text-equation-token" style="user-select:all;-webkit-user-select:all;-moz-user-select:all"><span></span><span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>α</mi></mrow><annotation encoding="application/x-tex">\alpha</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.43056em;vertical-align:0em;"></span><span class="mord mathnormal" style="margin-right:0.0037em;">α</span></span></span></span></span><span>﻿</span></span>, and the percentage owned by NN algorithm would be <style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.13.2/katex.min.css')</style><span data-token-index="0" contenteditable="false" class="notion-text-equation-token" style="user-select:all;-webkit-user-select:all;-moz-user-select:all"><span></span><span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>1</mn><mo>−</mo><mi>α</mi></mrow><annotation encoding="application/x-tex">1 - \alpha</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.72777em;vertical-align:-0.08333em;"></span><span class="mord">1</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.43056em;vertical-align:0em;"></span><span class="mord mathnormal" style="margin-right:0.0037em;">α</span></span></span></span></span><span>﻿</span></span></p><p id="651504be-69b6-4ef8-bc1c-a8f520f79d5f" class="">(Pretty much same idea for discriminator)</p><div id="4ce8373e-16cf-4dfc-9a51-9431fb364a84" class="column-list"><div id="724ca712-cc6b-4e2e-b20e-fae61049aa70" style="width:43.75%" class="column"><figure id="654566b7-a8b6-4ecf-b76f-871b9d604ef9" class="image"><a href="GAN%202%20Build%20Better%20GANs%20c49fb738543244689fd2d7d27afa8bac/Untitled%2017.png"><img style="width:1232px" src="GAN%202%20Build%20Better%20GANs%20c49fb738543244689fd2d7d27afa8bac/Untitled%2017.png"/></a></figure></div><div id="9eafd5bc-627d-4abf-92f5-6f5697c45046" style="width:56.25%" class="column"><p id="cd49f622-299f-403f-bd32-5345957b2252" class="">So Progressive Growing in StyleGAN looks like this in the architecture</p></div></div><h2 id="a8e6c2f9-a790-477e-b4e4-a8c0a3378538" class="">Noise Mapping Network</h2><div id="d53e6b0d-c8b7-4a8d-8e16-84bb5251881f" class="column-list"><div id="8ab71b28-a144-491e-9815-4848ab6f0f0f" style="width:31.25%" class="column"><figure id="b12df925-09e1-4f71-9fe6-3eb33f258318" class="image"><a href="GAN%202%20Build%20Better%20GANs%20c49fb738543244689fd2d7d27afa8bac/Untitled%2018.png"><img style="width:720px" src="GAN%202%20Build%20Better%20GANs%20c49fb738543244689fd2d7d27afa8bac/Untitled%2018.png"/></a></figure></div><div id="533238bf-34fe-427a-a416-5b0e5733206c" style="width:68.75%" class="column"><p id="40f496a5-4801-43b1-8717-8a128353f78a" class="">8-Layer MLP ⇒ 512 inputs and 512 outputs</p><p id="456f75d9-375d-4ff6-8baf-234f3ae4c62f" class="">Motivation: Mapping z to w helps disentangle noise representation</p><p id="6f2b543c-b6d3-4286-b967-208ed644d9b7" class="">Probability Distribution of features have certain density, but z has normal prior, it is hard for z to be mapped to exact space of features.</p><p id="c55a4483-ff60-493b-95bd-20d91ad5fec8" class="">
+</p></div></div><figure id="00a36ef9-58bd-471a-bdf7-9f5b8615298a" class="image"><a href="GAN%202%20Build%20Better%20GANs%20c49fb738543244689fd2d7d27afa8bac/Untitled%2019.png"><img style="width:528px" src="GAN%202%20Build%20Better%20GANs%20c49fb738543244689fd2d7d27afa8bac/Untitled%2019.png"/></a><figcaption>The w vector goes into every single one of the progressive layers, but its influence differs at positions</figcaption></figure><h2 id="717050cb-f2fe-415e-b533-038bd1b46ea1" class="">AdaIN (Adaptive Instance Normalization)</h2><figure id="a2cfa4eb-de61-4cc9-b9ad-9b0b8ee98142" class="image"><a href="GAN%202%20Build%20Better%20GANs%20c49fb738543244689fd2d7d27afa8bac/Untitled%2020.png"><img style="width:528px" src="GAN%202%20Build%20Better%20GANs%20c49fb738543244689fd2d7d27afa8bac/Untitled%2020.png"/></a></figure><h3 id="c4151d68-597b-4354-8037-f5ed2aad81d3" class="">Instance Normalization</h3><figure id="5ec2fcd2-d0e2-4453-aa7b-b8526a5bfbbb" class="equation"><style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.13.2/katex.min.css')</style><div class="equation-container"><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>o</mi><mi>u</mi><mi>t</mi><mi>p</mi><mi>u</mi><mi>t</mi><mo>=</mo><mfrac><mrow><mi>x</mi><mo>−</mo><mi>μ</mi><mo stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo></mrow><mrow><mi>σ</mi><mo stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo></mrow></mfrac></mrow><annotation encoding="application/x-tex">output = \frac{x-\mu(x)}{\sigma(x)}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.80952em;vertical-align:-0.19444em;"></span><span class="mord mathnormal">o</span><span class="mord mathnormal">u</span><span class="mord mathnormal">tp</span><span class="mord mathnormal">u</span><span class="mord mathnormal">t</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:2.363em;vertical-align:-0.936em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.427em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.03588em;">σ</span><span class="mopen">(</span><span class="mord mathnormal">x</span><span class="mclose">)</span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathnormal">x</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mord mathnormal">μ</span><span class="mopen">(</span><span class="mord mathnormal">x</span><span class="mclose">)</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.936em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span></span></span></span></span></div></figure><figure id="4aaf4ad7-af60-4a6f-9424-0fea93bea642" class="image"><a href="GAN%202%20Build%20Better%20GANs%20c49fb738543244689fd2d7d27afa8bac/Untitled%2021.png"><img style="width:480px" src="GAN%202%20Build%20Better%20GANs%20c49fb738543244689fd2d7d27afa8bac/Untitled%2021.png"/></a></figure><figure class="block-color-gray_background callout" style="white-space:pre-wrap;display:flex" id="56f8ca71-2a16-45f5-a750-3d1ac7e013f2"><div style="font-size:1.5em"><span class="icon">🔥</span></div><div style="width:100%">Different from BatchNorm which looks at an entire mini-batch of one channel at a time, instance norm only looks at a channel of a single sample at a time</div></figure><h3 id="b60c019e-fbe3-4aeb-825f-9be2c530ecd8" class="">AdaIN</h3><p id="c0f7ce0a-5e28-4045-9bcc-af919d87ff1e" class="">Apply Adaptive Styles using the intermediate noise vector <style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.13.2/katex.min.css')</style><span data-token-index="0" contenteditable="false" class="notion-text-equation-token" style="user-select:all;-webkit-user-select:all;-moz-user-select:all"><span></span><span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>w</mi></mrow><annotation encoding="application/x-tex">w</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.43056em;vertical-align:0em;"></span><span class="mord mathnormal" style="margin-right:0.02691em;">w</span></span></span></span></span><span>﻿</span></span></p><figure id="a0ba42e6-8fae-4113-9d38-184f5d39e670" class="image"><a href="GAN%202%20Build%20Better%20GANs%20c49fb738543244689fd2d7d27afa8bac/Untitled%2022.png"><img style="width:192px" src="GAN%202%20Build%20Better%20GANs%20c49fb738543244689fd2d7d27afa8bac/Untitled%2022.png"/></a></figure><p id="d6cdbac4-b76b-4f2b-900b-de8dd8338400" class="">w is first inputted into two fully-connected layers (adaptive since the weights of those FC layers can change) to produce <style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.13.2/katex.min.css')</style><span data-token-index="0" contenteditable="false" class="notion-text-equation-token" style="user-select:all;-webkit-user-select:all;-moz-user-select:all"><span></span><span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>y</mi><mi>s</mi></msub></mrow><annotation encoding="application/x-tex">y_s</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.625em;vertical-align:-0.19444em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.03588em;">y</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.151392em;"><span style="top:-2.5500000000000003em;margin-left:-0.03588em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">s</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span></span><span>﻿</span></span> and <style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.13.2/katex.min.css')</style><span data-token-index="0" contenteditable="false" class="notion-text-equation-token" style="user-select:all;-webkit-user-select:all;-moz-user-select:all"><span></span><span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>y</mi><mi>b</mi></msub></mrow><annotation encoding="application/x-tex">y_b</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.625em;vertical-align:-0.19444em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.03588em;">y</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.33610799999999996em;"><span style="top:-2.5500000000000003em;margin-left:-0.03588em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">b</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span></span><span>﻿</span></span> which stands for scale and b, and then</p><figure id="395ea6de-fd3c-43a0-8821-eb49a59124e8" class="equation"><style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.13.2/katex.min.css')</style><div class="equation-container"><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>A</mi><mi>d</mi><mi>a</mi><mi>I</mi><mi>N</mi><mo stretchy="false">(</mo><msub><mi>x</mi><mi>i</mi></msub><mo separator="true">,</mo><mi>y</mi><mo stretchy="false">)</mo><mo>=</mo><msub><mi>y</mi><mrow><mi>s</mi><mo separator="true">,</mo><mi>i</mi></mrow></msub><mfrac><mrow><msub><mi>x</mi><mi>i</mi></msub><mo>−</mo><mi>μ</mi><mo stretchy="false">(</mo><msub><mi>x</mi><mi>i</mi></msub><mo stretchy="false">)</mo></mrow><mrow><mi>σ</mi><mo stretchy="false">(</mo><msub><mi>x</mi><mi>i</mi></msub><mo stretchy="false">)</mo></mrow></mfrac><mo>+</mo><msub><mi>y</mi><mrow><mi>b</mi><mo separator="true">,</mo><mi>i</mi></mrow></msub></mrow><annotation encoding="application/x-tex">AdaIN(x_i,y)=y_{s,i}\frac{x_i-\mu(x_i)}{\sigma(x_i)}+y_{b,i}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal">A</span><span class="mord mathnormal">d</span><span class="mord mathnormal">a</span><span class="mord mathnormal" style="margin-right:0.07847em;">I</span><span class="mord mathnormal" style="margin-right:0.10903em;">N</span><span class="mopen">(</span><span class="mord"><span class="mord mathnormal">x</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.31166399999999994em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord mathnormal" style="margin-right:0.03588em;">y</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:2.363em;vertical-align:-0.936em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.03588em;">y</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.311664em;"><span style="top:-2.5500000000000003em;margin-left:-0.03588em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">s</span><span class="mpunct mtight">,</span><span class="mord mathnormal mtight">i</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.286108em;"><span></span></span></span></span></span></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.427em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.03588em;">σ</span><span class="mopen">(</span><span class="mord"><span class="mord mathnormal">x</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.31166399999999994em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mclose">)</span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord"><span class="mord mathnormal">x</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.31166399999999994em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mord mathnormal">μ</span><span class="mopen">(</span><span class="mord"><span class="mord mathnormal">x</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.31166399999999994em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mclose">)</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.936em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.716668em;vertical-align:-0.286108em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.03588em;">y</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361079999999999em;"><span style="top:-2.5500000000000003em;margin-left:-0.03588em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">b</span><span class="mpunct mtight">,</span><span class="mord mathnormal mtight">i</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.286108em;"><span></span></span></span></span></span></span></span></span></span></span></div></figure><blockquote id="f3d765eb-70f3-40e9-956e-1c489376a2f5" class="">The fraction part is basically just instance norm</blockquote><p id="14be3d31-e2b8-4b83-a470-acbeb20dec1b" class="">
+</p><h2 id="61e5e291-01e8-4a1b-8819-df52095abf71" class="">Style Mixing</h2><p id="67f978a6-13a4-4ad1-9bd8-687eaf4ad677" class="">w is injected into all layers of the progressive growing layers, but we can actually inject different <style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.13.2/katex.min.css')</style><span data-token-index="0" contenteditable="false" class="notion-text-equation-token" style="user-select:all;-webkit-user-select:all;-moz-user-select:all"><span></span><span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>z</mi></mrow><annotation encoding="application/x-tex">z</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.43056em;vertical-align:0em;"></span><span class="mord mathnormal" style="margin-right:0.04398em;">z</span></span></span></span></span><span>﻿</span></span> and therefore different <style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.13.2/katex.min.css')</style><span data-token-index="0" contenteditable="false" class="notion-text-equation-token" style="user-select:all;-webkit-user-select:all;-moz-user-select:all"><span></span><span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>w</mi></mrow><annotation encoding="application/x-tex">w</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.43056em;vertical-align:0em;"></span><span class="mord mathnormal" style="margin-right:0.02691em;">w</span></span></span></span></span><span>﻿</span></span> into different parts of the network</p><figure id="39d03a30-57ff-43f7-8140-ccdcd84f49fd" class="image"><a href="GAN%202%20Build%20Better%20GANs%20c49fb738543244689fd2d7d27afa8bac/Untitled%2023.png"><img style="width:480px" src="GAN%202%20Build%20Better%20GANs%20c49fb738543244689fd2d7d27afa8bac/Untitled%2023.png"/></a></figure><ol type="1" id="17daf688-2124-4a54-a7c8-6ba2325a6808" class="numbered-list" start="1"><li>Can get more diversity in the things the model see in training</li></ol><ol type="1" id="3f9e0edc-f1dc-46c3-86fa-9d972735ba39" class="numbered-list" start="2"><li>Can get control on granuity of details</li></ol><p id="8b2e1558-23b1-4d44-8ac2-fc232f11703e" class="">
+</p><h3 id="8ddad028-3ff1-4549-9a75-655fd597c37c" class="">Stochastic Variation</h3><figure id="5f43e73f-27db-4387-8c70-50b1e2deed1c" class="image"><a href="GAN%202%20Build%20Better%20GANs%20c49fb738543244689fd2d7d27afa8bac/Untitled%2024.png"><img style="width:528px" src="GAN%202%20Build%20Better%20GANs%20c49fb738543244689fd2d7d27afa8bac/Untitled%2024.png"/></a></figure><ol type="1" id="85bf78ff-34ed-4321-97de-c187e0a3dbba" class="numbered-list" start="1"><li>Don’t want mess of controlling two or more <style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.13.2/katex.min.css')</style><span data-token-index="0" contenteditable="false" class="notion-text-equation-token" style="user-select:all;-webkit-user-select:all;-moz-user-select:all"><span></span><span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>w</mi></mrow><annotation encoding="application/x-tex">w</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.43056em;vertical-align:0em;"></span><span class="mord mathnormal" style="margin-right:0.02691em;">w</span></span></span></span></span><span>﻿</span></span> noises.</li></ol><ol type="1" id="fe694622-8983-4242-8b44-0caf8abc2f29" class="numbered-list" start="2"><li>Can change very small details, like a very small piece of hair’s direction<ol type="a" id="49d75b71-799b-4112-a5d1-3895c0bc9d2f" class="numbered-list" start="1"><li>Have to inject in a deeper (or later) layer</li></ol></li></ol><p id="d5e28249-d12b-480f-9ca4-68110bbe6a95" class="">
+</p><p id="b85b2292-1c33-49df-ac19-6b81121627ac" class="">
+</p><p id="41961965-da1c-4402-a3d7-b004c178b63b" class="">
+</p></div></article></body></html>
