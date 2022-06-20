@@ -8,3 +8,4 @@ This is the Generative Adversarial Network [course](https://www.deeplearning.ai/
 
 - [Course 1: Build Basic Generative Adversarial Networks(GANs)](Notes/1-BasicGAN/)
 - [Course 2: Build Better GANs](Notes/2-BetterGAN/)
+- [Course 3: Apply GANs](Notes/3-ApplyGAN/)

@@ -1,0 +1,678 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>GAN3: Apply GANs</title><style>
+/* cspell:disable-file */
+/* webkit printing magic: print all background colors */
+html {
+	-webkit-print-color-adjust: exact;
+}
+* {
+	box-sizing: border-box;
+	-webkit-print-color-adjust: exact;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+@media only screen {
+	body {
+		margin: 2em auto;
+		max-width: 900px;
+		color: rgb(55, 53, 47);
+	}
+}
+
+body {
+	line-height: 1.5;
+	white-space: pre-wrap;
+}
+
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+h1 {
+	font-size: 1.875rem;
+	margin-top: 1.875rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+	margin-top: 1.25rem;
+}
+
+.source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 3px;
+	padding: 1rem;
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.column-list {
+	display: flex;
+	justify-content: space-between;
+}
+
+.column {
+	padding: 0 1em;
+}
+
+.column:first-child {
+	padding-left: 0;
+}
+
+.column:last-child {
+	padding-right: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding: 0.125rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+	border-collapse: collapse;
+}
+
+table {
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	text-indent: -1.7em;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+.simple-table {
+	margin-top: 1em;
+	font-size: 0.875rem;
+	empty-cells: show;
+}
+.simple-table td {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table th {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table-header-color {
+	background: rgb(247, 246, 243);
+	color: black;
+}
+.simple-table-header {
+	font-weight: 500;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-block;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	max-height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	transform: scale(1.5);
+	margin-right: 0.6em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code-wrap {
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1.25em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+.bookmark {
+	text-decoration: none;
+	max-height: 8em;
+	padding: 0;
+	display: flex;
+	width: 100%;
+	align-items: stretch;
+}
+
+.bookmark-title {
+	font-size: 0.85em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 1.75em;
+	white-space: nowrap;
+}
+
+.bookmark-text {
+	display: flex;
+	flex-direction: column;
+}
+
+.bookmark-info {
+	flex: 4 1 180px;
+	padding: 12px 14px 14px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.bookmark-image {
+	width: 33%;
+	flex: 1 1 180px;
+	display: block;
+	position: relative;
+	object-fit: cover;
+	border-radius: 1px;
+}
+
+.bookmark-description {
+	color: rgba(55, 53, 47, 0.6);
+	font-size: 0.75em;
+	overflow: hidden;
+	max-height: 4.5em;
+	word-break: break-word;
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	margin-top: 0.25em;
+}
+
+.sans { font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, ui-serif, serif; }
+.mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
+.pdf .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK JP'; }
+.pdf:lang(zh-CN) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC'; }
+.pdf:lang(zh-TW) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK TC'; }
+.pdf:lang(ko-KR) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK KR'; }
+.pdf .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK JP'; }
+.pdf:lang(zh-CN) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK SC'; }
+.pdf:lang(zh-TW) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK TC'; }
+.pdf:lang(ko-KR) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK KR'; }
+.pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.highlight-default {
+	color: rgba(55, 53, 47, 1);
+}
+.highlight-gray {
+	color: rgba(120, 119, 116, 1);
+	fill: rgba(120, 119, 116, 1);
+}
+.highlight-brown {
+	color: rgba(159, 107, 83, 1);
+	fill: rgba(159, 107, 83, 1);
+}
+.highlight-orange {
+	color: rgba(217, 115, 13, 1);
+	fill: rgba(217, 115, 13, 1);
+}
+.highlight-yellow {
+	color: rgba(203, 145, 47, 1);
+	fill: rgba(203, 145, 47, 1);
+}
+.highlight-teal {
+	color: rgba(68, 131, 97, 1);
+	fill: rgba(68, 131, 97, 1);
+}
+.highlight-blue {
+	color: rgba(51, 126, 169, 1);
+	fill: rgba(51, 126, 169, 1);
+}
+.highlight-purple {
+	color: rgba(144, 101, 176, 1);
+	fill: rgba(144, 101, 176, 1);
+}
+.highlight-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.highlight-red {
+	color: rgba(212, 76, 71, 1);
+	fill: rgba(212, 76, 71, 1);
+}
+.highlight-gray_background {
+	background: rgba(241, 241, 239, 1);
+}
+.highlight-brown_background {
+	background: rgba(244, 238, 238, 1);
+}
+.highlight-orange_background {
+	background: rgba(251, 236, 221, 1);
+}
+.highlight-yellow_background {
+	background: rgba(251, 243, 219, 1);
+}
+.highlight-teal_background {
+	background: rgba(237, 243, 236, 1);
+}
+.highlight-blue_background {
+	background: rgba(231, 243, 248, 1);
+}
+.highlight-purple_background {
+	background: rgba(244, 240, 247, 0.8);
+}
+.highlight-pink_background {
+	background: rgba(249, 238, 243, 0.8);
+}
+.highlight-red_background {
+	background: rgba(253, 235, 236, 1);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(120, 119, 116, 1);
+	fill: rgba(120, 119, 116, 1);
+}
+.block-color-brown {
+	color: rgba(159, 107, 83, 1);
+	fill: rgba(159, 107, 83, 1);
+}
+.block-color-orange {
+	color: rgba(217, 115, 13, 1);
+	fill: rgba(217, 115, 13, 1);
+}
+.block-color-yellow {
+	color: rgba(203, 145, 47, 1);
+	fill: rgba(203, 145, 47, 1);
+}
+.block-color-teal {
+	color: rgba(68, 131, 97, 1);
+	fill: rgba(68, 131, 97, 1);
+}
+.block-color-blue {
+	color: rgba(51, 126, 169, 1);
+	fill: rgba(51, 126, 169, 1);
+}
+.block-color-purple {
+	color: rgba(144, 101, 176, 1);
+	fill: rgba(144, 101, 176, 1);
+}
+.block-color-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.block-color-red {
+	color: rgba(212, 76, 71, 1);
+	fill: rgba(212, 76, 71, 1);
+}
+.block-color-gray_background {
+	background: rgba(241, 241, 239, 1);
+}
+.block-color-brown_background {
+	background: rgba(244, 238, 238, 1);
+}
+.block-color-orange_background {
+	background: rgba(251, 236, 221, 1);
+}
+.block-color-yellow_background {
+	background: rgba(251, 243, 219, 1);
+}
+.block-color-teal_background {
+	background: rgba(237, 243, 236, 1);
+}
+.block-color-blue_background {
+	background: rgba(231, 243, 248, 1);
+}
+.block-color-purple_background {
+	background: rgba(244, 240, 247, 0.8);
+}
+.block-color-pink_background {
+	background: rgba(249, 238, 243, 0.8);
+}
+.block-color-red_background {
+	background: rgba(253, 235, 236, 1);
+}
+.select-value-color-pink { background-color: rgba(245, 224, 233, 1); }
+.select-value-color-purple { background-color: rgba(232, 222, 238, 1); }
+.select-value-color-green { background-color: rgba(219, 237, 219, 1); }
+.select-value-color-gray { background-color: rgba(227, 226, 224, 1); }
+.select-value-color-opaquegray { background-color: rgba(255, 255, 255, 0.0375); }
+.select-value-color-orange { background-color: rgba(250, 222, 201, 1); }
+.select-value-color-brown { background-color: rgba(238, 224, 218, 1); }
+.select-value-color-red { background-color: rgba(255, 226, 221, 1); }
+.select-value-color-yellow { background-color: rgba(253, 236, 200, 1); }
+.select-value-color-blue { background-color: rgba(211, 229, 239, 1); }
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+	
+</style></head><body><article id="f05f15ae-4406-4d62-80d1-80bb44e655f5" class="page sans"><header><div class="page-header-icon undefined"><span class="icon">🧐</span></div><h1 class="page-title">GAN3: Apply GANs</h1></header><div class="page-body"><p id="59787d74-7f6a-49dc-8ac1-e372114675f1" class="">Some notes of GAN(Generative Adversarial Network) Specialization Course by Yunhao Cao(Github@<a href="https://github.com/ToiletCommander/">ToiletCommander</a>)</p><figure class="block-color-gray_background callout" style="white-space:pre-wrap;display:flex" id="6cea2e1b-ab38-48f2-949d-c5834e66d209"><div style="font-size:1.5em"><span class="icon">👉</span></div><div style="width:100%">Note: This note has content including week 1-3 (version as of 2022/6/16)</div></figure><p id="ea9bf043-fe46-4e2f-93bc-90b025ddb1fe" class="">This work is licensed under a <a href="http://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License</a>.</p><p id="63c5f3a4-d335-41d5-9147-90bfc302b4b8" class="">Acknowledgements: Some of the resources(images, animations) are taken from:</p><ol type="1" id="033f6c8a-ed50-48fb-956c-5ac47e98c40d" class="numbered-list" start="1"><li>Sharon Zhou &amp; Andrew Ng and <a href="http://DeepLearning.AI">DeepLearning.AI</a>’s GAN Specialization Course Track</li></ol><ol type="1" id="8533e3c0-999d-4249-a1c8-7d26bb236587" class="numbered-list" start="2"><li>articles on towardsdatascience.com</li></ol><ol type="1" id="b6830b3c-da41-4884-ac77-551be3ff7e46" class="numbered-list" start="3"><li>images from google image search(from other online sources)</li></ol><p id="88ccc926-dc7d-4b9b-8fdf-ff472aec09a9" class="">Since this article is not for commercial use, please let me know if you would like your resource taken off from here by creating an issue on my github repository.</p><blockquote id="90176f39-8480-4f3c-af38-6ef9adee7c9c" class="">Last updated: 2022/6/16 14:15 CST</blockquote><p id="f0cd87c2-7205-437b-9bf5-e1e66ca7329e" class="">
+</p><h1 id="323be56f-1be4-4429-875b-b66baf1e645f" class="">Applying GANS</h1><p id="4abf903b-bcf2-49aa-971a-42255ab23698" class="">Gans can be used to</p><ol type="1" id="07e173b0-05e8-4b73-b34e-7ee8f2550ad4" class="numbered-list" start="1"><li>Image-to-image translation</li></ol><ol type="1" id="0f4be872-571d-4b42-a7ce-0d1ae130790c" class="numbered-list" start="2"><li>Data augmentation<ol type="a" id="b56ac87d-8823-4e7e-8f5f-719bd6f1049e" class="numbered-list" start="1"><li>supplement data when real data is too expensive or rare</li></ol><ol type="a" id="983bc7e7-81ee-4979-b9a7-715aacdcfebb" class="numbered-list" start="2"><li>traditionally done by cropping, rotating, flipping images, etc.</li></ol><ol type="a" id="9cf9b82f-24b0-489a-b3ff-7467d7856120" class="numbered-list" start="3"><li>now we can use generators</li></ol><ol type="a" id="aa0b7fec-9255-4e15-a079-c39e93087e82" class="numbered-list" start="4"><li>RandAugment paper to tell how to augment based on scenerio</li></ol><ol type="a" id="3bf1e364-f715-4bc6-8bfd-29847e25e486" class="numbered-list" start="5"><li>GAN has been shown to be better than synthetic data, plus it can be used to generate <strong>labeled</strong> examples<ol type="i" id="3b017ed6-fbd2-49bc-8043-734c7bafc38d" class="numbered-list" start="1"><li>Encourages data-sharing, less expensive, and protects real data</li></ol><ol type="i" id="6b451e6a-24dd-4d86-b34e-41e32c758365" class="numbered-list" start="2"><li>looks real to professionals(pathogen doctor) eyes who look at samples every day</li></ol></li></ol><ol type="a" id="f9aa74e2-4e26-44d8-a493-109734e3fa25" class="numbered-list" start="6"><li>but GAN’s <strong>diversity is always limited by the data available</strong><ol type="i" id="7877b4af-950c-4cb7-8f0b-2869b3acf880" class="numbered-list" start="1"><li>so GANS can generate samples that are too close to the reals</li></ol></li></ol></li></ol><p id="e5712713-9347-4fed-a3b3-9bffd8582308" class="">
+</p><h1 id="da60d587-bf81-4353-9fe3-860f014cc9ab" class="">Image-to-image translation</h1><figure class="block-color-gray_background callout" style="white-space:pre-wrap;display:flex" id="b6f9bf93-cf8a-4ffd-8d5b-a3b1a24f0e37"><div style="font-size:1.5em"><span class="icon">🔥</span></div><div style="width:100%">Translating image from one style to another</div></figure><ol type="1" id="e688f2cd-fc7f-4d8f-bb7e-88b0ebee7d15" class="numbered-list" start="1"><li>Black-white image to colored?</li></ol><ol type="1" id="b2b30d36-49c9-45d4-86aa-6f8d3f560cf5" class="numbered-list" start="2"><li>Segmentation Map to photorealistic images</li></ol><ol type="1" id="b66eabee-fb4b-4317-88b9-1e532ec578b5" class="numbered-list" start="3"><li>Paired image-to-image translation<ol type="a" id="32066829-1acc-4fb3-8e31-c914b4923b68" class="numbered-list" start="1"><li>Image to image</li></ol></li></ol><ol type="1" id="c1842967-e1cf-4246-9a38-800ceabe257c" class="numbered-list" start="4"><li>Other Translations<ol type="a" id="a18e7947-e605-46b3-8993-d320255ca6fe" class="numbered-list" start="1"><li>Text to image?</li></ol></li></ol><p id="7a3e3912-03b5-4cba-81a5-e35455391764" class="">
+</p><h2 id="5ffac6f1-4c4b-4ff8-93dc-4788934d063c" class="">Unpaired image-to-image translation</h2><figure id="8bb7303d-130b-4de9-ac58-217865e3415e" class="image"><a href="GAN3%20Apply%20GANs%208bb7303d130b4de9ac58217865e3415e/7D3ECEE6-0709-430C-81E1-C906C0720992.jpeg"><img style="width:2565px" src="GAN3%20Apply%20GANs%208bb7303d130b4de9ac58217865e3415e/7D3ECEE6-0709-430C-81E1-C906C0720992.jpeg"/></a></figure><blockquote id="d85549f6-41ff-45b9-827c-1383c9df8567" class="">With paired image-to-image translation, you get a one-to-one correspondence between the input and the output while in unpaired image-to-image translation the input and the output are generally two different piles of image that have different styles</blockquote><p id="a970700a-88ef-463f-b47e-dadaad0af7ae" class="">So in an unpaired image translation task, you want to </p><ol type="1" id="6cf04222-c5f3-446e-ae37-f09afa469f6a" class="numbered-list" start="1"><li>Still learn a mapping between the two piles</li></ol><ol type="1" id="7b7c7178-b061-4649-b8a0-81b2e671702f" class="numbered-list" start="2"><li>Examine the common elements of the two piles (content) and unique elements of each pile (style)</li></ol><figure class="block-color-gray_background callout" style="white-space:pre-wrap;display:flex" id="c72770cd-da29-42b8-a639-5c881cc87c08"><div style="font-size:1.5em"><span class="icon">🔥</span></div><div style="width:100%">So we introduce CycleGAN, see below for detail of this network</div></figure><h2 id="662e04f9-89c1-4c72-8cad-4547787240c1" class="">Pix2Pix</h2><p id="0a58f32c-2d09-405b-ad4d-5a17ed0e5b79" class="">Paired Image-to-Image Translation Model <strong>from UC Berkeley</strong>, Yeah!!!!</p><p id="a95de53d-ba9f-4789-b113-348db93a489d" class="">Instead of inputting a noise vector, we would input a real input (segmentation map, etc.) and it would translate into another paired output. Noise vector is not introduced but we would use dropout to add randomness to the output.</p><figure id="aa237c90-680d-43e7-8506-7fd7633dec31" class="image"><a href="GAN3%20Apply%20GANs%208bb7303d130b4de9ac58217865e3415e/Untitled.png"><img style="width:624px" src="GAN3%20Apply%20GANs%208bb7303d130b4de9ac58217865e3415e/Untitled.png"/></a><figcaption>Generator</figcaption></figure><figure id="9bd0b2d4-e3c9-458a-99f7-bf006d0ab36a" class="image"><a href="GAN3%20Apply%20GANs%208bb7303d130b4de9ac58217865e3415e/Untitled%201.png"><img style="width:624px" src="GAN3%20Apply%20GANs%208bb7303d130b4de9ac58217865e3415e/Untitled%201.png"/></a><figcaption>Discriminator</figcaption></figure><figure id="097fb4ad-1ebe-43e8-9d82-0ee2b4848c1c" class="image"><a href="GAN3%20Apply%20GANs%208bb7303d130b4de9ac58217865e3415e/Untitled%202.png"><img style="width:2257px" src="GAN3%20Apply%20GANs%208bb7303d130b4de9ac58217865e3415e/Untitled%202.png"/></a><figcaption>THe generator is upgraded with an “U-Net” and the discriminator is upgraded to give specific feedback about some areas</figcaption></figure><p id="0ada58dd-53e8-4c7c-bbea-e1757e56c768" class="">
+</p><h3 id="f49f5f08-c599-43ba-a6ad-3dd32184bc41" class="">Pix2Pix Discriminator - PatchGAN</h3><ol type="1" id="49e89742-c860-4ffb-b382-63dbd669d51a" class="numbered-list" start="1"><li>Outputs a matrix of evaluations instead of just one value, the values of each element in the matrix is between 0 to 1.<ol type="a" id="5728b0c2-7fa2-4d69-8766-a177d2293f7e" class="numbered-list" start="1"><li>gives feedback to specific “path”</li></ol><ol type="a" id="5c725947-aed6-45bd-9227-08b2a95be4aa" class="numbered-list" start="2"><li>value closer to 0 ⇒ fake</li></ol><ol type="a" id="86cbd996-c8fc-4e43-b02a-cbf53482a415" class="numbered-list" start="3"><li>value closer to 1 ⇒ real</li></ol></li></ol><h3 id="66b47af8-37b9-4828-81db-72fa6636565b" class="">Pix2Pix Generator - UNet</h3><p id="f2eb527c-b6de-46ae-a0c1-dfeeebec3bf7" class="">UNet has been very successful for image segmentation</p><blockquote id="45e60b90-3b96-4413-b11e-cf1435283ab8" class="">See my notes on DL Specialization course 4</blockquote><figure id="be3f288b-a16f-439d-a6fb-9fab32f6355e"><a href="https://toiletcommander.github.io/Opensourced-Study-Notes-Berkeley/DLSpecialization/Notes/4-CNN/#13c4df75-9ae6-496e-943c-33233abce034" class="bookmark source"><div class="bookmark-info"><div class="bookmark-text"><div class="bookmark-title">DLS 4: CNN</div><div class="bookmark-description">Another illustration of reverse convolution(with kernel being 3*3, stride being (2,2)), where the right(green) layer is the input layer, grey layer the applied filter with the subscript denoting the value in the filter, and left(blue) layer denoting the output layer, the dotted parts of the output layer is the padding.</div></div><div class="bookmark-href">https://toiletcommander.github.io/Opensourced-Study-Notes-Berkeley/DLSpecialization/Notes/4-CNN/#13c4df75-9ae6-496e-943c-33233abce034</div></div></a></figure><p id="7b74f04b-187b-477b-9e4c-0d68531e9ab1" class="">But for segmentation and generation, they are different</p><ol type="1" id="e8bb7806-3ec5-483c-8465-dd7061c2c0e7" class="numbered-list" start="1"><li>There is not a correct answer for generation<ol type="a" id="487e71c5-d8b7-4726-9fb9-58d13cce3946" class="numbered-list" start="1"><li>for a car area, we can generate a car, a truck, a bus, etc.</li></ol></li></ol><ol type="1" id="17059243-7ad0-4751-8c7d-30215f6b5c12" class="numbered-list" start="2"><li>Since we picked up an image instead of a noise vector, the generator has to be beefier.</li></ol><ol type="1" id="fe14f078-05a1-4788-b6ae-96e374ad3e92" class="numbered-list" start="3"><li>skip connections to help vanishing gradient problem, and bottlenet helps to embed information</li></ol><div id="bc689db6-1d5a-49cb-a531-89b93c95428b" class="column-list"><div id="2a2ababc-6531-4487-9969-3663259c28bc" style="width:43.75%" class="column"><figure id="a11e1f34-fa34-4391-9aad-d7c1ca1d6613" class="image"><a href="GAN3%20Apply%20GANs%208bb7303d130b4de9ac58217865e3415e/Untitled%203.png"><img style="width:528px" src="GAN3%20Apply%20GANs%208bb7303d130b4de9ac58217865e3415e/Untitled%203.png"/></a><figcaption>Each “Block” ⇒ Conv + BatchNorm + LeakyReLU</figcaption></figure></div><div id="8f048451-2f9c-47d5-a030-f7286f09904c" style="width:56.25%" class="column"><figure id="63295459-03df-48e1-ae27-c479ab37f169" class="image"><a href="GAN3%20Apply%20GANs%208bb7303d130b4de9ac58217865e3415e/Untitled%204.png"><img style="width:2389px" src="GAN3%20Apply%20GANs%208bb7303d130b4de9ac58217865e3415e/Untitled%204.png"/></a><figcaption>Each “Block” ⇒ Trans Conv + BatchNorm + ReLU</figcaption></figure><p id="2215036d-abc3-4abe-9956-82c4e7b2b15c" class="">Dropout is added to some decoder blocks(first 3 blocks) ⇒ adds noise to the network</p><p id="7b9c9e24-b574-4e09-869f-6a2e487b8e0d" class="">At inference time, dropout is actually disactivated and scaling is used to maintain the stability of distribution</p></div></div><h3 id="a0d82499-0f96-484f-8325-8a93dc10ecb0" class="">PixelDistance Loss Term</h3><p id="e3bed7af-d41f-4731-a53b-72e712e4a793" class="">An additional loss term for pix2pix model</p><p id="09f33cd4-d144-421c-96a6-3db96f486b4f" class="">Objective</p><figure id="a765ee88-ddb3-4882-9eac-e167eb67065f" class="equation"><style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.13.2/katex.min.css')</style><div class="equation-container"><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><munder><mrow><mi>min</mi><mo>⁡</mo></mrow><mi>g</mi></munder><munder><mrow><mi>max</mi><mo>⁡</mo></mrow><mi>d</mi></munder><mi>L</mi><mo stretchy="false">(</mo><mi>g</mi><mo separator="true">,</mo><mi>d</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">\min_g \max_d L(g,d)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.5861079999999999em;vertical-align:-0.836108em;"></span><span class="mop op-limits"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.66786em;"><span style="top:-2.4000000000000004em;margin-left:0em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.03588em;">g</span></span></span><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span><span class="mop">min</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.836108em;"><span></span></span></span></span></span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mop op-limits"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.43055999999999994em;"><span style="top:-2.347892em;margin-left:0em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">d</span></span></span><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span><span class="mop">max</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.752108em;"><span></span></span></span></span></span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord mathnormal">L</span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.03588em;">g</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord mathnormal">d</span><span class="mclose">)</span></span></span></span></span></div></figure><p id="aa14c639-d299-4eab-a1d3-99bb4dd98d48" class="">So loss function for pix2pix model</p><figure id="4462c455-fa49-4079-8bbc-87d92aae9aaa" class="equation"><style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.13.2/katex.min.css')</style><div class="equation-container"><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>L</mi><mo stretchy="false">(</mo><mi>g</mi><mo separator="true">,</mo><mi>d</mi><mo stretchy="false">)</mo><mo>=</mo><mtext>Adversarial Loss (BCE Loss/W Loss)</mtext><mo>+</mo><mi>λ</mi><mo>×</mo><mtext>Pixel loss term</mtext></mrow><annotation encoding="application/x-tex">L(g,d)=\text{Adversarial Loss (BCE Loss/W Loss)}+\lambda \times \text{Pixel loss term}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal">L</span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.03588em;">g</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord mathnormal">d</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord text"><span class="mord">Adversarial Loss (BCE Loss/W Loss)</span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.77777em;vertical-align:-0.08333em;"></span><span class="mord mathnormal">λ</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.69444em;vertical-align:0em;"></span><span class="mord text"><span class="mord">Pixel loss term</span></span></span></span></span></span></div></figure><p id="6c6c4ff3-d1b3-4355-a628-4301f8137c37" class="">The Pixel Loss is equal to...</p><figure id="e6d4a5e3-9c75-4ca9-92f9-7337fc83e93d" class="image"><a href="GAN3%20Apply%20GANs%208bb7303d130b4de9ac58217865e3415e/Untitled%205.png"><img style="width:576px" src="GAN3%20Apply%20GANs%208bb7303d130b4de9ac58217865e3415e/Untitled%205.png"/></a></figure><p id="40617065-1579-4b34-9745-7d8f15a1500e" class="">Comes handy for getting exactly close to what is real</p><p id="68e2665e-46de-41e5-b398-cdf2adc01505" class="">Added layer of supervision also...which is kind of bad (but very soft, since its only abs not squared distance)</p><p id="ec57532e-94a7-45cd-b019-3bfa6bf6cc68" class="">
+</p><blockquote id="00a6def4-0535-439d-87b7-767e33156cd2" class="">Successors: Pix2PixHD, GauGAN</blockquote><p id="b8624e8f-35e8-4256-b25e-031563d8f4bf" class="">
+</p><h1 id="b2aa2f7b-326d-483a-8259-d76b702a2664" class="">CycleGAN</h1><p id="8c534923-42f0-4f8e-848f-97a7dd18bafe" class="">Unpaired image-to-image translation model</p><figure id="25481c23-db4c-4787-b938-79560d82bd5f" class="image"><a href="GAN3%20Apply%20GANs%208bb7303d130b4de9ac58217865e3415e/F2345340-333A-4FC4-829B-A22352B452E2.jpeg"><img style="width:2618px" src="GAN3%20Apply%20GANs%208bb7303d130b4de9ac58217865e3415e/F2345340-333A-4FC4-829B-A22352B452E2.jpeg"/></a></figure><p id="e4b48af9-ec40-42fb-84a5-cf8bf63f395d" class="">CycleGAN has two generator models (and two PatchGAN discriminators), one to transfer from one style to another and the other model going the opposite way. Therefore <strong>they form a cycle</strong>. The generators look very similar to a U-Net structure + bottleneck section interconnected with skip connections of DCGAN.</p><h2 id="98648b4a-8461-47a5-a680-77aeb58d4a4b" class="">Generator</h2><figure id="4a9cc65b-1338-4309-8a5d-e1427b837e82" class="image"><a href="GAN3%20Apply%20GANs%208bb7303d130b4de9ac58217865e3415e/F35CCA19-6099-4FF3-A222-898AC0769538.jpeg"><img style="width:1997px" src="GAN3%20Apply%20GANs%208bb7303d130b4de9ac58217865e3415e/F35CCA19-6099-4FF3-A222-898AC0769538.jpeg"/></a></figure><figure id="f88b0f87-47be-43d6-a355-44cc8ab73856" class="image"><a href="GAN3%20Apply%20GANs%208bb7303d130b4de9ac58217865e3415e/13B2C3B1-F945-4017-838D-8EDEF1561D39.jpeg"><img style="width:1994px" src="GAN3%20Apply%20GANs%208bb7303d130b4de9ac58217865e3415e/13B2C3B1-F945-4017-838D-8EDEF1561D39.jpeg"/></a></figure><h2 id="cb42baf6-e467-4947-a9d1-8db382aaf3bd" class="">Loss Terms</h2><p id="5890af4a-4f95-4362-b9c0-1546ea39b578" class="">All loss terms have to be applied to both of the two generators ⇒ 6 loss terms in the entire loss function!</p><h3 id="51d69066-978f-4bec-b419-8177ab93c0ef" class="">Adversarial Loss - Squared Loss</h3><p id="695d5f43-56f9-4061-92ef-ea94cbc37a0a" class="">We use least square loss in adversarial loss term for CycleGAN because</p><ol type="1" id="4e72d746-4122-4506-ac05-dcd449a4a996" class="numbered-list" start="1"><li>Least square do not have extreme behaviors of vanishing gradient problem like BCE loss<ol type="a" id="5fa125c4-8bbe-4ea1-9325-b17dcd977ff3" class="numbered-list" start="1"><li>gradient is only flat when prediction is <strong>exactly</strong> correct</li></ol></li></ol><ol type="1" id="2a6df111-dda6-44a4-beda-08e20be31632" class="numbered-list" start="2"><li>It is the easiest function to calculate and optimize if we want to bring fake close to real (it considers outliers)</li></ol><p id="cf6bdce5-8e2a-4812-a0be-a7336191afa4" class="">
+</p><p id="ae2281b0-4247-43dc-b3c2-4365f171690f" class="">Discriminator Loss:</p><figure id="b40309fe-cebe-46ae-86da-ad9d11411399" class="equation"><style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.13.2/katex.min.css')</style><div class="equation-container"><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><msub><mi mathvariant="double-struck">E</mi><mi>x</mi></msub><mo stretchy="false">[</mo><mo stretchy="false">(</mo><mi>d</mi><mo stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo><mo>−</mo><mn>1</mn><msup><mo stretchy="false">)</mo><mn>2</mn></msup><mo stretchy="false">]</mo><mo>+</mo><msub><mi mathvariant="double-struck">E</mi><mi>z</mi></msub><mo stretchy="false">[</mo><mo stretchy="false">(</mo><mi>d</mi><mo stretchy="false">(</mo><mi>g</mi><mo stretchy="false">(</mo><mi>z</mi><mo stretchy="false">)</mo><mo stretchy="false">)</mo><mo>−</mo><mn>0</mn><msup><mo stretchy="false">)</mo><mn>2</mn></msup><mo stretchy="false">]</mo></mrow><annotation encoding="application/x-tex">\mathbb{E}_x[(d(x)-1)^2]+\mathbb{E}_z[(d(g(z))-0)^2]</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord"><span class="mord mathbb">E</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.151392em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">x</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mopen">[(</span><span class="mord mathnormal">d</span><span class="mopen">(</span><span class="mord mathnormal">x</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1.1141079999999999em;vertical-align:-0.25em;"></span><span class="mord">1</span><span class="mclose"><span class="mclose">)</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8641079999999999em;"><span style="top:-3.113em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span><span class="mclose">]</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord"><span class="mord mathbb">E</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.151392em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.04398em;">z</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mopen">[(</span><span class="mord mathnormal">d</span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.03588em;">g</span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.04398em;">z</span><span class="mclose">))</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1.1141079999999999em;vertical-align:-0.25em;"></span><span class="mord">0</span><span class="mclose"><span class="mclose">)</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8641079999999999em;"><span style="top:-3.113em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span><span class="mclose">]</span></span></span></span></span></div></figure><p id="322730f0-cb66-4f2c-998c-b0ec5d151450" class="">Generator Loss:</p><figure id="b9efd735-cba6-43e6-8441-9e8f97bf947c" class="equation"><style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.13.2/katex.min.css')</style><div class="equation-container"><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><msub><mi mathvariant="double-struck">E</mi><mi>z</mi></msub><mo stretchy="false">[</mo><mo stretchy="false">(</mo><mi>d</mi><mo stretchy="false">(</mo><mi>g</mi><mo stretchy="false">(</mo><mi>z</mi><mo stretchy="false">)</mo><mo stretchy="false">)</mo><mo>−</mo><mn>1</mn><msup><mo stretchy="false">)</mo><mn>2</mn></msup><mo stretchy="false">]</mo></mrow><annotation encoding="application/x-tex">\mathbb{E}_z[(d(g(z))-1)^2]</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord"><span class="mord mathbb">E</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.151392em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.04398em;">z</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mopen">[(</span><span class="mord mathnormal">d</span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.03588em;">g</span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.04398em;">z</span><span class="mclose">))</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1.1141079999999999em;vertical-align:-0.25em;"></span><span class="mord">1</span><span class="mclose"><span class="mclose">)</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8641079999999999em;"><span style="top:-3.113em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span><span class="mclose">]</span></span></span></span></span></div></figure><h3 id="036d4a87-79ba-45c1-84cc-9ec6b6c872b6" class="">Cycle Consistency</h3><figure id="d23c3d82-e9f1-4ca7-bb26-f83dc276e2e4" class="image"><a href="GAN3%20Apply%20GANs%208bb7303d130b4de9ac58217865e3415e/1F9CE5EF-A211-4A79-A120-93F0D70049AD.jpeg"><img style="width:2348px" src="GAN3%20Apply%20GANs%208bb7303d130b4de9ac58217865e3415e/1F9CE5EF-A211-4A79-A120-93F0D70049AD.jpeg"/></a></figure><p id="f816d68c-f7ab-47c6-b749-8dc7c09a2388" class="">We want the cycle generation to be similar to the original one, only style should have changed so it is appropriate to take the pixel distance.</p><p id="6ccb8219-21a6-4a24-8e86-07715e5c1ea2" class="">Ah, plus we also want a two-way cycle consistency so the entire term should be</p><figure id="66ba8af2-ee5d-49da-8ff8-cc4b376f8694" class="image"><a href="GAN3%20Apply%20GANs%208bb7303d130b4de9ac58217865e3415e/C9CA2FF0-E841-48DE-B79D-DC0876E632F2.jpeg"><img style="width:2641px" src="GAN3%20Apply%20GANs%208bb7303d130b4de9ac58217865e3415e/C9CA2FF0-E841-48DE-B79D-DC0876E632F2.jpeg"/></a></figure><p id="4b243d5b-9946-4f15-a9c3-33d813fd2031" class="">
+</p><h3 id="fc142a01-17fe-4822-ba02-2f02c4f6d76a" class="">Identity Loss</h3><p id="730bbb1d-0a89-4cbe-801f-5237c5882539" class="">Additional, optionally added loss term added to the loss function</p><figure id="2791d84d-2bb7-40aa-be07-9ed932729d68" class="image"><a href="GAN3%20Apply%20GANs%208bb7303d130b4de9ac58217865e3415e/3719443F-8B73-454A-833F-41C77457F619.jpeg"><img style="width:1498px" src="GAN3%20Apply%20GANs%208bb7303d130b4de9ac58217865e3415e/3719443F-8B73-454A-833F-41C77457F619.jpeg"/></a></figure><p id="0f6ddbd7-e9eb-4e44-8344-eddf7fb7d2c4" class="">If we put horse into a zebra-to-horse translator, we would expect the horse to come out still as a horse. This technique:</p><ol type="1" id="83bb223d-26b7-40f7-82df-e771d24c6c22" class="numbered-list" start="1"><li>Discourages Z ⇒ H mapping to distort color</li></ol><ol type="1" id="cf67b750-74e5-48cc-8678-4c2d49b5e8d9" class="numbered-list" start="2"><li>is two way as well, just like the cycle consistency loss term</li></ol><figure id="034b343f-e195-4873-ae24-5d5ae806f52f" class="image"><a href="GAN3%20Apply%20GANs%208bb7303d130b4de9ac58217865e3415e/F4CAFF81-69AD-4D45-9191-B557C489FC8C.jpeg"><img style="width:1400px" src="GAN3%20Apply%20GANs%208bb7303d130b4de9ac58217865e3415e/F4CAFF81-69AD-4D45-9191-B557C489FC8C.jpeg"/></a></figure><p id="2ee5124b-5a37-4568-a3a8-9f4fbfdc3a96" class="">
+</p></div></article></body></html>
