@@ -7,4 +7,6 @@ This is the [course](https://www.deeplearning.ai/program/deep-learning-specializ
 ## Resource List
 
 - [Course 4: Convolution Neural Networks(CNN) Notes](Notes/4-CNN/)
+  - CNN / R-CNN / U-Net / YOLO / InceptionNet / EfficientNet / MobileNet
 - [Course 5: Sequence Models(RNN,GRU,LSTM,Transformer) Notes](Notes/5-RNN/)
+  - RNN / LSTM / GRU / Transformer
