@@ -15,6 +15,7 @@ This repository is brought to you by [Yunhao Cao](https://github.com/ToiletComma
   - [CS 189 Intro to Machine Learning - 2022 Spring](CS189/)
   - [UGBA 102A Intro to Accounting - 2022 Spring](UGBA102A/)
   - [INDENG/IEOR 162 Linear Programming and Network Flow - 2022 Spring](INDENG162/)
+  - [UGBA C155 Leadership: Purpose, Authority, and Empowerment - 2022 Summer](UGBA%20C155/)
 - Non-Berkeley Courses
   - DeepLearning.AI
     - [Deep Learning Specialization](DLSpecialization/)
