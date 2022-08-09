@@ -1,0 +1,705 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>UGBA C155 Notes</title><style>
+/* cspell:disable-file */
+/* webkit printing magic: print all background colors */
+html {
+	-webkit-print-color-adjust: exact;
+}
+* {
+	box-sizing: border-box;
+	-webkit-print-color-adjust: exact;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+@media only screen {
+	body {
+		margin: 2em auto;
+		max-width: 900px;
+		color: rgb(55, 53, 47);
+	}
+}
+
+body {
+	line-height: 1.5;
+	white-space: pre-wrap;
+}
+
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+h1 {
+	font-size: 1.875rem;
+	margin-top: 1.875rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+	margin-top: 1.25rem;
+}
+
+.source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 3px;
+	padding: 1rem;
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.column-list {
+	display: flex;
+	justify-content: space-between;
+}
+
+.column {
+	padding: 0 1em;
+}
+
+.column:first-child {
+	padding-left: 0;
+}
+
+.column:last-child {
+	padding-right: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding: 0.125rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+	border-collapse: collapse;
+}
+
+table {
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	text-indent: -1.7em;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+.simple-table {
+	margin-top: 1em;
+	font-size: 0.875rem;
+	empty-cells: show;
+}
+.simple-table td {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table th {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table-header-color {
+	background: rgb(247, 246, 243);
+	color: black;
+}
+.simple-table-header {
+	font-weight: 500;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-block;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	max-height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	transform: scale(1.5);
+	margin-right: 0.6em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code-wrap {
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1.25em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+.bookmark {
+	text-decoration: none;
+	max-height: 8em;
+	padding: 0;
+	display: flex;
+	width: 100%;
+	align-items: stretch;
+}
+
+.bookmark-title {
+	font-size: 0.85em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 1.75em;
+	white-space: nowrap;
+}
+
+.bookmark-text {
+	display: flex;
+	flex-direction: column;
+}
+
+.bookmark-info {
+	flex: 4 1 180px;
+	padding: 12px 14px 14px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.bookmark-image {
+	width: 33%;
+	flex: 1 1 180px;
+	display: block;
+	position: relative;
+	object-fit: cover;
+	border-radius: 1px;
+}
+
+.bookmark-description {
+	color: rgba(55, 53, 47, 0.6);
+	font-size: 0.75em;
+	overflow: hidden;
+	max-height: 4.5em;
+	word-break: break-word;
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	margin-top: 0.25em;
+}
+
+.sans { font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, ui-serif, serif; }
+.mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
+.pdf .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK JP'; }
+.pdf:lang(zh-CN) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC'; }
+.pdf:lang(zh-TW) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK TC'; }
+.pdf:lang(ko-KR) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK KR'; }
+.pdf .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK JP'; }
+.pdf:lang(zh-CN) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK SC'; }
+.pdf:lang(zh-TW) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK TC'; }
+.pdf:lang(ko-KR) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK KR'; }
+.pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.highlight-default {
+	color: rgba(55, 53, 47, 1);
+}
+.highlight-gray {
+	color: rgba(120, 119, 116, 1);
+	fill: rgba(120, 119, 116, 1);
+}
+.highlight-brown {
+	color: rgba(159, 107, 83, 1);
+	fill: rgba(159, 107, 83, 1);
+}
+.highlight-orange {
+	color: rgba(217, 115, 13, 1);
+	fill: rgba(217, 115, 13, 1);
+}
+.highlight-yellow {
+	color: rgba(203, 145, 47, 1);
+	fill: rgba(203, 145, 47, 1);
+}
+.highlight-teal {
+	color: rgba(68, 131, 97, 1);
+	fill: rgba(68, 131, 97, 1);
+}
+.highlight-blue {
+	color: rgba(51, 126, 169, 1);
+	fill: rgba(51, 126, 169, 1);
+}
+.highlight-purple {
+	color: rgba(144, 101, 176, 1);
+	fill: rgba(144, 101, 176, 1);
+}
+.highlight-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.highlight-red {
+	color: rgba(212, 76, 71, 1);
+	fill: rgba(212, 76, 71, 1);
+}
+.highlight-gray_background {
+	background: rgba(241, 241, 239, 1);
+}
+.highlight-brown_background {
+	background: rgba(244, 238, 238, 1);
+}
+.highlight-orange_background {
+	background: rgba(251, 236, 221, 1);
+}
+.highlight-yellow_background {
+	background: rgba(251, 243, 219, 1);
+}
+.highlight-teal_background {
+	background: rgba(237, 243, 236, 1);
+}
+.highlight-blue_background {
+	background: rgba(231, 243, 248, 1);
+}
+.highlight-purple_background {
+	background: rgba(244, 240, 247, 0.8);
+}
+.highlight-pink_background {
+	background: rgba(249, 238, 243, 0.8);
+}
+.highlight-red_background {
+	background: rgba(253, 235, 236, 1);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(120, 119, 116, 1);
+	fill: rgba(120, 119, 116, 1);
+}
+.block-color-brown {
+	color: rgba(159, 107, 83, 1);
+	fill: rgba(159, 107, 83, 1);
+}
+.block-color-orange {
+	color: rgba(217, 115, 13, 1);
+	fill: rgba(217, 115, 13, 1);
+}
+.block-color-yellow {
+	color: rgba(203, 145, 47, 1);
+	fill: rgba(203, 145, 47, 1);
+}
+.block-color-teal {
+	color: rgba(68, 131, 97, 1);
+	fill: rgba(68, 131, 97, 1);
+}
+.block-color-blue {
+	color: rgba(51, 126, 169, 1);
+	fill: rgba(51, 126, 169, 1);
+}
+.block-color-purple {
+	color: rgba(144, 101, 176, 1);
+	fill: rgba(144, 101, 176, 1);
+}
+.block-color-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.block-color-red {
+	color: rgba(212, 76, 71, 1);
+	fill: rgba(212, 76, 71, 1);
+}
+.block-color-gray_background {
+	background: rgba(241, 241, 239, 1);
+}
+.block-color-brown_background {
+	background: rgba(244, 238, 238, 1);
+}
+.block-color-orange_background {
+	background: rgba(251, 236, 221, 1);
+}
+.block-color-yellow_background {
+	background: rgba(251, 243, 219, 1);
+}
+.block-color-teal_background {
+	background: rgba(237, 243, 236, 1);
+}
+.block-color-blue_background {
+	background: rgba(231, 243, 248, 1);
+}
+.block-color-purple_background {
+	background: rgba(244, 240, 247, 0.8);
+}
+.block-color-pink_background {
+	background: rgba(249, 238, 243, 0.8);
+}
+.block-color-red_background {
+	background: rgba(253, 235, 236, 1);
+}
+.select-value-color-pink { background-color: rgba(245, 224, 233, 1); }
+.select-value-color-purple { background-color: rgba(232, 222, 238, 1); }
+.select-value-color-green { background-color: rgba(219, 237, 219, 1); }
+.select-value-color-gray { background-color: rgba(227, 226, 224, 1); }
+.select-value-color-opaquegray { background-color: rgba(255, 255, 255, 0.0375); }
+.select-value-color-orange { background-color: rgba(250, 222, 201, 1); }
+.select-value-color-brown { background-color: rgba(238, 224, 218, 1); }
+.select-value-color-red { background-color: rgba(255, 226, 221, 1); }
+.select-value-color-yellow { background-color: rgba(253, 236, 200, 1); }
+.select-value-color-blue { background-color: rgba(211, 229, 239, 1); }
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+	
+</style></head><body><article id="8cf98008-5f39-445c-8a7f-5921b95e7183" class="page sans"><header><div class="page-header-icon undefined"><span class="icon">🙉</span></div><h1 class="page-title">UGBA C155 Notes</h1></header><div class="page-body"><p id="67aa6489-e3de-4a67-83e2-ccdff017def6" class="">Created by <a href="https://github.com/ToiletCommander">Yunhao Cao</a> (Github@ToiletCommander) in Summer 2022 for UC Berkeley UGBA C155.</p><blockquote id="15171982-3d96-4630-9529-8d7b1b0a0bb7" class="">Reference Notice: Material highly and mostly derived from Prof Daniel Mulhern&#x27;s lecture notes, some ideas were borrowed from wikipedia &amp; Stanford CS231N &amp; Andrew Ng’s Intro to ML Course@Stanford.</blockquote><p id="24b64e22-2f75-487b-a6db-194a428f1881" class="">This work is licensed under a <a href="http://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License</a></p><p id="3238293d-b97d-4780-886b-3deb0e91f5a1" class="">Last Update: 2022-08-08- 20:35 ⇒ Last Lecture Finished!</p><p id="bbce3ea7-27d8-4f0f-aa91-df4c4f14feca" class="">
+</p><h1 id="0af73fec-f107-4951-9ed0-21f0b8815551" class="">The McKinsey 7-S Model</h1><figure id="b7199f64-6bdc-4221-9fdd-c3683e9a3dcb" class="image"><a href="UGBA%20C155%20Notes%20b7199f646bdc42219fddc3683e9a3dcb/Untitled.png"><img style="width:480px" src="UGBA%20C155%20Notes%20b7199f646bdc42219fddc3683e9a3dcb/Untitled.png"/></a></figure><p id="db5e4f8a-ff53-4a33-8f9a-96f9bfacf445" class="">The outer 6 elements have to be kept up-to-date in order for success, and every element in the model influence each other. If an organization continuously strengthens employees’ shared values, then the organization will stand the test of time.</p><figure class="block-color-gray_background callout" style="white-space:pre-wrap;display:flex" id="6cfdca72-bbab-409b-84ee-bad8a7e7f794"><div style="font-size:1.5em"><span class="icon">🔥</span></div><div style="width:100%">Those are factors to help us think about ways to make the organization aligned &amp; dynamic. </div></figure><p id="1ef53116-8986-4f63-9371-828ab2795749" class="">
+</p><h2 id="71d0e165-6383-42a6-a3a8-64a8c6ac5d63" class="">Vision and Structural Tension</h2><figure class="block-color-gray_background callout" style="white-space:pre-wrap;display:flex" id="9e5408d6-923a-483d-9b12-44c72e59a9a9"><div style="font-size:1.5em"><span class="icon">🔥</span></div><div style="width:100%">Always think from <strong>right(future) to left(present)</strong></div></figure><figure id="7732308d-576d-4e2b-93cf-bb7909ee1756" class="image"><a href="UGBA%20C155%20Notes%20b7199f646bdc42219fddc3683e9a3dcb/Untitled%201.png"><img style="width:624px" src="UGBA%20C155%20Notes%20b7199f646bdc42219fddc3683e9a3dcb/Untitled%201.png"/></a></figure><p id="64f1eb88-e160-41d0-b0c6-43a7651ac9ff" class="">A vision:</p><ol type="1" id="2c180845-7b2f-4264-af49-286ed627f7f6" class="numbered-list" start="1"><li>Inspires and energizes people</li></ol><ol type="1" id="c55909a9-2cbb-4a2b-a03f-9864db891e20" class="numbered-list" start="2"><li><strong>serves as the true north for continuous alignment and re-alignment</strong></li></ol><p id="435d737f-eed9-4091-809f-75fb46f631b0" class="">
+</p><blockquote id="76a44267-acd7-4077-91b4-c5e560d631ef" class="">If you want to build a ship, don’t drum up people together to collect wood and don’t assign them tasks and work, but rather teach them to long for the endless immensity of the sea. - Antoine de Saint “Exupery”</blockquote><blockquote id="aa25a50d-b26e-4ab9-899f-3ae4e2f0f36b" class="">It’s not that the shared vision but the <strong>sharing of visions</strong> that fully empowers individuals and groups - Mulhern</blockquote><p id="987d8d65-31f0-4209-8f83-813c19a7b04e" class="">
+</p><h3 id="572c6220-9e9e-4b4e-b5ec-4363908dd19b" class="">Structural Tension</h3><p id="1539a679-f835-4da9-974b-d0bca2027ec7" class="">Think about a rubber band between the present and the future, where the current reality is pulled by the organization towards the vision.</p><p id="d62ae672-19e1-412d-8095-70679fdb6ec5" class="">
+</p><p id="0d997512-7d0f-44cc-a639-5d5d34803c7b" class="">Two Purposes:</p><ol type="1" id="91050560-f09b-4b0c-afba-5ad2d03214dc" class="numbered-list" start="1"><li>Intrinsic Motivation (内在动机)</li></ol><ol type="1" id="f352c420-00d8-44f3-a7e3-c492c0885837" class="numbered-list" start="2"><li>Alignment to the grand vision</li></ol><table id="ec566c84-4722-4805-b3a7-5c5263faee08" class="simple-table"><tbody><tr id="4f597e34-fa5a-428f-8021-693c9824726e"><td id="?sn:" class="" style="width:116.33333333333333px">Tasks</td><td id="MY\W" class="" style="width:116.33333333333333px">Sub-goals Tactic</td><td id="O&lt;RC" class="" style="width:116.33333333333333px">Strategy to Achieve Mission Goals</td><td id="&lt;TRD" class="" style="width:116.33333333333333px">OKRs - Objectives and Key Results</td><td id="zgDV" class="" style="width:116.33333333333333px">Mission: Who, What, How do we serve?</td><td id="YTG?" class="" style="width:116.33333333333333px">Vision: Why + Whe</td></tr></tbody></table><p id="afcf9799-f497-4871-8576-94e807eb9ce8" class="">
+</p><h1 id="4233a1f9-0c2c-48e0-a255-f1c40ea61878" class="">Myers Briggs Theory of 16 Peronality</h1><ol type="1" id="3066b365-7cc1-4555-8d15-2ae0a7d0d5d4" class="numbered-list" start="1"><li>The video talks about how 16 MBTI personality test helps to create neutral, descriptive, natural-born habits descriptions</li></ol><ol type="1" id="e0921170-f796-47c9-858c-f836d55ca9b4" class="numbered-list" start="2"><li><strong>I</strong>ntroverted or <strong>E</strong>xtroverted (prefers to gain energy through inside or outside)</li></ol><ol type="1" id="3c6c23fd-e112-4ef6-9b7d-f2bc9277aa63" class="numbered-list" start="3"><li>i<strong>N</strong>tuitive or <strong>S</strong>ensing (sees future or present, present controls quality but future helps hold a bigger picture)</li></ol><ol type="1" id="0a6deb4c-d9bf-4144-b082-e1a3beb36c6d" class="numbered-list" start="4"><li><strong>T</strong>hinking or <strong>F</strong>eeling (Cold-blooded, realistic vs. warm-hearted, ideal ⇒ who to kick out of work?)</li></ol><ol type="1" id="cba5f3cf-39f4-4463-adc6-18b0007dcf2f" class="numbered-list" start="5"><li><strong>J</strong>udging and <strong>P</strong>erceiving (influence the world or adapt to the world? Judging ⇒ plans, Perceiving ⇒ open-ended)</li></ol><p id="c6f360cd-5c09-4aa3-a0ac-8688942c2087" class="">
+</p><h1 id="3af6e8cb-de28-4a20-887a-61a4d8a679fb" class="">Power of Listening</h1><figure class="block-color-gray_background callout" style="white-space:pre-wrap;display:flex" id="62deec17-4c61-42b3-ae47-005c7eb489bf"><div style="font-size:1.5em"><span class="icon">🔥</span></div><div style="width:100%">Accept ⇒ Learn ⇒ Adjust ⇒ Advance</div></figure><figure id="b2dc3682-fe6d-48cd-bb5e-f7f9e707d9cc" class="image"><a href="UGBA%20C155%20Notes%20b7199f646bdc42219fddc3683e9a3dcb/Untitled%202.png"><img style="width:336px" src="UGBA%20C155%20Notes%20b7199f646bdc42219fddc3683e9a3dcb/Untitled%202.png"/></a></figure><h2 id="088e6cf6-ab29-4afb-b570-a15696464133" class="">Continually Quiet Your Mind</h2><ol type="1" id="4b4b9a55-3281-476f-a6a1-c861f7cae6ae" class="numbered-list" start="1"><li>Listen to yourself first<ol type="a" id="60b721d0-a7f7-4c70-a8a9-994cbfe1537f" class="numbered-list" start="1"><li>notice and let go without judgement</li></ol></li></ol><ol type="1" id="66a20407-608d-4058-ab96-ff88e0d58fa9" class="numbered-list" start="2"><li>Then listen to the others</li></ol><h2 id="da27f562-8aa3-4877-8dbf-6eeadfd00bb2" class="">Copy &amp; Pasting People’s Worlds</h2><ol type="1" id="9e291fbe-523a-4fae-a422-fe845a5d11ce" class="numbered-list" start="1"><li>This confirms understanding</li></ol><ol type="1" id="3fe6f2ea-c577-41a0-afef-6fde3eea5897" class="numbered-list" start="2"><li>And also strengthens speaker’s confidence at speaking</li></ol><ol type="1" id="a5448fdc-e63a-4869-981b-78624927616e" class="numbered-list" start="3"><li>“Use their words to gain trust and knowledge”</li></ol><h2 id="1453a6c4-ad18-4aeb-811e-f613e9970744" class="">Reflect Back with Empathy</h2><ol type="1" id="d5406cac-0742-45d1-a106-78eba6dc8561" class="numbered-list" start="1"><li>Signals perception of other’s feelings</li></ol><ol type="1" id="98ad7bc5-d470-43b8-a3f4-00ee7dd35a4d" class="numbered-list" start="2"><li>Shows opinions and perspectives are heard and received.</li></ol><p id="a0b76454-8d30-45bf-9e74-9e3c35597dbe" class="">
+</p><h1 id="d1e22670-15c3-46f6-814e-1bad7f6cedc4" class="">Whats Up Management</h1><ol type="1" id="f5e84028-e256-4857-a1f2-99dde596a1a2" class="numbered-list" start="1"><li>Choose to let yourself be managed and manage the others</li></ol><ol type="1" id="7815908b-5c92-4010-b66d-0415d12abf2a" class="numbered-list" start="2"><li>Learn to negotiate breakdowns in a healthy way</li></ol><ol type="1" id="5a436fcd-7b57-4979-9a64-c1c52dcabf7f" class="numbered-list" start="3"><li>Create clean lanes and workable authority</li></ol><h2 id="7b9621d3-8693-4184-b284-2727a989fac5" class="">Assigning Tasks</h2><ol type="1" id="597e70a7-f368-4d65-95fd-e402eed36f3e" class="numbered-list" start="1"><li>Make clear, time-bound, honest requests(within the lane of authority)</li></ol><h2 id="856cbec5-b082-445f-a2d6-fa73af765f61" class="">What if things break</h2><figure id="666a2164-7863-41ab-a3e4-1acfefad8f66" class="image"><a href="UGBA%20C155%20Notes%20b7199f646bdc42219fddc3683e9a3dcb/Untitled%203.png"><img style="width:480px" src="UGBA%20C155%20Notes%20b7199f646bdc42219fddc3683e9a3dcb/Untitled%203.png"/></a></figure><ol type="1" id="884a8947-d1b7-446b-bc48-c841b8f9a7c5" class="numbered-list" start="1"><li>The What’s up question fills the gap between reality and goal</li></ol><ol type="1" id="7fc2ffbf-f8e6-4ee3-bf4b-bb748bd876cd" class="numbered-list" start="2"><li>Open-ended, casual, driven by inquiry</li></ol><ol type="1" id="9c4e18db-204f-47f6-a50a-e5e7e06a4fb3" class="numbered-list" start="3"><li>Seeking agreement so can diagnose and prescribe together.</li></ol><ol type="1" id="50281e1e-8c12-4ec6-9274-53caee77c439" class="numbered-list" start="4"><li>Then create a clear new lane ⇒ a new agreement</li></ol><h2 id="4d063534-15c3-4f71-9060-71407b23d7c7" class="">Agreement exists everywhere in a company</h2><figure id="b44a8a55-14aa-4b8a-9520-c55bafdd8feb" class="image"><a href="UGBA%20C155%20Notes%20b7199f646bdc42219fddc3683e9a3dcb/Untitled%204.png"><img style="width:2411px" src="UGBA%20C155%20Notes%20b7199f646bdc42219fddc3683e9a3dcb/Untitled%204.png"/></a></figure><figure class="block-color-gray_background callout" style="white-space:pre-wrap;display:flex" id="61f2e028-bb83-4d3e-b909-10e2c6cb346d"><div style="font-size:1.5em"><span class="icon">⚠️</span></div><div style="width:100%">Which triggers my thought, a customer asks an inquiry and agreements are established in a company, but there are chances that a portion of those agreements will break… So can we use data science to predict those break times and reserve extra time for those promises to be fixed?</div></figure><p id="6dd9fae5-22de-451f-93b2-13c3f9ca4f2a" class="">
+</p><h1 id="ae7f7e87-ddc6-44cc-b7b6-c61ec9a661f1" class="">Public Speech</h1><ol type="1" id="fff68a56-8ebe-45d0-a591-42a62b991a39" class="numbered-list" start="1"><li>Repeat and take time for the audience to understand your critical(power) points</li></ol><ol type="1" id="2fc8e8a9-ebdd-43e6-9a71-652e1f2183da" class="numbered-list" start="2"><li>Use stats in public speech, but principle: 3Rs<ol type="a" id="dc0c0dbd-4b9f-4250-b2a2-522d86c68beb" class="numbered-list" start="1"><li>Reduce the number of statistics (1 per 8 mins)</li></ol><ol type="a" id="29030424-4a44-4a22-8eb5-58b4b8e58e81" class="numbered-list" start="2"><li>Round off statistics to percentage for better estimation</li></ol><ol type="a" id="11bea24c-d4bc-40c1-a9ac-efad05d4554a" class="numbered-list" start="3"><li>Relate to the topic for greater impact</li></ol></li></ol><p id="064f97b2-b450-4db2-9a11-253695504fc6" class="">
+</p><h2 id="e6a3c466-ce28-42f5-93e7-f1dccc7f4986" class="">The Rule of 3</h2><p id="5b9aa2fd-c1b9-4d7a-b8db-e23582e88f28" class="">Powerful speechwriting technique</p><ol type="1" id="3db4f5d1-3aa5-407f-8ee1-53f4707f7c61" class="numbered-list" start="1"><li>We humans can only process some limited amount of informatio</li></ol><h3 id="bd11f57f-8e3b-44dc-99e9-40d9a27f7639" class="">Preparation - The 3</h3><ol type="1" id="f6ecf114-9df1-4892-aed6-fcb7607d168d" class="numbered-list" start="1"><li>Not about you! Focus on them!</li></ol><ol type="1" id="c47b357f-8798-4a27-bf46-5fdffb6975dc" class="numbered-list" start="2"><li>TRTL(Thinking from right to left): What do you want them think / feel / say when they walk out</li></ol><ol type="1" id="8f8acfa1-826e-470d-bf26-4b14af5a8f88" class="numbered-list" start="3"><li>Structure - the rule of 3<ol type="a" id="4f6afb3e-bddd-4bde-80ad-c7912e6d2c66" class="numbered-list" start="1"><li>Prepare<ol type="i" id="2cec7931-05c2-4194-8ec3-f8c0f626a772" class="numbered-list" start="1"><li>Tell them what you’ll tell them (help them understand)</li></ol><ol type="i" id="d5a3a4ac-c8b5-4ecc-9208-61a76d1ea744" class="numbered-list" start="2"><li>Tell them</li></ol><ol type="i" id="7d07d94b-8137-4ad9-8fcf-416a86f6d4d5" class="numbered-list" start="3"><li>Tell them what you told them (summarize)</li></ol></li></ol><ol type="a" id="f9d3650e-5ee7-457e-91d8-876fa10d4464" class="numbered-list" start="2"><li>Practice (Taking a debate class may help, story on Yale’s debate team)<ol type="i" id="4c012572-5ec6-4a88-a9e1-a27ef4aab3bd" class="numbered-list" start="1"><li>Practice 2x: the third one is a charm</li></ol><ol type="i" id="c627499b-4149-4b89-9ce5-acdf978cfc16" class="numbered-list" start="2"><li>Groove the start<ol type="1" id="bd92d920-e9a8-44e4-8187-c54fbac854b2" class="numbered-list" start="1"><li>Know your first 30 seconds, feel very confident</li></ol><ol type="1" id="d026761f-fd19-4d4f-9ae8-d724944faf29" class="numbered-list" start="2"><li>Initialize the positive feedback loop</li></ol></li></ol><ol type="i" id="5d29c1e5-ef83-4412-a127-a326910bd3bf" class="numbered-list" start="3"><li>Kill the finish<ol type="1" id="55912c36-093b-4efd-ac5f-f6c2db9c0cc1" class="numbered-list" start="1"><li>Moves the heart, the mind to action</li></ol></li></ol></li></ol><ol type="a" id="147f4ff4-720d-4c3d-b558-abc9d6367e97" class="numbered-list" start="3"><li>Present<ol type="i" id="31da0b14-6d58-481d-bd3c-d6cbe0f10158" class="numbered-list" start="1"><li>Pumped<ol type="1" id="39e0f541-a2c8-49b1-b000-f7d921881162" class="numbered-list" start="1"><li>Ready to go, energized &amp; ready for the game</li></ol></li></ol><ol type="i" id="70497af2-743f-4855-9278-5a6033d5a5a5" class="numbered-list" start="2"><li>Breathe 3-3-6x3<ol type="1" id="a765983e-b7e6-42cd-b4c9-1e26b76fabea" class="numbered-list" start="1"><li>3 counts on inbreath</li></ol><ol type="1" id="a3cc2a90-56e7-4242-b83e-24c86c264760" class="numbered-list" start="2"><li>3 counts holding </li></ol><ol type="1" id="070c2a60-aacf-4173-8c7c-a955f5598637" class="numbered-list" start="3"><li>and 6 counts out</li></ol></li></ol><ol type="i" id="8eda30d8-228c-4ec2-9b2d-37df38b1d8ff" class="numbered-list" start="3"><li>Play with tone, pace, volumn, etc.<ol type="1" id="a4a696c2-1c4a-4f9e-81a8-6973c48a1af5" class="numbered-list" start="1"><li>Increase volumn when important point ⇒ or whisper?</li></ol></li></ol></li></ol></li></ol><p id="ece3612a-ee3b-425b-a9a7-61fee5bcfdf0" class="">
+</p><h1 id="4d9d94ab-9828-46a1-b22d-59dd60c5af2f" class="">Practice of Exemplary Leaderships</h1><h2 id="adefeaf6-ed2c-455b-b25b-8af3b7a4875e" class="">The “Five Leadership Practices”</h2><ol type="1" id="a687781c-253b-4664-9ba4-8f5ae1036fcc" class="numbered-list" start="1"><li>Modeling the Way<ol type="a" id="52b29d42-3de7-4e99-a943-f3b5836007df" class="numbered-list" start="1"><li>Clarify Values</li></ol><ol type="a" id="50237dc3-acbf-4b86-8811-420c3bfb4d2f" class="numbered-list" start="2"><li>Set the Example</li></ol><ol type="a" id="2a3f9265-1bc7-43eb-a938-a7855e29bc8f" class="numbered-list" start="3"><li>“Kuozes’ and Posners’ First Law: If you don’t believe the messenger, you won’t believe the message” ⇒ Leaders find their authentic voice<ol type="i" id="3dec485d-2438-4b3d-9f74-d99e77e94741" class="numbered-list" start="1"><li>Consistant with who they are</li></ol><ol type="i" id="114b085c-1ea7-45d8-9268-988d497eb6b6" class="numbered-list" start="2"><li>Drawing leaders to their highest ideals</li></ol><ol type="i" id="0f25d522-696b-4560-95cd-c20d7346d6ee" class="numbered-list" start="3"><li>DWISIWD ⇒ Do What I Say I Will Do, DWWSWWD ⇒ Do What We Say We Will Do</li></ol><ol type="i" id="63888e8f-ed02-4a19-b02e-cf85d38c3d9d" class="numbered-list" start="4"><li>See Chart Below, Number represents level of commitment in the organization</li></ol><figure id="e4980594-9046-46fe-92ab-d6badb1d283a" class="image"><a href="UGBA%20C155%20Notes%20b7199f646bdc42219fddc3683e9a3dcb/Untitled%205.png"><img style="width:2011px" src="UGBA%20C155%20Notes%20b7199f646bdc42219fddc3683e9a3dcb/Untitled%205.png"/></a></figure></li></ol></li></ol><ol type="1" id="35a8186d-bbc7-46ea-b364-16899668449d" class="numbered-list" start="2"><li>Inspiring a Shared Vision</li></ol><ol type="1" id="92f57ee9-a044-4fe6-9441-f94aa7429634" class="numbered-list" start="3"><li>Challanging the Process<ol type="a" id="f733a8ca-64af-4932-a572-a556bf4354d1" class="numbered-list" start="1"><li>Search for opportunities<ol type="i" id="f261bc12-24c5-432d-9ecf-cbed915737d9" class="numbered-list" start="1"><li>Look for new ways to improve and experiment(take risks)</li></ol></li></ol><ol type="a" id="6294050f-4fc0-4d11-a439-184405b428b0" class="numbered-list" start="2"><li>Vision is the focal point for alignment</li></ol><ol type="a" id="41b9ce3b-788e-41c3-8fd1-36c64c47f80a" class="numbered-list" start="3"><li>Welcome people who want to overthrow the leader’s conventional wisdom</li></ol></li></ol><ol type="1" id="55f062c8-a28f-4c0c-acba-1b3adae26fd3" class="numbered-list" start="4"><li>Enabling Others to Act<ol type="a" id="06438ef5-0d0d-4039-a332-6dd3036e5bb1" class="numbered-list" start="1"><li></li></ol><figure id="b2d34015-0a66-45b7-a5bd-e38fb82ac2ac" class="image"><a href="UGBA%20C155%20Notes%20b7199f646bdc42219fddc3683e9a3dcb/Untitled%206.png"><img style="width:1685px" src="UGBA%20C155%20Notes%20b7199f646bdc42219fddc3683e9a3dcb/Untitled%206.png"/></a></figure></li></ol><ol type="1" id="12ea3a20-27b1-42e6-9de8-660885e771ed" class="numbered-list" start="5"><li>Encouraging the Heart<ol type="a" id="9f339fe0-66f8-4c04-895d-c0f12706a431" class="numbered-list" start="1"><li>“Perpetual optimism is a force multiplier”</li></ol><ol type="a" id="216f81db-d353-4af0-8527-cae562898f59" class="numbered-list" start="2"><li>Positive:Negative Communication Ratio: <ol type="i" id="25dd3d8f-ccd6-467d-9973-82c5b0604334" class="numbered-list" start="1"><li>High-performance business teams: 5.6:1</li></ol><ol type="i" id="7d6c5c5e-b0ef-4660-a8f1-06ad255b001e" class="numbered-list" start="2"><li>mid-performance 1.8:1</li></ol><ol type="i" id="f0665374-b585-4bac-b8b7-74df87318272" class="numbered-list" start="3"><li>Pivot Point according to Frederickson 3:1</li></ol><ol type="i" id="5535ea4c-1698-4656-8981-381f6de7ae15" class="numbered-list" start="4"><li>Successful marriages Gottman rule 5:1</li></ol></li></ol><ol type="a" id="870ffe36-76fd-4608-91d7-f9e1b270e34c" class="numbered-list" start="3"><li>Celebration of individual and organizational effort and achivement is foundation to for necessary openess, critique, and hard conversation.</li></ol><p id="77c88e43-2585-4f14-b33b-00fc462562a7" class="">
+</p></li></ol><h2 id="298219ad-2da2-462f-8f2c-e16fc7795fd2" class="">Self-Perception and Perception of others (in an org)</h2><div id="c31b5afe-afa3-43db-bd27-991107deec43" class="column-list"><div id="ec40499d-29ed-4ea9-b3c5-5002e0d43ba9" style="width:37.5%" class="column"><figure id="2a807820-59c8-41ea-88f6-d07e85139f0a" class="image"><a href="UGBA%20C155%20Notes%20b7199f646bdc42219fddc3683e9a3dcb/Untitled%207.png"><img style="width:240px" src="UGBA%20C155%20Notes%20b7199f646bdc42219fddc3683e9a3dcb/Untitled%207.png"/></a></figure></div><div id="656c85d0-8d0b-48df-aea1-d92bdc5e34f2" style="width:62.5%" class="column"><ol type="1" id="3d380857-d512-419a-af13-7c2838e8c58c" class="numbered-list" start="1"><li>Seeing to balance inquiry with advocacy</li></ol><figure id="ce1c63d3-06bb-4947-aa56-1e43ae965a98" class="image"><a href="UGBA%20C155%20Notes%20b7199f646bdc42219fddc3683e9a3dcb/Untitled%208.png"><img style="width:432px" src="UGBA%20C155%20Notes%20b7199f646bdc42219fddc3683e9a3dcb/Untitled%208.png"/></a></figure><ol type="1" id="33fc8645-ec8c-43e5-9d5c-e7e01917908f" class="numbered-list" start="2"><li>Balance courage(speak your opinion) and humility(but know your opinion is not the only one in the room)<ol type="a" id="bcdef034-8f4a-45b6-8a68-0997c830ad65" class="numbered-list" start="1"><li>Not arguing about reality but constructing a picture of me and include another’s perception and engagement with reality and with ideals</li></ol></li></ol></div></div><ol type="1" id="69cfeece-f92f-43f9-9f20-15cea6f356b4" class="numbered-list" start="1"><li>Provide feedback<ol type="a" id="8d23a80d-3989-4747-b3c6-0964bbbed643" class="numbered-list" start="1"><li>anonymous &amp; aggregated feedback ⇒ avoid humiliation and create a trend instead of individual feedback</li></ol></li></ol><ol type="1" id="172a4c6c-c029-4b0f-902c-ec0f42d0024c" class="numbered-list" start="2"><li>Self-Assessment Component</li></ol><ol type="1" id="d1642864-db44-4a43-8769-40431355ac06" class="numbered-list" start="3"><li>Conversations</li></ol><ol type="1" id="a7de0fa9-6a99-472d-8d8e-5051fe424873" class="numbered-list" start="4"><li>Type Talk at Work (MBTI tends to interact with each other…)</li></ol><ol type="1" id="c15cfde5-6493-4a78-aec2-04eb8f836c28" class="numbered-list" start="5"><li>Goal Setting</li></ol><ol type="1" id="47b3459d-bf76-42cc-8945-8bcd1c76dfcd" class="numbered-list" start="6"><li>Solicid ongoing feedback</li></ol><p id="9dca13dc-fbaf-40b3-8820-66f892c16883" class="">
+</p><h1 id="d1737b3a-2693-4366-a9e2-104156af3915" class="">Coaching</h1><h2 id="3080b0c8-91fc-40af-bafd-79c6fac44263" class="">Clear the Air</h2><p id="0837ba02-d501-44f9-9468-3c729b92bcde" class="">Remove the burden from other people around you so that they don’t have to read your mind</p><p id="85521bef-8eea-49b0-a3c4-987e23b97c01" class="">This is one more addition to our key strategies (make&amp;manage agreements, listen, coach)</p><figure id="836fd974-ef97-4389-9cda-75e73ea3ee80" class="image"><a href="UGBA%20C155%20Notes%20b7199f646bdc42219fddc3683e9a3dcb/Untitled%209.png"><img style="width:480px" src="UGBA%20C155%20Notes%20b7199f646bdc42219fddc3683e9a3dcb/Untitled%209.png"/></a></figure><p id="b457a77d-d4f8-4cfa-a293-b993fc41a558" class="">“I feel … when you … because …”</p><p id="638b4dd8-0af9-407d-abef-45545113ac8f" class="">Instead of focusing on:</p><ol type="1" id="d09dfc3b-26c6-4554-b8bc-9660b87fe056" class="numbered-list" start="1"><li>people’s character and intention</li></ol><p id="50ea4ff7-d308-4d12-85fd-553849a1457b" class="">, focus on:</p><ol type="1" id="75fd1b57-04fd-4e25-a5fd-08a75a7fa9f6" class="numbered-list" start="1"><li>What actions / behavior</li></ol><ol type="1" id="ed8386a0-ae95-4033-9345-72e2f45a6ccd" class="numbered-list" start="2"><li>specific words</li></ol><p id="df4bf9ba-9bfc-426a-a320-b77b01789be8" class="">
+</p><p id="0612ca4d-bc0b-4906-b3b4-8a9755dd0bb8" class="">The Hook: The shared future</p><p id="92043c6d-4612-4893-8e40-6083a0a1b334" class="">“We are still in this together, but I do need change”</p><p id="1b632d02-eed9-4213-98c6-5b0154856af2" class="">
+</p><figure id="f150fda2-8356-47da-8599-70d289e5f413" class="image"><a href="UGBA%20C155%20Notes%20b7199f646bdc42219fddc3683e9a3dcb/Screenshot_2022-07-19_at_14-10-19_Leadership_-_SUS20_UGBA_Leadership_VOPP_Laura_Coaching_v02.png"><img style="width:1407px" src="UGBA%20C155%20Notes%20b7199f646bdc42219fddc3683e9a3dcb/Screenshot_2022-07-19_at_14-10-19_Leadership_-_SUS20_UGBA_Leadership_VOPP_Laura_Coaching_v02.png"/></a></figure><p id="647fa312-e976-4101-8bd6-69af1e055f48" class="">
+</p><h1 id="267711e7-5747-4e13-8280-aa1e36fcdd0c" class="">Business Structure</h1><h2 id="aaa05c97-1047-4993-aa02-a04b0407282e" class="">See the variety of structure</h2><div id="c4851770-9221-40fa-b0bb-c546cc910c99" class="column-list"><div id="6cda0f71-10fd-43fe-8c2e-2b8ab84aae9b" style="width:68.75%" class="column"><figure id="91ae0f2b-aae6-4701-aabe-e235058ebf27" class="image"><a href="UGBA%20C155%20Notes%20b7199f646bdc42219fddc3683e9a3dcb/Untitled%2010.png"><img style="width:1474px" src="UGBA%20C155%20Notes%20b7199f646bdc42219fddc3683e9a3dcb/Untitled%2010.png"/></a><figcaption>Traditional Structure</figcaption></figure></div><div id="7ba78147-1fdb-4e31-b45d-30dfdc6d28ae" style="width:31.25%" class="column"><figure id="f0dcdeb4-aea0-4f56-a908-5b86442518d1" class="image"><a href="UGBA%20C155%20Notes%20b7199f646bdc42219fddc3683e9a3dcb/Untitled%2011.png"><img style="width:1197px" src="UGBA%20C155%20Notes%20b7199f646bdc42219fddc3683e9a3dcb/Untitled%2011.png"/></a><figcaption>Dyatic Structure</figcaption></figure></div></div><div id="878b2875-b24e-47d5-9a4b-dcabc1643321" class="column-list"><div id="9bc34def-f395-4ac4-8c43-b071e1063a88" style="width:50%" class="column"><figure id="bfc51676-52b0-438d-9c2c-3eaa851bdd82" class="image"><a href="UGBA%20C155%20Notes%20b7199f646bdc42219fddc3683e9a3dcb/Untitled%2012.png"><img style="width:1521px" src="UGBA%20C155%20Notes%20b7199f646bdc42219fddc3683e9a3dcb/Untitled%2012.png"/></a><figcaption>Flipped Structure</figcaption></figure></div><div id="920b628c-135a-43c5-97a6-6692ab51c6d8" style="width:49.99999999999999%" class="column"><figure id="c72905b9-c076-485f-904e-1da968a15ae9" class="image"><a href="UGBA%20C155%20Notes%20b7199f646bdc42219fddc3683e9a3dcb/Untitled%2013.png"><img style="width:1387px" src="UGBA%20C155%20Notes%20b7199f646bdc42219fddc3683e9a3dcb/Untitled%2013.png"/></a><figcaption>Networked Structure</figcaption></figure></div></div><ol type="1" id="c34dd88c-80fa-4c5f-9b94-25f422534784" class="numbered-list" start="1"><li>Traditional/Hierarchical<ol type="a" id="23c32a60-44d4-439c-9ed3-35ac7c214ecc" class="numbered-list" start="1"><li>In truth, boards should on top</li></ol></li></ol><ol type="1" id="c3164b20-3f1f-4237-b522-e8c4456c495c" class="numbered-list" start="2"><li>Flipped<ol type="a" id="746e29cc-76f7-4c83-84ed-61de0d11d006" class="numbered-list" start="1"><li>Customer first, employee first</li></ol></li></ol><ol type="1" id="982819e6-f308-4717-b7ca-82d606c80d59" class="numbered-list" start="3"><li>Flattened<ol type="a" id="ae2b13da-50ec-4a0f-b43f-34546610ca03" class="numbered-list" start="1"><li>fluidity and empowerment</li></ol><ol type="a" id="fe5dafdc-5fe4-4bc4-8db4-c33db498b76e" class="numbered-list" start="2"><li>tough to scale, loss of coordination, unique management needs</li></ol></li></ol><ol type="1" id="8ef03b17-0a5c-4648-ad7f-0c13a948c877" class="numbered-list" start="4"><li>Networked<ol type="a" id="de31f0ab-1fef-4c87-af1a-3a30f27267e3" class="numbered-list" start="1"><li>Like traditional but has projects on the left side that connects everyone</li></ol><ol type="a" id="7213ae49-7d85-41ef-87f0-427383d2b9a9" class="numbered-list" start="2"><li>program focused and cuts across silos</li></ol><ol type="a" id="7a4be21e-3319-4b07-9790-0c5389adec2e" class="numbered-list" start="3"><li>Requires high EQ for managers and demand mixed accountabilities: down and across</li></ol></li></ol><ol type="1" id="e0079bd8-0a83-460e-acaf-c0188d74717c" class="numbered-list" start="5"><li>Dyatic<ol type="a" id="9de15140-2e19-4b50-b22b-1736f8d5b460" class="numbered-list" start="1"><li>Models collaboration</li></ol><ol type="a" id="d2f3a7aa-8e33-4300-a958-f02916fcfa85" class="numbered-list" start="2"><li>builds in checks, support, etc.</li></ol><ol type="a" id="6ecca84d-c903-41ac-bebb-c9e8bdd79fcd" class="numbered-list" start="3"><li>Is accountability clear?</li></ol><ol type="a" id="10ebf300-8be8-49c0-8709-48d68f31544d" class="numbered-list" start="4"><li>Does it exclude other executives?</li></ol></li></ol><p id="ba946d4b-be6f-4d4c-9396-b6f5693c736f" class="">
+</p><h2 id="177f8424-a4cd-4b2d-8407-1cf5e202bbd9" class="">Leading by two</h2><div id="cced3749-fa63-4ba4-bd96-72a3963aa3ad" class="column-list"><div id="5cc6364b-159e-4b24-8fb6-058dae17ba41" style="width:43.75%" class="column"><figure id="7d4ec945-12d2-43bd-ac94-a71fa338cdd8" class="image"><a href="UGBA%20C155%20Notes%20b7199f646bdc42219fddc3683e9a3dcb/Untitled%2014.png"><img style="width:384px" src="UGBA%20C155%20Notes%20b7199f646bdc42219fddc3683e9a3dcb/Untitled%2014.png"/></a></figure></div><div id="f5e6f90f-470f-45b6-922c-f0929d9fa1ba" style="width:56.25000000000002%" class="column"><p id="a806a72f-dce3-4327-9098-9e83dc53fc03" class="">Traditional leadership: leader assigns job and the follower executes it.</p><figure id="141f5f06-45c5-46af-a6f0-ce2e1de2a00f" class="image"><a href="UGBA%20C155%20Notes%20b7199f646bdc42219fddc3683e9a3dcb/Untitled%2015.png"><img style="width:384px" src="UGBA%20C155%20Notes%20b7199f646bdc42219fddc3683e9a3dcb/Untitled%2015.png"/></a></figure></div></div><p id="7bb812bb-1273-416a-acb9-2ebc8a9af7fa" class="">Evolve this relationship:</p><ol type="1" id="273752c4-2363-4a5d-89d9-fb116af92f6d" class="numbered-list" start="1"><li>form a single-directional relationship to bi-directional relationship</li></ol><ol type="1" id="dc6660a8-fa03-4c31-8ca5-c180d12d41db" class="numbered-list" start="2"><li>ultimately leader to leader</li></ol><figure id="a28fd60a-e029-4c7f-9f8b-606f0828a38c" class="image"><a href="UGBA%20C155%20Notes%20b7199f646bdc42219fddc3683e9a3dcb/Untitled%2016.png"><img style="width:2382px" src="UGBA%20C155%20Notes%20b7199f646bdc42219fddc3683e9a3dcb/Untitled%2016.png"/></a></figure><p id="12f06f96-3b9f-4c89-9d18-5a97523b2bf1" class="">
+</p><h2 id="92400b63-8635-4b76-8472-6d95d367f5e3" class="">Objective and Key Results (OKRs)</h2><p id="1367a973-d530-4c63-a5c3-63c1114795b0" class="">Interview with Niket Densai on OKRs, one technique used by Google very effectively</p><figure id="cac631f8-c3f3-40dc-a828-84f571d51882"><a href="https://rework.withgoogle.com/guides/set-goals-with-okrs/steps/introduction/" class="bookmark source"><div class="bookmark-info"><div class="bookmark-text"><div class="bookmark-title">re:Work - Guide: Set goals with OKRs</div><div class="bookmark-description">Studies have shown that committing to a goal can help improve employee performance. But more specifically, research reveals that setting challenging and specific goals can further enhance employee engagement in attaining those goals. Google often uses &quot;Objectives and Key Results&quot; (OKRs) to try to set ambitious goals and track progress.</div></div><div class="bookmark-href"><img src="https://rework.withgoogle.com/static/a25cc87f/public/images/favicon.ico" class="icon bookmark-icon"/>https://rework.withgoogle.com/guides/set-goals-with-okrs/steps/introduction/</div></div><img src="https://rework.withgoogle.com/static/a25cc87f/public/images/social-share-image.png" class="bookmark-image"/></a></figure><p id="7d087d4c-5eee-43d9-82c7-db3aad0c27c4" class="">
+</p><p id="f9a26cf9-7e19-4841-a1bd-5908d31d420c" class="">
+</p><h1 id="a0152601-4aac-4f96-85c4-22075205a128" class="">Systems, Skill, Staff</h1><h2 id="d126cacf-4bfc-4cb3-8ae4-4cbf9f5a2cdc" class="">System</h2><p id="d55d10d3-403d-4d3e-9411-d1a22f6a25c8" class="">We have different systems in organizations / body / world</p><figure id="3c52d1ba-c7d0-43ab-9dc0-4f2fa90a2af9" class="image"><a href="UGBA%20C155%20Notes%20b7199f646bdc42219fddc3683e9a3dcb/Untitled%2017.png"><img style="width:1692px" src="UGBA%20C155%20Notes%20b7199f646bdc42219fddc3683e9a3dcb/Untitled%2017.png"/></a></figure><p id="06aaa659-35bf-4ffd-9c92-608eec657ea6" class="">How do we open up the systems and make sure that the systems are not blaming each other for failures and encourage giving credit to each other for success?</p><p id="d0e487d7-fa21-49a9-b728-066259962e70" class="">
+</p><ol type="1" id="0c48f939-5d97-4df1-aee8-12179122675e" class="numbered-list" start="1"><li>Leaders at all levels must continually struggle to see larger systems.</li></ol><ol type="1" id="8bc65e76-0eb7-4d21-b5f8-cbc311751a2d" class="numbered-list" start="2"><li>Seeing interrelationship may be the central purpose for having hierarchical leaders</li></ol><ol type="1" id="c2f01f76-576d-4034-811c-c1b786728faf" class="numbered-list" start="3"><li>They realize presenting problems may have causes far away in distance and time</li></ol><ol type="1" id="21e79a3e-e582-48aa-be74-f8a38c52ebb6" class="numbered-list" start="4"><li>Leaders ask the 5 “Why’s” as they look back for causes</li></ol><ol type="1" id="ff48c271-250b-4301-bd33-82231b2985b2" class="numbered-list" start="5"><li>Leaders must strive to create One Team, so people look beyond silos(personal, team, even organizational silo)</li></ol><ol type="1" id="f0b8e3f1-9c14-467a-a09e-cc119e36ab2b" class="numbered-list" start="6"><li>Leaders looking forward ask the 5 “Then What Happens?” to discover forward seeing unintended consequences</li></ol><p id="7f162fd8-780f-4d3a-badc-826b12a8fd24" class="">
+</p><h2 id="9384fcd6-87ad-4025-bd15-7090a97f3a2a" class="">Strength-based Leadership</h2><h3 id="ef4ca186-869a-4555-8608-6a744feaa174" class="">The Pareto Principle (80/20 Principle)</h3><p id="956378bf-3c82-4474-97a6-b237a98509f6" class="">“Unrationality of our lives”</p><p id="125df954-c2f9-4a9a-b072-632b4703a7ef" class="">80% of land in italy was owned by 20% of people in Italy and aross Europe.</p><p id="7ee37897-1cba-4c8c-97a6-885d5ef93705" class="">Same principle applies…</p><ol type="1" id="531f2793-1c7b-40b8-8b2f-ae87ccb16a4e" class="numbered-list" start="1"><li>20% of employee produces 80% of results</li></ol><ol type="1" id="36edd5ae-e557-462b-a468-e4886e70d830" class="numbered-list" start="2"><li>80% of your managerial time is spent with 20% of your performers</li></ol><p id="439976f7-1637-44bb-bc4c-1e57ac3ce10b" class="">
+</p><p id="e826e756-f09a-407b-84d9-7d610063520f" class="">“Maslow’s Theory of The Instrument: If all you have is a hammer, everything looks like a nail”</p><p id="8ae7cb9b-0bc0-401b-ac52-cf341736796f" class="">
+</p><h3 id="8f04900d-9287-48af-9217-ebcb37f895ce" class="">Personal Value of the Shift toward Strength-based placements</h3><ol type="1" id="7673d916-31c4-4e09-9585-8e68a35b748f" class="numbered-list" start="1"><li>Personal Enjoyment - 6x as likely to agree - I do what I do best everyday</li></ol><ol type="1" id="c2878920-fb87-4c55-9bfc-1a9ca040ee3d" class="numbered-list" start="2"><li>Organizational Engagement - 6x as likely to be engaged - generates productivity</li></ol><ol type="1" id="e09fd34d-fa46-4a8e-ad14-8f4c9382b85d" class="numbered-list" start="3"><li>Growth - If you spend your whole life trying to be good at everything, you probably won’t be great at anything</li></ol><p id="31fc6129-ba33-42e3-bc20-c006a1fa9dcb" class="">
+</p><h3 id="41df3282-8df2-49ea-81ee-6d0b67d62f8e" class="">Value of Strengths-based leadership in hiring and placement</h3><ol type="1" id="fc1c57d7-53db-4e79-8c2b-6f7a5f1600f0" class="numbered-list" start="1"><li>Many organizations still don’t hire for competency(talent). Sadly!</li></ol><ol type="1" id="0e9a7d35-411f-4461-a45f-ba200eb4ef18" class="numbered-list" start="2"><li>Because it’s often hard to train for it.</li></ol><ol type="1" id="1bf91b98-780f-4dfc-82fd-57a147d6ecc1" class="numbered-list" start="3"><li>Strengths-based hiring naturally complements systems thinking</li></ol><p id="5cc140cd-4bac-48b4-bf86-7d329ffe7bf7" class="">
+</p><h3 id="8658be81-3497-41f6-83d5-0afa1b2a83c9" class="">Importance of Growth Mindset</h3><figure id="34527027-f054-497d-8325-309a6083bda5" class="image"><a href="UGBA%20C155%20Notes%20b7199f646bdc42219fddc3683e9a3dcb/Untitled%2018.png"><img style="width:1311px" src="UGBA%20C155%20Notes%20b7199f646bdc42219fddc3683e9a3dcb/Untitled%2018.png"/></a></figure><p id="eeb73846-6a67-433a-8dc7-2b0c9c72f08b" class="">
+</p><h3 id="fb13cc21-3d41-4184-90d5-bc3ec1cef2af" class="">Strengths-based Leadership Works 2 Ways</h3><ol type="1" id="3bd77e00-d315-452a-abc5-8ff6f6f2cc4c" class="numbered-list" start="1"><li>It plays to our fixed mindset, relaxing our fearful mindset<ol type="a" id="b503b772-e7cb-4a79-a76c-803a5adb92ec" class="numbered-list" start="1"><li>You’re not good at basketball but good at piano during kindergarten, then just play piano!</li></ol></li></ol><ol type="1" id="99fee5e5-9a08-4e4f-b96e-7bf0a3a940cb" class="numbered-list" start="2"><li>And thus relaxed our slip into the growth mindset - I’m good. I can do this. I can handle setbacks, and I can build on my advantage.</li></ol><p id="da633777-b1e4-45ec-ba4c-ecb569b0e510" class="">
+</p><figure id="86a19e1a-4cb2-4713-9eb0-bb163b609171" class="image"><a href="UGBA%20C155%20Notes%20b7199f646bdc42219fddc3683e9a3dcb/Untitled%2019.png"><img style="width:1342px" src="UGBA%20C155%20Notes%20b7199f646bdc42219fddc3683e9a3dcb/Untitled%2019.png"/></a></figure><p id="a4361249-f7d9-40f5-9c42-46dcc2ae8eba" class="">
+</p><h3 id="8263b338-76b6-4cb0-b1c1-4415b3d7cfdb" class="">Bottom Line on Strengths-based leadership</h3><ol type="1" id="aecabd12-ae70-4d53-8b91-2532c9cf7e4b" class="numbered-list" start="1"><li>It’s good for the person in their sweet spot</li></ol><ol type="1" id="3c7840ed-88d2-4186-bb4b-dedd2296ebf3" class="numbered-list" start="2"><li>It’s good for the organization that maximizes natural talent</li></ol><ol type="1" id="6ec0a46a-fd28-4736-bbef-2e42b56c5f17" class="numbered-list" start="3"><li>It should be complemented with growth strategies and crossfertilization</li></ol><p id="92d8901e-2259-494a-b93b-fe1cb2575f4d" class="">
+</p><h2 id="68c19fb6-e380-4f99-ab55-4615adeae2aa" class="">Talent</h2><blockquote id="bf8c9195-e0fc-4e6b-ab7e-431aa1d17a4b" class="">Hire Slow, Fire Fast</blockquote><ol type="1" id="412b7893-bfd8-435d-8f4c-b412f121974e" class="numbered-list" start="1"><li>Uncover the benefits and costs of finding and training great talent</li></ol><ol type="1" id="8308fe82-0672-4d47-a5de-0932c9af1d09" class="numbered-list" start="2"><li>Explore a few strategies to hire well</li></ol><ol type="1" id="f52ce97c-cdb8-4a13-9aba-74d867037899" class="numbered-list" start="3"><li>Clarify the value of retaining and growing great talent</li></ol><ol type="1" id="970bf6d5-12a6-4617-a5a6-fd4e0612467d" class="numbered-list" start="4"><li>Identify how necessary turnover(firing people) can decrease the frequency and size of costs of unwanted turnover.</li></ol><p id="fdfa94b4-a888-4272-ae9b-25c00de38efa" class="">
+</p><h3 id="9e845562-ab79-49c5-9290-35503b8ea93d" class="">“Hiring Slow”</h3><div id="fa817a63-57b2-4e43-8681-4b99bc568852" class="column-list"><div id="a00e1f72-a871-4281-8b5d-0a71f62e905e" style="width:62.5%" class="column"><figure id="b90e1da0-d398-4d63-9a18-73a09947ef66" class="image"><a href="UGBA%20C155%20Notes%20b7199f646bdc42219fddc3683e9a3dcb/Untitled%2020.png"><img style="width:2317px" src="UGBA%20C155%20Notes%20b7199f646bdc42219fddc3683e9a3dcb/Untitled%2020.png"/></a></figure></div><div id="c1815d67-aae6-4dc2-b16c-99616f924dba" style="width:37.5%" class="column"><figure id="3fe933e6-7414-40ee-9bc4-2977e01930ee" class="image"><a href="UGBA%20C155%20Notes%20b7199f646bdc42219fddc3683e9a3dcb/Untitled%2021.png"><img style="width:883px" src="UGBA%20C155%20Notes%20b7199f646bdc42219fddc3683e9a3dcb/Untitled%2021.png"/></a></figure></div></div><figure id="33a83fce-9b35-47f4-959d-23dfdc9fc6a3" class="equation"><style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.13.2/katex.min.css')</style><div class="equation-container"><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mtext>Expenses of employee leaving</mtext><mo>=</mo><mtext>Lost Productivity of Role</mtext><mo>+</mo><mtext>Lost Productivity of Team</mtext></mrow><annotation encoding="application/x-tex">\text{Expenses of employee leaving} = \text{Lost Productivity of Role} + \text{Lost Productivity of Team}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8888799999999999em;vertical-align:-0.19444em;"></span><span class="mord text"><span class="mord">Expenses of employee leaving</span></span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.8888799999999999em;vertical-align:-0.19444em;"></span><span class="mord text"><span class="mord">Lost Productivity of Role</span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.8888799999999999em;vertical-align:-0.19444em;"></span><span class="mord text"><span class="mord">Lost Productivity of Team</span></span></span></span></span></span></div></figure><hr id="9d8bc5de-443e-4bed-93d7-b88055f6f68f"/><p id="782f4e18-fad8-48cd-8dbb-4160b4dc4864" class="">Therefore, we can use <strong>competency-based hiring</strong></p><blockquote id="1f2e8d8b-5025-4c65-8292-a5cb9a551b7d" class="">A process of evaluating candidates’ <strong>behavioral attributes</strong>, as well as their skills and knowlege, by using job profiles and <strong>structured interviews</strong> to determine their suitability for a position</blockquote><p id="6efec676-3aeb-4f65-90cc-707cdb5faba5" class="">
+</p><h3 id="75fcc4fd-daf8-4dc9-ae1f-ddec602ff59f" class="">Hiring by Committee</h3><ol type="1" id="165e226c-f5d1-48d2-b4b3-aee5a242a0fc" class="numbered-list" start="1"><li>A hiring manager can say no to an applicant for any reason but cannot singlehandedly give the “final yes” to extend a job offer</li></ol><ol type="1" id="08989085-0850-42dd-ac9f-3a4271e8ef2f" class="numbered-list" start="2"><li>All suitable candidates are passed along to a hiring committee for review.</li></ol><ol type="1" id="efc26203-2679-4721-b5dd-fb40e715b0a4" class="numbered-list" start="3"><li>That group of people have to agree on each person that’s hired</li></ol><ol type="1" id="45971f6d-5164-4199-b408-69f3fc1dec19" class="numbered-list" start="4"><li>Employees are rated for competencies directly related to the job description, attributes required to execute the role, and competencies required of all employees (certain communication skills)</li></ol><ol type="1" id="fa403862-b21a-4341-8d2e-cde619a05d85" class="numbered-list" start="5"><li>Can assess “fit” with clear definition (e.g. Aligment to core values)</li></ol><p id="027e260e-93ad-44f5-a875-965e22e29ad0" class="">
+</p><h3 id="75374f90-322c-41fa-8a96-bc901a5bdd21" class="">“Firing Fast”</h3><blockquote id="de08da77-98db-4fae-a1cd-a492ef3f3c34" class="">Sutton’s no asshole rule</blockquote><figure id="63dd99a6-8cb5-4a13-9f31-87c45692c5e7" class="equation"><style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.13.2/katex.min.css')</style><div class="equation-container"><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mtext>Total Cost of Assholes</mtext><mo>=</mo><mtext>Damage to victims and witnesses (unmotivated, distracted, quitting)</mtext><mo>+</mo><mtext>Management time lost spent addressing asshole-related issues</mtext><mo>+</mo><mtext>Reduced innovation and creativity due to lack of psychological safety</mtext><mo>+</mo><mtext>Legal and HR costs</mtext><mo>+</mo><mtext>Impaired ability to attract the best and brightest</mtext></mrow><annotation encoding="application/x-tex">\text{Total Cost of Assholes} = \text{Damage to victims and witnesses (unmotivated, distracted, quitting)} + \text{Management time lost spent addressing asshole-related issues} + \text{Reduced innovation and creativity due to lack of psychological safety} + \text{Legal and HR costs} + \text{Impaired ability to attract the best and brightest}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.69444em;vertical-align:0em;"></span><span class="mord text"><span class="mord">Total Cost of Assholes</span></span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord text"><span class="mord">Damage to victims and witnesses (unmotivated, distracted, quitting)</span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.8888799999999999em;vertical-align:-0.19444em;"></span><span class="mord text"><span class="mord">Management time lost spent addressing asshole-related issues</span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.8888799999999999em;vertical-align:-0.19444em;"></span><span class="mord text"><span class="mord">Reduced innovation and creativity due to lack of psychological safety</span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.8888799999999999em;vertical-align:-0.19444em;"></span><span class="mord text"><span class="mord">Legal and HR costs</span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.8888799999999999em;vertical-align:-0.19444em;"></span><span class="mord text"><span class="mord">Impaired ability to attract the best and brightest</span></span></span></span></span></span></div></figure><p id="0acaf22c-0571-439e-b7b4-8cf18f006f8c" class="">But hard to identify assholes</p><ol type="1" id="a36bc968-6c9b-4a1f-abb6-8e216b54f434" class="numbered-list" start="1"><li>so know your people and where gaps are in your company</li></ol><p id="94ce4963-d855-4bae-8217-a3e08ef2e4d8" class="">
+</p><p id="f098373c-baeb-4145-b348-64eb654eb8b3" class="">Three factors to keep us motivated</p><ol type="1" id="b70a1dcc-2f4b-4c55-8bf8-aac09b82043a" class="numbered-list" start="1"><li>Autonomy - our desire to become self-directed, increases engagement over compliance</li></ol><ol type="1" id="832f55ab-45a0-4e39-9ba5-8e9a77f81267" class="numbered-list" start="2"><li>Mastery - the urge to get better skills, know your people and grow your people</li></ol><ol type="1" id="3376ef39-13e4-4b2b-ace3-1a2fdfdb523b" class="numbered-list" start="3"><li>Purpose - the desire to do something that has meaning and is important</li></ol><p id="803887ff-7230-42d1-aba6-e7d55bbf58dc" class="">
+</p><blockquote id="cd8d418e-38e3-4c68-b19f-10dc1f21cae9" class="">Interview with Dr. Eugene Whitlock takeaway: Community efforts are important and HR instead of being HRs should be people &amp; culture (because people are not resources)</blockquote><p id="f61e88de-f522-4e15-9068-61c6a863c278" class="">
+</p></div></article></body></html>
