@@ -17,7 +17,8 @@ This repository is brought to you by [Yunhao Cao](https://github.com/ToiletComma
   - [INDENG/IEOR 162 Linear Programming and Network Flow - 2022 Spring](INDENG162/)
   - [UGBA C155 Leadership: Purpose, Authority, and Empowerment - 2022 Summer](UGBA%20C155/)
   - [EECS 127 Optimization Models in Engineering - 2022 Fall](EECS127/)
-  - 
+  - [CS 285 Deep Reinforcement Learning - 2022 Fall](CS285/)
+  - [CS 170 Discrete Optimization - 2022 Fall](CS170/)
 - Non-Berkeley Courses
   - DeepLearning.AI
     - [Deep Learning Specialization](DLSpecialization/)
