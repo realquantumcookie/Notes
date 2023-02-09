@@ -1,0 +1,675 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>Open problems in RL</title><style>
+/* cspell:disable-file */
+/* webkit printing magic: print all background colors */
+html {
+	-webkit-print-color-adjust: exact;
+}
+* {
+	box-sizing: border-box;
+	-webkit-print-color-adjust: exact;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+@media only screen {
+	body {
+		margin: 2em auto;
+		max-width: 900px;
+		color: rgb(55, 53, 47);
+	}
+}
+
+body {
+	line-height: 1.5;
+	white-space: pre-wrap;
+}
+
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+h1 {
+	font-size: 1.875rem;
+	margin-top: 1.875rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+	margin-top: 1.25rem;
+}
+
+.source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 3px;
+	padding: 1rem;
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.column-list {
+	display: flex;
+	justify-content: space-between;
+}
+
+.column {
+	padding: 0 1em;
+}
+
+.column:first-child {
+	padding-left: 0;
+}
+
+.column:last-child {
+	padding-right: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding: 0.125rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+	border-collapse: collapse;
+}
+
+table {
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	text-indent: -1.7em;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+.simple-table {
+	margin-top: 1em;
+	font-size: 0.875rem;
+	empty-cells: show;
+}
+.simple-table td {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table th {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table-header-color {
+	background: rgb(247, 246, 243);
+	color: black;
+}
+.simple-table-header {
+	font-weight: 500;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-block;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	max-height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	transform: scale(1.5);
+	margin-right: 0.6em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code-wrap {
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1.25em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+.bookmark {
+	text-decoration: none;
+	max-height: 8em;
+	padding: 0;
+	display: flex;
+	width: 100%;
+	align-items: stretch;
+}
+
+.bookmark-title {
+	font-size: 0.85em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 1.75em;
+	white-space: nowrap;
+}
+
+.bookmark-text {
+	display: flex;
+	flex-direction: column;
+}
+
+.bookmark-info {
+	flex: 4 1 180px;
+	padding: 12px 14px 14px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.bookmark-image {
+	width: 33%;
+	flex: 1 1 180px;
+	display: block;
+	position: relative;
+	object-fit: cover;
+	border-radius: 1px;
+}
+
+.bookmark-description {
+	color: rgba(55, 53, 47, 0.6);
+	font-size: 0.75em;
+	overflow: hidden;
+	max-height: 4.5em;
+	word-break: break-word;
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	margin-top: 0.25em;
+}
+
+.sans { font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, ui-serif, serif; }
+.mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
+.pdf .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK JP'; }
+.pdf:lang(zh-CN) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC'; }
+.pdf:lang(zh-TW) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK TC'; }
+.pdf:lang(ko-KR) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK KR'; }
+.pdf .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK JP'; }
+.pdf:lang(zh-CN) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK SC'; }
+.pdf:lang(zh-TW) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK TC'; }
+.pdf:lang(ko-KR) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK KR'; }
+.pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.highlight-default {
+	color: rgba(55, 53, 47, 1);
+}
+.highlight-gray {
+	color: rgba(120, 119, 116, 1);
+	fill: rgba(120, 119, 116, 1);
+}
+.highlight-brown {
+	color: rgba(159, 107, 83, 1);
+	fill: rgba(159, 107, 83, 1);
+}
+.highlight-orange {
+	color: rgba(217, 115, 13, 1);
+	fill: rgba(217, 115, 13, 1);
+}
+.highlight-yellow {
+	color: rgba(203, 145, 47, 1);
+	fill: rgba(203, 145, 47, 1);
+}
+.highlight-teal {
+	color: rgba(68, 131, 97, 1);
+	fill: rgba(68, 131, 97, 1);
+}
+.highlight-blue {
+	color: rgba(51, 126, 169, 1);
+	fill: rgba(51, 126, 169, 1);
+}
+.highlight-purple {
+	color: rgba(144, 101, 176, 1);
+	fill: rgba(144, 101, 176, 1);
+}
+.highlight-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.highlight-red {
+	color: rgba(212, 76, 71, 1);
+	fill: rgba(212, 76, 71, 1);
+}
+.highlight-gray_background {
+	background: rgba(241, 241, 239, 1);
+}
+.highlight-brown_background {
+	background: rgba(244, 238, 238, 1);
+}
+.highlight-orange_background {
+	background: rgba(251, 236, 221, 1);
+}
+.highlight-yellow_background {
+	background: rgba(251, 243, 219, 1);
+}
+.highlight-teal_background {
+	background: rgba(237, 243, 236, 1);
+}
+.highlight-blue_background {
+	background: rgba(231, 243, 248, 1);
+}
+.highlight-purple_background {
+	background: rgba(244, 240, 247, 0.8);
+}
+.highlight-pink_background {
+	background: rgba(249, 238, 243, 0.8);
+}
+.highlight-red_background {
+	background: rgba(253, 235, 236, 1);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(120, 119, 116, 1);
+	fill: rgba(120, 119, 116, 1);
+}
+.block-color-brown {
+	color: rgba(159, 107, 83, 1);
+	fill: rgba(159, 107, 83, 1);
+}
+.block-color-orange {
+	color: rgba(217, 115, 13, 1);
+	fill: rgba(217, 115, 13, 1);
+}
+.block-color-yellow {
+	color: rgba(203, 145, 47, 1);
+	fill: rgba(203, 145, 47, 1);
+}
+.block-color-teal {
+	color: rgba(68, 131, 97, 1);
+	fill: rgba(68, 131, 97, 1);
+}
+.block-color-blue {
+	color: rgba(51, 126, 169, 1);
+	fill: rgba(51, 126, 169, 1);
+}
+.block-color-purple {
+	color: rgba(144, 101, 176, 1);
+	fill: rgba(144, 101, 176, 1);
+}
+.block-color-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.block-color-red {
+	color: rgba(212, 76, 71, 1);
+	fill: rgba(212, 76, 71, 1);
+}
+.block-color-gray_background {
+	background: rgba(241, 241, 239, 1);
+}
+.block-color-brown_background {
+	background: rgba(244, 238, 238, 1);
+}
+.block-color-orange_background {
+	background: rgba(251, 236, 221, 1);
+}
+.block-color-yellow_background {
+	background: rgba(251, 243, 219, 1);
+}
+.block-color-teal_background {
+	background: rgba(237, 243, 236, 1);
+}
+.block-color-blue_background {
+	background: rgba(231, 243, 248, 1);
+}
+.block-color-purple_background {
+	background: rgba(244, 240, 247, 0.8);
+}
+.block-color-pink_background {
+	background: rgba(249, 238, 243, 0.8);
+}
+.block-color-red_background {
+	background: rgba(253, 235, 236, 1);
+}
+.select-value-color-pink { background-color: rgba(245, 224, 233, 1); }
+.select-value-color-purple { background-color: rgba(232, 222, 238, 1); }
+.select-value-color-green { background-color: rgba(219, 237, 219, 1); }
+.select-value-color-gray { background-color: rgba(227, 226, 224, 1); }
+.select-value-color-opaquegray { background-color: rgba(255, 255, 255, 0.0375); }
+.select-value-color-orange { background-color: rgba(250, 222, 201, 1); }
+.select-value-color-brown { background-color: rgba(238, 224, 218, 1); }
+.select-value-color-red { background-color: rgba(255, 226, 221, 1); }
+.select-value-color-yellow { background-color: rgba(253, 236, 200, 1); }
+.select-value-color-blue { background-color: rgba(211, 229, 239, 1); }
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+	
+</style></head><body><article id="455952ce-506e-477b-879e-2ffcce7d50b7" class="page sans"><header><h1 class="page-title">Open problems in RL</h1></header><div class="page-body"><p id="26c904f8-c78f-4eb6-86c0-4b6f700db067" class="">Challenges with core algorithms:</p><ul id="aa0bba7a-8321-454a-a7ea-683b56e058a9" class="bulleted-list"><li style="list-style-type:disc">Stability: does your algorithm converge?</li></ul><ul id="7f93a44e-fdd3-4ad2-b4fe-4848bdaff51e" class="bulleted-list"><li style="list-style-type:disc">Efficiency: how long does it take to converge? (how many samples)</li></ul><ul id="137bf538-ffc8-46f1-b442-009f5dd629f1" class="bulleted-list"><li style="list-style-type:disc">Generalization: after it converges, does it generalize?</li></ul><p id="ccdbdcf6-99db-4b15-9547-efd6a9111b3a" class="">Challenges with assumptions:</p><ul id="325e96b1-5829-4027-9c23-49fb6adb2790" class="bulleted-list"><li style="list-style-type:disc">Is this even the right problem formulation?</li></ul><ul id="5ad0da7e-2627-4390-9f64-aae9b7db95e8" class="bulleted-list"><li style="list-style-type:disc">What is the source of supervision?</li></ul><p id="e8635a60-7534-41b1-b5bf-489493bdc343" class="">
+</p><h2 id="9f62427f-e47e-4a1c-a824-39d753d6dba4" class="">Stability</h2><ul id="7c957918-d40f-4186-a675-7eb15420d634" class="bulleted-list"><li style="list-style-type:disc">Devising stable RL algorithms is very hard</li></ul><ul id="64c06ee3-6c1a-4372-ada9-49635cc190b6" class="bulleted-list"><li style="list-style-type:disc">Q-learning/value function estimation<ul id="ba5cf3ad-4621-4032-8d7e-1532172cf88e" class="bulleted-list"><li style="list-style-type:circle">Fitted Q/fitted value methods with deep network function<ul id="7e526ad6-76f4-4432-9858-ef58712f0b13" class="bulleted-list"><li style="list-style-type:square">estimators are typically not contractions, hence no guarantee of convergence</li></ul></li></ul><ul id="16f80c1b-b4ba-40a6-a9dd-5042bbe8f970" class="bulleted-list"><li style="list-style-type:circle">Lots of parameters for stability: <ul id="ceefb50b-0548-4139-b460-03c1c2ccde75" class="bulleted-list"><li style="list-style-type:square">target network delay, replay buffer size, clipping, sensitivity to learning rates, etc.</li></ul></li></ul></li></ul><ul id="756ed65b-dd89-48b7-803b-37b8724fcce9" class="bulleted-list"><li style="list-style-type:disc">Policy gradient/likelihood ratio/REINFORCE<ul id="9881a484-0bfb-4b93-a0a2-781fb14382c7" class="bulleted-list"><li style="list-style-type:circle">Very high variance gradient estimator</li></ul><ul id="54b04800-7814-4e37-bc25-846ca292e012" class="bulleted-list"><li style="list-style-type:circle">Lots of samples, complex baselines, etc.</li></ul><ul id="850f2aa6-7dbc-4721-9e98-80b79faf37bf" class="bulleted-list"><li style="list-style-type:circle">Parameters: batch size, learning rate, design of baseline</li></ul></li></ul><ul id="b3fb2e08-77d2-41d7-8940-54b4f572e7d5" class="bulleted-list"><li style="list-style-type:disc">Model-based RL algorithms<ul id="a01cd950-f7db-4110-a394-95ae7c179d75" class="bulleted-list"><li style="list-style-type:circle">Model class and fitting method</li></ul><ul id="e77f4f71-ae54-4496-9fa9-0b8184e71df8" class="bulleted-list"><li style="list-style-type:circle">Optimizing policy w.r.t. model non-trivial due to backpropagation through time</li></ul><ul id="53bc6b75-7598-4667-a372-75af4cbb3854" class="bulleted-list"><li style="list-style-type:circle">More subtle issue: policy tends to exploit the model</li></ul></li></ul><p id="b2b2f020-2639-45f0-b7d8-aa878d6849fd" class="">
+</p><h2 id="64b0f729-5ee1-4988-adb6-8fe07d01ac7a" class="">Sample Efficiency</h2><div id="8a4b33bd-075b-46fc-a064-a16ec0b07eb0" class="column-list"><div id="cd615ffe-153d-442e-833b-090df654e49f" style="width:43.75%" class="column"><figure id="a663ab28-ff1b-4826-aed2-5200b8252bfc" class="image"><a href="Open%20problems%20in%20RL%20455952ce506e477b879e2ffcce7d50b7/Untitled.png"><img style="width:384px" src="Open%20problems%20in%20RL%20455952ce506e477b879e2ffcce7d50b7/Untitled.png"/></a></figure></div><div id="d1ffe3fa-c124-48c4-a8ff-fdb6cc30a8f5" style="width:56.25%" class="column"><ul id="84c8fdc9-37a9-4804-9954-b54e37131a76" class="bulleted-list"><li style="list-style-type:disc">Need to wait for a long time for your homework to finish running</li></ul><ul id="019d2ddc-8dc8-4a2d-875b-b994805aee9a" class="bulleted-list"><li style="list-style-type:disc">Real-world learning becomes difficult or impractical</li></ul><ul id="963d0d6f-92ab-4e02-87e5-1386ea7ae26c" class="bulleted-list"><li style="list-style-type:disc">Precludes the use of expensive, high-fidelity simulators</li></ul><ul id="332b4295-8517-4351-9235-b0782d194ae3" class="bulleted-list"><li style="list-style-type:disc">Limits applicability to real-world problems</li></ul><p id="3d806c24-02f0-41f0-9e88-23a840c75b04" class="">
+</p></div></div><h2 id="65db45ab-922f-43a5-ab9c-0d0304990723" class="">Scaling up deep RL &amp; Generalization</h2><div id="add7de16-360f-4dee-a859-0bfe7f6c2520" class="column-list"><div id="5157d14b-1a14-47a3-a64e-d098fbb1c0a4" style="width:50%" class="column"><figure id="fd0a8585-2a15-4494-9cdd-3704454b5881" class="image"><a href="Open%20problems%20in%20RL%20455952ce506e477b879e2ffcce7d50b7/Untitled%201.png"><img style="width:438px" src="Open%20problems%20in%20RL%20455952ce506e477b879e2ffcce7d50b7/Untitled%201.png"/></a></figure></div><div id="fde884e9-69a9-4146-8210-e243efeedfb4" style="width:50%" class="column"><p id="292ee7be-b0f6-4378-8b17-914be213051b" class="">Supervised Learning (with Imagenet)</p><ul id="33180b0f-9d61-4056-a5f4-f2ddd9cd429b" class="bulleted-list"><li style="list-style-type:disc">Large-scale</li></ul><ul id="94692fb6-00a0-47ab-b640-0e8115442042" class="bulleted-list"><li style="list-style-type:disc">Emphasizes diversity</li></ul><ul id="74471313-608c-4439-b9b5-a4417826fecc" class="bulleted-list"><li style="list-style-type:disc">Evaluated on generalization</li></ul></div></div><div id="e680c9db-b548-431a-98a0-0c0892a41ee6" class="column-list"><div id="2e6c34ed-66c1-434e-98cb-53d6e3c0395a" style="width:50%" class="column"><p id="3f1ee89c-ec1d-46ce-a921-1f4ae98edafa" class="">RL:</p><ul id="921b38c4-ca85-4437-8c6f-61cda4d4c27b" class="bulleted-list"><li style="list-style-type:disc">Small-scale</li></ul><ul id="b9ef4715-ad20-42a8-84ff-6fb0e69a8f55" class="bulleted-list"><li style="list-style-type:disc">Emphasizes mastery</li></ul><ul id="1f2a2a1f-e6a2-4dff-99fc-2002780c065b" class="bulleted-list"><li style="list-style-type:disc">Evaluated on performance</li></ul></div><div id="718277d5-0999-4ab9-8bb4-304466541b71" style="width:50%" class="column"><figure id="80549245-8a6f-4097-8bdf-391a88888e8b" class="image"><a href="Open%20problems%20in%20RL%20455952ce506e477b879e2ffcce7d50b7/Untitled%202.png"><img style="width:241px" src="Open%20problems%20in%20RL%20455952ce506e477b879e2ffcce7d50b7/Untitled%202.png"/></a></figure></div></div><h2 id="b8ef6d84-c0fc-448d-b65a-cf5783a1451b" class="">Supervision</h2><p id="0417bade-955c-4891-a7a8-c664c5828ea6" class="">Where do supervision come from?</p><ul id="1d3020fa-5877-412e-9937-cfc8bef5c340" class="bulleted-list"><li style="list-style-type:disc">For atari games, it is natural for supervision (reward) to come from the game score</li></ul><ul id="f98cfc90-0b96-4537-aa94-9a3f9a201177" class="bulleted-list"><li style="list-style-type:disc">But there are other form of supervisions other than rewards that we can potentially incorporate<ul id="20c5fd18-0493-46b8-8ffc-f3f980efdc56" class="bulleted-list"><li style="list-style-type:circle">Demonstrations<ul id="333ee798-14d2-4e46-beb1-e92043ee5dfa" class="bulleted-list"><li style="list-style-type:square">Muelling, K et al. (2013). Learning to Select and Generalize Striking Movements in Robot Table Tennis</li></ul></li></ul><ul id="6721eb02-e05c-4446-9f52-074456f25ed2" class="bulleted-list"><li style="list-style-type:circle">Language<ul id="27517e5d-83e8-4d6a-86a1-b7a7b58b5703" class="bulleted-list"><li style="list-style-type:square">Andreas et al. (2018). Learning with latent language</li></ul></li></ul><ul id="a315be6d-4595-493d-840a-55e42056d293" class="bulleted-list"><li style="list-style-type:circle">Human preferences<ul id="adc52909-4e21-4566-bc18-9dc55f1d1838" class="bulleted-list"><li style="list-style-type:square">Christiano et al. (2017). Deep reinforcement learning from human preferences</li></ul></li></ul></li></ul><p id="68590abe-0fe9-4e41-b6bb-8cbb136561c0" class="">
+</p><h2 id="274d58ab-33f1-4fe6-a97b-56b89aa910d3" class="">Rethinking the problem formulation</h2><ul id="fbfcaee9-75a1-4534-aaa0-7cf7da0f1622" class="bulleted-list"><li style="list-style-type:disc">How should we define a control problem?<ul id="2dfac081-d475-4da0-aae4-2c5c1629dd5d" class="bulleted-list"><li style="list-style-type:circle">What is the data?</li></ul><ul id="6c3341ac-e456-4699-8a6b-4af7a86050ab" class="bulleted-list"><li style="list-style-type:circle">What is the goal?</li></ul><ul id="09ab3832-8307-4a59-a246-8c1b9eb885c2" class="bulleted-list"><li style="list-style-type:circle">What is the supervision?<ul id="c2f8419f-19e2-45dc-b55f-1f9b0ba49761" class="bulleted-list"><li style="list-style-type:square">may not be the same as the goal...</li></ul></li></ul></li></ul><ul id="36343254-3158-48d2-bb8d-9ae5e993e6fd" class="bulleted-list"><li style="list-style-type:disc">Think about the assumptions that fit your problem setting!</li></ul><ul id="0ed0c1c0-d4a5-45ee-9a4e-85b0de56e6f9" class="bulleted-list"><li style="list-style-type:disc">Don’t assume the basic RL problem is set in stone</li></ul><p id="82a4ffcd-a1ea-4075-a683-63323fb7a477" class="">
+</p><p id="ed10d920-eb86-4b9b-86b8-7462933e8e0c" class="">Some perspectives</p><ul id="275c794e-bb7e-4227-bafd-30133b6ae16a" class="bulleted-list"><li style="list-style-type:disc">RL as an Engineering Tool<ul id="1b1f6244-5dcd-4638-86e1-717fb4bdcc07" class="bulleted-list"><li style="list-style-type:circle">“Anything you can simulate you can control”<ul id="b0f78ae9-20eb-4d55-a5fd-634d956eef1e" class="bulleted-list"><li style="list-style-type:square">Before: characterize, simulate, control</li></ul><ul id="2207297a-ad33-4da2-9cc3-9c763d13f0c0" class="bulleted-list"><li style="list-style-type:square">Now: characterize, simulate, run RL</li></ul></li></ul><ul id="744f161f-3001-498e-b702-a9c0b70e3667" class="bulleted-list"><li style="list-style-type:circle">Powerful inversion engine ⇒ but still needs to simulate!</li></ul></li></ul><ul id="623a3b1d-08bf-4daa-adfb-963b835f0e06" class="bulleted-list"><li style="list-style-type:disc">RL as the Real World<ul id="4e328728-4dab-4fea-8a73-ba5e91aa068c" class="bulleted-list"><li style="list-style-type:circle">How do we engineer a system that can deal with the unexpected?<ul id="fc7adbef-3e84-4d8b-aa6b-15cc2f552cc0" class="bulleted-list"><li style="list-style-type:square">Minimal external supervision about what to do</li></ul><ul id="01984f20-65bd-45d0-897b-35d13d8be9da" class="bulleted-list"><li style="list-style-type:square">Unexpected situations that require adaptation</li></ul><ul id="5d99e1fe-2eaf-471b-9709-c298573e75d5" class="bulleted-list"><li style="list-style-type:square">Must discover solutions autonomously</li></ul></li></ul><ul id="3fd4d474-4193-4b76-99a1-2bbf4239cbfb" class="bulleted-list"><li style="list-style-type:circle">Humans extremely good at this, current AI systems are extremely bad at this</li></ul><ul id="8b6f1a19-3ed1-48e2-9005-caa832f81c4a" class="bulleted-list"><li style="list-style-type:circle">RL <em><strong>in theory</strong></em> can do this, and nothing else can<ul id="02fac6d4-1017-4c0a-beb3-2ad0204dc8c7" class="bulleted-list"><li style="list-style-type:square">But we rarely study this kind of setting in RL research</li></ul><ul id="78cc12b1-06cb-4596-b6d2-3226406bca9e" class="bulleted-list"><li style="list-style-type:square">“easy universe”<ul id="ad932cca-0e6d-4f14-9694-844f8202d852" class="bulleted-list"><li style="list-style-type:disc">Success = high reward</li></ul><ul id="1e25b746-f10f-4363-9268-0df1dc77e6b2" class="bulleted-list"><li style="list-style-type:disc">close world, rules unknown</li></ul><ul id="baa7bc34-75a5-41bd-a4ac-9f6c73fce9d8" class="bulleted-list"><li style="list-style-type:disc">lots of simulation</li></ul><ul id="8fc41c36-d2a7-4fba-affe-ec56eed5e1e4" class="bulleted-list"><li style="list-style-type:disc">“Can RL algorithms optimize really well?”</li></ul></li></ul><ul id="72f4cab3-afdd-428d-aa54-cb2c7fd9ec25" class="bulleted-list"><li style="list-style-type:square">“hard universe”<ul id="f2bed55f-ebae-423e-9590-79a28ebaa1a7" class="bulleted-list"><li style="list-style-type:disc">success = survival (good enough control)</li></ul><ul id="706d5bbf-d040-4779-9207-503b81f5efc1" class="bulleted-list"><li style="list-style-type:disc">open world, everything must come from data</li></ul><ul id="bd4b7751-1002-4af7-8053-a8f63e19d279" class="bulleted-list"><li style="list-style-type:disc">no simulation (rules unknown)</li></ul><ul id="4890aee2-e2cd-40eb-b3ae-db1221f23239" class="bulleted-list"><li style="list-style-type:disc">“Can RL generalize and adapt?”</li></ul></li></ul></li></ul><ul id="2732aed1-48ed-47f5-9088-a3754a0c9882" class="bulleted-list"><li style="list-style-type:circle">Some questions that come up<ul id="5516b747-8067-4734-bb44-e74620373031" class="bulleted-list"><li style="list-style-type:square">How do we tell RL algorithms what we want them to do?</li></ul><ul id="f7cb917b-bd6a-4c87-9233-e0e53fe533ec" class="bulleted-list"><li style="list-style-type:square">How can we learn fully autonomously in continual environments?</li></ul><ul id="02f643b5-578d-4d35-968c-54aeec87fe7a" class="bulleted-list"><li style="list-style-type:square">How to remain robust as the world changes around us?</li></ul><ul id="91973c61-0cc5-4831-b5a6-3d5f27545acf" class="bulleted-list"><li style="list-style-type:square">What is the right way to generalize using experience &amp; prior data?</li></ul><ul id="51dbb306-3bb9-4cfd-85f4-062895656b06" class="bulleted-list"><li style="list-style-type:square">What’s the right way to bootstrap exploration with prior experience?</li></ul><ul id="c3a359b1-506d-4930-a203-d4ad3d05192a" class="bulleted-list"><li style="list-style-type:square">Can we run fully autonomously?</li></ul></li></ul></li></ul><ul id="6c6e40e5-2a9c-4d37-af5c-b367b1a4b098" class="bulleted-list"><li style="list-style-type:disc">RL as “Universal” Learning<ul id="28733961-edd3-4c0c-a433-1c200d2ca85c" class="bulleted-list"><li style="list-style-type:circle">&quot;We need machine learning for one reason and one reason only – that’s to produce adaptable and complex decisions.”</li></ul><ul id="35cfce4e-f5a5-4d85-bb35-cea570c10e99" class="bulleted-list"><li style="list-style-type:circle">Can we learn from offline data without well-defined tasks?<ul id="b2944752-14b7-4784-ab3f-812e1e72e477" class="bulleted-list"><li style="list-style-type:square">Inspired by large language models learning from internet texts</li></ul><ul id="dcdc81d7-e597-4ed1-915b-2b7a88630e36" class="bulleted-list"><li style="list-style-type:square">self-supervised learning</li></ul><ul id="a3cc36da-3986-4a03-9b49-a94c9e825b93" class="bulleted-list"><li style="list-style-type:square">Chebotar, Hausman, Lu, Xiao, Kalashnikov, Varley, Irpan, Eysenbach, Julian, Finn, Levine. Actionable Models: Unsupervised Offline Reinforcement Learning of Robotic Skills. 2021.</li></ul></li></ul></li></ul><figure id="4de08752-679b-48f3-bccb-950d9da601b7" class="image"><a href="Open%20problems%20in%20RL%20455952ce506e477b879e2ffcce7d50b7/Untitled%203.png"><img style="width:717px" src="Open%20problems%20in%20RL%20455952ce506e477b879e2ffcce7d50b7/Untitled%203.png"/></a></figure><p id="4cf6c6d1-24cf-4e89-9fde-fe6e852eac97" class="">
+</p></div></article></body></html>
