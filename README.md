@@ -19,6 +19,8 @@ This repository is brought to you by [Yunhao Cao](https://github.com/ToiletComma
   - [EECS 127 Optimization Models in Engineering - 2022 Fall](EECS127/)
   - [CS 285 Deep Reinforcement Learning - 2022 Fall](CS285/)
   - [CS 170 Discrete Optimization - 2022 Fall](CS170/)
+  - [ECON 101B Economic Theory - Macro - 2022 Fall](ECON101B/)
+  - [CS 184 Computer Graphics and Imaging - 2023 Spring](CS184/)
 - Non-Berkeley Courses
   - DeepLearning.AI
     - [Deep Learning Specialization](DLSpecialization/)
