@@ -25,6 +25,9 @@ Our approach is:
        1. We determine a top edge by first determining whether it is a horizontal edge and then find out if the other vertex not on this edge has a bigger y-coordinate. 
        2. Similarly, we determine a left edge by first ensuring the edge is not horizontal and one vertex of the edge should have the minimum x-value among all three vertices. 
 2. We ensured the efficiency algorithm by first calculating the minimum and maximum x and y value, and only iterated inside this box instead of the entire buffer frame.
+
+![Task 1 Image](./images/task1.png)
+
 ### Part 2: Antialiasing by Supersampling
 In this part, we are given a triangle and a color, and we need to rasterize the triangle with antialiasing technique. The reason why we need to do this is because the resolution of the screen usually does not match with the edge of the triangles perfectly and through supersampling we can get a better approximation of the shape of the triangle edges through smoother color transitions.
 
@@ -36,7 +39,18 @@ In this part, we are given a triangle and a color, and we need to rasterize the 
    3. The last step we modified is the `resolve_to_frame_buffer` function. Instead of a one-to-one relationship in task 1, we first sum over all the colors in each pixel due to supersampling (summing up each rgb value of the indices corresponding to the pixel in the sample buffer) and average them by dividing by the `sample_rate`. Then we assign the overall rgb value for the pixel in the frame buffer. 
 2. In short, we did not change the rasterization pipeline, but rather modified the rasterize_triangle and resolve_to_frame_buffer function to make it support supersampling. That being said, supersampling is useful especially in terms of antialiasing the triangles intuitively because it samples more points inside each pixel and averages over the color to output one single color to the frame buffer, which in turn **resembles downsampling from a high resolution image**. This works especially well at the edge of each triangle, since there will be drastic change of color from inside the triangle to the background on the edge. Hence by averaging over all colors of the supersampled points for this pixel, the color will not be such a drastic change, instead it will be a milder color, therefore antialiasing accomplished. 
 
+|Image|Image|
+|-|-|
+|![Task2 Sample Rate 1](./images/task2-1.png) <br/> Sample Rate: 1 per px|![Task2 Sample Rate 4](./images/task2-4.png) <br/> Sample Rate: 4 per px|
+|![Task2 Sample Rate 9](./images/task2-9.png) <br /> Sample Rate: 9 per px|![Task2 Sample Rate 16](./images/task2-16.png) <br /> Sample Rate: 16 per px|
+
+> Analysis: As sample rate increases, we see a smoother transition of color at the edge of the triangle.
+
 ### Task 3: Transforms
+
+For this task we implemented 3 functions that involves transformations in the 2D plane. Here is a picture of rendered (and modified) little robot picture using those functions.
+
+![Task 3 Result](./images/task3.png)
 
 ### Task 4: Barycentric coordinates
 In this task, we are asked to rasterize triangles with interpolated color values. The challenge here is that we need to determine the color of each pixel inside the triangle.
@@ -47,6 +61,7 @@ Barycentric coordinate is a coordinate system for triangles of the form (alpha, 
 
 By borrowing this picture from the Internet, we could see as we move away from the red vertex, the interpolation of color will become less and less red since the distance from that vertex to the point is becoming larger, hence a smaller influence. The same works for the vertices with blue and green color.
 
+![Task 4 Render](./images/task4.png)
 
 ### Task 5: "Pixel sampling" for texture mapping
 
@@ -56,13 +71,18 @@ Pixel sampling is sampling the texture map through uv coordinates to get the tex
 2. Then we query the corresponding mipmap level (for this task, it's fixed to be 0) to get the texture map through either nearest or bilinear. 
    1. For nearest, we first multiply `u,v` by texture's `width` and `height` respectively, and round that number to get the nearest pixel on texture corresponding to the `u,v` position. 
    2. For bilinear, we do 2 interpolations within the nearest 4 texture pixels, and get a s and t proportion; then utilize that to interpolate the “intermediate” texture element, which we will fill the pixel with. 
-3. It is clear from the pixel inspector that if we are using nearest pixel sampling, the white line that is supposed to run across the entire globe is just dots scattered around, while if we take a look at the bilinear interpolation sampling, we could clearly see the white longitudinal and latitudinal line running across the texture. I think this large difference is caused when there is a sharp change in texture, so nearest sampling will just take the nearest texture element, which could be just white or blue in this case; but bilinear sampling will be able to take blue and white, blending them together to give a much smoother transition. This caused the difference in the result showed above.
+3. It is clear from the pixel inspector that if we are using nearest pixel sampling, the white line that is supposed to run across the entire globe is just dots scattered around, while if we take a look at the bilinear interpolation sampling, we could clearly see the white longitudinal and latitudinal line running across the texture. I think this large difference is caused when there is a sharp change in texture, so nearest sampling will just take the nearest texture element, which could be just white or blue in this case; but bilinear sampling will be able to take blue and white, blending them together to give a much smoother transition. This caused the difference in the result showed below.
+
+|Image|Image|
+|-|-|
+|![Task 5 Nearest Sampling with 1 samples per pixel](./images/task5-nearest-1.png) <br/>Nearest Sampling with 1 samples per pixel|![Task 5 Bilinear Sampling with 1 samples per pixel](./images/task5-bilinear-1.png) <br/>Bilinear Sampling with 1 samples per pixel|
+|![Task 5 Nearest Sampling with 16 samples per pixel](./images/task5-nearest-16.png) <br/>Nearest Sampling with 16 samples per pixel|![Task 5 Bilinear Sampling with 16 samples per pixel](./images/task5-bilinear-16.png) <br/>Bilinear Sampling with 16 samples per pixel|
 
 ### Task 6: "Level sampling" with mipmaps for texture mapping
 
 Level sampling is using appropriate mipmap levels to avoid sampling multiple texture pixels for a single on-screen pixel. Mipmaps are basically a set of pre-sampled textures at different resolutions, and we can use the derivative of the uv coordinates to determine which mipmap level to use.
 
-I implemneted Level sampling by first computing the derivative of the uv coordinates
+I implemented Level sampling by first computing the derivative of the uv coordinates
 
 We will use $x,y$ to represent the pixel coordinates on the screen, $u,v$ to represent the uv coordinates on the texture map, and $t_x, t_y$ to represent pixel coordinates on the original texture map at level 0.
 
@@ -116,12 +136,14 @@ Visualizations:
 
 |Pixel Sampling Method|Level Sampling Method|Result|
 |-|-|-|
-|`P_NEAREST`|`L_ZERO`||
-|`P_LINEAR`|`L_ZERO`||
-|`P_NEAREST`|`L_NEAREST`||
-|`P_LINEAR`|`L_NEAREST`||
-|`P_NEAREST`|`L_LINEAR`||
-|`P_LINEAR`|`L_LINEAR`||
+|`P_NEAREST`|`L_ZERO`|![Illus](./images/task6-nearest-l0.png)|
+|`P_LINEAR`|`L_ZERO`|![Illus](./images/task6-bilinear-l0.png)|
+|`P_NEAREST`|`L_NEAREST`|![Illus](./images/task6-nearest-lnearest.png)|
+|`P_LINEAR`|`L_NEAREST`|![Illus](./images/task6-bilinear-lnearest.png)|
+|`P_NEAREST`|`L_LINEAR`|![Illus](./images/task6-nearest-llinear.png)|
+|`P_LINEAR`|`L_LINEAR`|![Illus](./images/task6-bilinear-llinear.png)|
 
+
+Credit and Side notes:
 
 > Webpage hosted at [quantumcookie.xyz/Opensourced-Study-Notes-Berkeley/CS184/proj1-rasterizer-writeup](https://quantumcookie.xyz/Opensourced-Study-Notes-Berkeley/CS184/proj1-rasterizer-writeup)
