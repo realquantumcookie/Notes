@@ -1,0 +1,660 @@
+<!DOCTYPE html><html><head>
+      <title>README</title>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      
+      <link rel="stylesheet" href="file:///c:\Users\cxcyh\.vscode\extensions\shd101wyy.markdown-preview-enhanced-0.6.8\node_modules\@shd101wyy\mume\dependencies\katex\katex.min.css">
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      <style>
+      /**
+ * prism.js Github theme based on GitHub's theme.
+ * @author Sam Clarke
+ */
+code[class*="language-"],
+pre[class*="language-"] {
+  color: #333;
+  background: none;
+  font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace;
+  text-align: left;
+  white-space: pre;
+  word-spacing: normal;
+  word-break: normal;
+  word-wrap: normal;
+  line-height: 1.4;
+
+  -moz-tab-size: 8;
+  -o-tab-size: 8;
+  tab-size: 8;
+
+  -webkit-hyphens: none;
+  -moz-hyphens: none;
+  -ms-hyphens: none;
+  hyphens: none;
+}
+
+/* Code blocks */
+pre[class*="language-"] {
+  padding: .8em;
+  overflow: auto;
+  /* border: 1px solid #ddd; */
+  border-radius: 3px;
+  /* background: #fff; */
+  background: #f5f5f5;
+}
+
+/* Inline code */
+:not(pre) > code[class*="language-"] {
+  padding: .1em;
+  border-radius: .3em;
+  white-space: normal;
+  background: #f5f5f5;
+}
+
+.token.comment,
+.token.blockquote {
+  color: #969896;
+}
+
+.token.cdata {
+  color: #183691;
+}
+
+.token.doctype,
+.token.punctuation,
+.token.variable,
+.token.macro.property {
+  color: #333;
+}
+
+.token.operator,
+.token.important,
+.token.keyword,
+.token.rule,
+.token.builtin {
+  color: #a71d5d;
+}
+
+.token.string,
+.token.url,
+.token.regex,
+.token.attr-value {
+  color: #183691;
+}
+
+.token.property,
+.token.number,
+.token.boolean,
+.token.entity,
+.token.atrule,
+.token.constant,
+.token.symbol,
+.token.command,
+.token.code {
+  color: #0086b3;
+}
+
+.token.tag,
+.token.selector,
+.token.prolog {
+  color: #63a35c;
+}
+
+.token.function,
+.token.namespace,
+.token.pseudo-element,
+.token.class,
+.token.class-name,
+.token.pseudo-class,
+.token.id,
+.token.url-reference .token.variable,
+.token.attr-name {
+  color: #795da3;
+}
+
+.token.entity {
+  cursor: help;
+}
+
+.token.title,
+.token.title .token.punctuation {
+  font-weight: bold;
+  color: #1d3e81;
+}
+
+.token.list {
+  color: #ed6a43;
+}
+
+.token.inserted {
+  background-color: #eaffea;
+  color: #55a532;
+}
+
+.token.deleted {
+  background-color: #ffecec;
+  color: #bd2c00;
+}
+
+.token.bold {
+  font-weight: bold;
+}
+
+.token.italic {
+  font-style: italic;
+}
+
+
+/* JSON */
+.language-json .token.property {
+  color: #183691;
+}
+
+.language-markup .token.tag .token.punctuation {
+  color: #333;
+}
+
+/* CSS */
+code.language-css,
+.language-css .token.function {
+  color: #0086b3;
+}
+
+/* YAML */
+.language-yaml .token.atrule {
+  color: #63a35c;
+}
+
+code.language-yaml {
+  color: #183691;
+}
+
+/* Ruby */
+.language-ruby .token.function {
+  color: #333;
+}
+
+/* Markdown */
+.language-markdown .token.url {
+  color: #795da3;
+}
+
+/* Makefile */
+.language-makefile .token.symbol {
+  color: #795da3;
+}
+
+.language-makefile .token.variable {
+  color: #183691;
+}
+
+.language-makefile .token.builtin {
+  color: #0086b3;
+}
+
+/* Bash */
+.language-bash .token.keyword {
+  color: #0086b3;
+}
+
+/* highlight */
+pre[data-line] {
+  position: relative;
+  padding: 1em 0 1em 3em;
+}
+pre[data-line] .line-highlight-wrapper {
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-color: transparent;
+  display: block;
+  width: 100%;
+}
+
+pre[data-line] .line-highlight {
+  position: absolute;
+  left: 0;
+  right: 0;
+  padding: inherit 0;
+  margin-top: 1em;
+  background: hsla(24, 20%, 50%,.08);
+  background: linear-gradient(to right, hsla(24, 20%, 50%,.1) 70%, hsla(24, 20%, 50%,0));
+  pointer-events: none;
+  line-height: inherit;
+  white-space: pre;
+}
+
+pre[data-line] .line-highlight:before, 
+pre[data-line] .line-highlight[data-end]:after {
+  content: attr(data-start);
+  position: absolute;
+  top: .4em;
+  left: .6em;
+  min-width: 1em;
+  padding: 0 .5em;
+  background-color: hsla(24, 20%, 50%,.4);
+  color: hsl(24, 20%, 95%);
+  font: bold 65%/1.5 sans-serif;
+  text-align: center;
+  vertical-align: .3em;
+  border-radius: 999px;
+  text-shadow: none;
+  box-shadow: 0 1px white;
+}
+
+pre[data-line] .line-highlight[data-end]:after {
+  content: attr(data-end);
+  top: auto;
+  bottom: .4em;
+}html body{font-family:"Helvetica Neue",Helvetica,"Segoe UI",Arial,freesans,sans-serif;font-size:16px;line-height:1.6;color:#333;background-color:#fff;overflow:initial;box-sizing:border-box;word-wrap:break-word}html body>:first-child{margin-top:0}html body h1,html body h2,html body h3,html body h4,html body h5,html body h6{line-height:1.2;margin-top:1em;margin-bottom:16px;color:#000}html body h1{font-size:2.25em;font-weight:300;padding-bottom:.3em}html body h2{font-size:1.75em;font-weight:400;padding-bottom:.3em}html body h3{font-size:1.5em;font-weight:500}html body h4{font-size:1.25em;font-weight:600}html body h5{font-size:1.1em;font-weight:600}html body h6{font-size:1em;font-weight:600}html body h1,html body h2,html body h3,html body h4,html body h5{font-weight:600}html body h5{font-size:1em}html body h6{color:#5c5c5c}html body strong{color:#000}html body del{color:#5c5c5c}html body a:not([href]){color:inherit;text-decoration:none}html body a{color:#08c;text-decoration:none}html body a:hover{color:#00a3f5;text-decoration:none}html body img{max-width:100%}html body>p{margin-top:0;margin-bottom:16px;word-wrap:break-word}html body>ul,html body>ol{margin-bottom:16px}html body ul,html body ol{padding-left:2em}html body ul.no-list,html body ol.no-list{padding:0;list-style-type:none}html body ul ul,html body ul ol,html body ol ol,html body ol ul{margin-top:0;margin-bottom:0}html body li{margin-bottom:0}html body li.task-list-item{list-style:none}html body li>p{margin-top:0;margin-bottom:0}html body .task-list-item-checkbox{margin:0 .2em .25em -1.8em;vertical-align:middle}html body .task-list-item-checkbox:hover{cursor:pointer}html body blockquote{margin:16px 0;font-size:inherit;padding:0 15px;color:#5c5c5c;background-color:#f0f0f0;border-left:4px solid #d6d6d6}html body blockquote>:first-child{margin-top:0}html body blockquote>:last-child{margin-bottom:0}html body hr{height:4px;margin:32px 0;background-color:#d6d6d6;border:0 none}html body table{margin:10px 0 15px 0;border-collapse:collapse;border-spacing:0;display:block;width:100%;overflow:auto;word-break:normal;word-break:keep-all}html body table th{font-weight:bold;color:#000}html body table td,html body table th{border:1px solid #d6d6d6;padding:6px 13px}html body dl{padding:0}html body dl dt{padding:0;margin-top:16px;font-size:1em;font-style:italic;font-weight:bold}html body dl dd{padding:0 16px;margin-bottom:16px}html body code{font-family:Menlo,Monaco,Consolas,'Courier New',monospace;font-size:.85em !important;color:#000;background-color:#f0f0f0;border-radius:3px;padding:.2em 0}html body code::before,html body code::after{letter-spacing:-0.2em;content:"\00a0"}html body pre>code{padding:0;margin:0;font-size:.85em !important;word-break:normal;white-space:pre;background:transparent;border:0}html body .highlight{margin-bottom:16px}html body .highlight pre,html body pre{padding:1em;overflow:auto;font-size:.85em !important;line-height:1.45;border:#d6d6d6;border-radius:3px}html body .highlight pre{margin-bottom:0;word-break:normal}html body pre code,html body pre tt{display:inline;max-width:initial;padding:0;margin:0;overflow:initial;line-height:inherit;word-wrap:normal;background-color:transparent;border:0}html body pre code:before,html body pre tt:before,html body pre code:after,html body pre tt:after{content:normal}html body p,html body blockquote,html body ul,html body ol,html body dl,html body pre{margin-top:0;margin-bottom:16px}html body kbd{color:#000;border:1px solid #d6d6d6;border-bottom:2px solid #c7c7c7;padding:2px 4px;background-color:#f0f0f0;border-radius:3px}@media print{html body{background-color:#fff}html body h1,html body h2,html body h3,html body h4,html body h5,html body h6{color:#000;page-break-after:avoid}html body blockquote{color:#5c5c5c}html body pre{page-break-inside:avoid}html body table{display:table}html body img{display:block;max-width:100%;max-height:100%}html body pre,html body code{word-wrap:break-word;white-space:pre}}.markdown-preview{width:100%;height:100%;box-sizing:border-box}.markdown-preview .pagebreak,.markdown-preview .newpage{page-break-before:always}.markdown-preview pre.line-numbers{position:relative;padding-left:3.8em;counter-reset:linenumber}.markdown-preview pre.line-numbers>code{position:relative}.markdown-preview pre.line-numbers .line-numbers-rows{position:absolute;pointer-events:none;top:1em;font-size:100%;left:0;width:3em;letter-spacing:-1px;border-right:1px solid #999;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}.markdown-preview pre.line-numbers .line-numbers-rows>span{pointer-events:none;display:block;counter-increment:linenumber}.markdown-preview pre.line-numbers .line-numbers-rows>span:before{content:counter(linenumber);color:#999;display:block;padding-right:.8em;text-align:right}.markdown-preview .mathjax-exps .MathJax_Display{text-align:center !important}.markdown-preview:not([for="preview"]) .code-chunk .btn-group{display:none}.markdown-preview:not([for="preview"]) .code-chunk .status{display:none}.markdown-preview:not([for="preview"]) .code-chunk .output-div{margin-bottom:16px}.markdown-preview .md-toc{padding:0}.markdown-preview .md-toc .md-toc-link-wrapper .md-toc-link{display:inline;padding:.25rem 0}.markdown-preview .md-toc .md-toc-link-wrapper .md-toc-link p,.markdown-preview .md-toc .md-toc-link-wrapper .md-toc-link div{display:inline}.markdown-preview .md-toc .md-toc-link-wrapper.highlighted .md-toc-link{font-weight:800}.scrollbar-style::-webkit-scrollbar{width:8px}.scrollbar-style::-webkit-scrollbar-track{border-radius:10px;background-color:transparent}.scrollbar-style::-webkit-scrollbar-thumb{border-radius:5px;background-color:rgba(150,150,150,0.66);border:4px solid rgba(150,150,150,0.66);background-clip:content-box}html body[for="html-export"]:not([data-presentation-mode]){position:relative;width:100%;height:100%;top:0;left:0;margin:0;padding:0;overflow:auto}html body[for="html-export"]:not([data-presentation-mode]) .markdown-preview{position:relative;top:0}@media screen and (min-width:914px){html body[for="html-export"]:not([data-presentation-mode]) .markdown-preview{padding:2em calc(50% - 457px + 2em)}}@media screen and (max-width:914px){html body[for="html-export"]:not([data-presentation-mode]) .markdown-preview{padding:2em}}@media screen and (max-width:450px){html body[for="html-export"]:not([data-presentation-mode]) .markdown-preview{font-size:14px !important;padding:1em}}@media print{html body[for="html-export"]:not([data-presentation-mode]) #sidebar-toc-btn{display:none}}html body[for="html-export"]:not([data-presentation-mode]) #sidebar-toc-btn{position:fixed;bottom:8px;left:8px;font-size:28px;cursor:pointer;color:inherit;z-index:99;width:32px;text-align:center;opacity:.4}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] #sidebar-toc-btn{opacity:1}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc{position:fixed;top:0;left:0;width:300px;height:100%;padding:32px 0 48px 0;font-size:14px;box-shadow:0 0 4px rgba(150,150,150,0.33);box-sizing:border-box;overflow:auto;background-color:inherit}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc::-webkit-scrollbar{width:8px}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc::-webkit-scrollbar-track{border-radius:10px;background-color:transparent}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc::-webkit-scrollbar-thumb{border-radius:5px;background-color:rgba(150,150,150,0.66);border:4px solid rgba(150,150,150,0.66);background-clip:content-box}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc a{text-decoration:none}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc .md-toc{padding:0 16px}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc .md-toc .md-toc-link-wrapper .md-toc-link{display:inline;padding:.25rem 0}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc .md-toc .md-toc-link-wrapper .md-toc-link p,html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc .md-toc .md-toc-link-wrapper .md-toc-link div{display:inline}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc .md-toc .md-toc-link-wrapper.highlighted .md-toc-link{font-weight:800}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .markdown-preview{left:300px;width:calc(100% -  300px);padding:2em calc(50% - 457px -  300px/2);margin:0;box-sizing:border-box}@media screen and (max-width:1274px){html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .markdown-preview{padding:2em}}@media screen and (max-width:450px){html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .markdown-preview{width:100%}}html body[for="html-export"]:not([data-presentation-mode]):not([html-show-sidebar-toc]) .markdown-preview{left:50%;transform:translateX(-50%)}html body[for="html-export"]:not([data-presentation-mode]):not([html-show-sidebar-toc]) .md-sidebar-toc{display:none}
+/* Please visit the URL below for more information: */
+/*   https://shd101wyy.github.io/markdown-preview-enhanced/#/customize-css */
+
+      </style>
+    </head>
+    <body for="html-export">
+      <div class="mume markdown-preview  ">
+      <h1 class="mume-header" id="cs184-project-3-1-pathtracer-writeup">CS184 Project 3-1 (Pathtracer) Writeup</h1>
+
+<blockquote>
+<p>Spring 2023, Yunhao Cao and Yuqi Zhai</p>
+</blockquote>
+<h2 class="mume-header" id="overview">Overview</h2>
+
+<p>In this project, we implemented a renderer using physics-based ray tracing algorithm to render scenes. We began with implementing a simple ray generation from camera position (and parameters) and check for ray-object intersections, then we implemented a BVH(bounding volumn hierarchy) to accelerate the ray tracing process. After that we implemented basic lighting calculations in the scene using direct illumination (zero-bounce and one-bounce lighting). Then we finished off with global illumination and adaptive sampling.</p>
+<h2 class="mume-header" id="task-1-ray-generation-and-scene-intersection">Task 1: Ray Generation and Scene Intersection</h2>
+
+<p>It is the most basic part of the ray tracing algorithm. Due to the computation complexity of forward raytracing, we actually perform inverse ray-tracing in camera renders. We first need to generate rays from the camera position and direction. Then we need to check if the ray intersects with any object in the scene. If it does, we need to calculate the intersection point and normal of the object. This intersection point will give us a starting point to calculate the actual illuminance received by the specific camera pixel.</p>
+<blockquote>
+<p>Walk through the ray generation and primitive intersection parts of the rendering pipeline</p>
+</blockquote>
+<p>First We turned <code>hFov</code> and <code>vFov</code> into radians by multiplying by <code>PI</code> and then dividing by <code>180</code>.</p>
+<p>Then since <code>(0,0)</code> on the output image is mapped to <code>(-tan(0.5hFov), -tan(0.5vFov))</code>, and <code>(1,1)</code> on the output image is mapped to <code>(tan(0.5hFov), tan(0.5vFov))</code>, we decide to turn <code>(x,y)</code> into <code>(-tan(0.5hFov) + 2x(tan(0.5hFov)), -tan(0.5vFov) + 2y(tan(0.5vFov)))</code>, denote this as <code>(new_x, new_y)</code>.</p>
+<p>Then this new coordinate <code>(new_x, new_y)</code> together with origin <code>(0,0)</code> forms the ray that we want to generate in camera coordinates. Before performing the transformation from camera coordinates to world coordinates via multiplying by matrix c2w, we have to <strong>add the position of the camera to both coordinates</strong>.</p>
+<p>Then the ray starts at world coordinate for <code>(0,0) + camera position</code> and travels along the direction of <code>(new_x, new_y)</code> vector in world coordinates. From here, we could test for intersection of the ray with surface (defined by a point <code>p&#x2019;</code> and a normal vector <code>N</code>) by simply testing if any point of the form <code>o + td</code> appears to be on the surface, which satisfies the constraint that <code>t &gt;= min_t</code> and <code>t&lt;= max_t</code>.</p>
+<blockquote>
+<p>Explain the triangle intersection algorithm you implemented in your own words</p>
+</blockquote>
+<p>For the triangle intersection test, we implemented the <strong>Moller Trumbore Algorithm</strong>, where we</p>
+<ol>
+<li>first calculate the normal vector of the triangle and determine whether there is an intersection with the ray
+<ol>
+<li>If indeed there is an intersection, then we test if the intersection point is inside the triangle by examining the barycentric coordinates of that point.
+<ol>
+<li>If alpha, beta, and gamma are all in between 0 and 1 and sum up to 1, then the point is inside the triangle, which concludes that the ray intersects the triangle at the t solved.</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<blockquote>
+<p>Show images with normal shading for a few small .dae files</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>bench</th>
+<th>bunny</th>
+<th>blob</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><img src="images/task1_bench.png" alt="bench"></td>
+<td><img src="images/task1_bunny.png" alt="bunny"></td>
+<td><img src="images/task1_blob.png" alt="blob"></td>
+</tr>
+</tbody>
+</table>
+<h2 class="mume-header" id="task-2-bounding-volume-hierarchy">Task 2: Bounding Volume Hierarchy</h2>
+
+<p>With Task 1 finished, we can render scenes with a few objects. However, the performance is not good enough for large scenes. This is largely due to the fact that the ray is solving the intersection equation with <strong>every single object in the scene</strong>. To improve the performance, we use an idea similar to &quot;nearest neighbour search&quot; using KD-tree in machine learning and implemented a BVH to accelerate the ray tracing process.</p>
+<p>In a BVH (bounding volume hierarchy), every internal node stores a bounding box of all the objects inside it and references to its children. The leaf nodes store the actual objects. The BVH is constructed by recursively splitting the objects into two groups, and then recursively building the BVH for each group. The splitting is done by finding the longest axis of the bounding box of the objects, and then sorting the objects along that axis. The splitting point is chosen to be the median (or mean) of the sorted objects. The splitting is repeated until the number of objects in a group is less than a threshold.</p>
+<blockquote>
+<p>Walk through your BVH construction algorithm. Explain the heuristic you chose for picking the splitting point.</p>
+</blockquote>
+<p>We constructed the Bounding Volume Hierarchy in a recursive manner.</p>
+<ol>
+<li>We first check whether the number of primitives at this level is less than or equal to the max_leaf_size or not.
+<ol>
+<li>If it is true, then we just need to return a leaf node with the primitive list.</li>
+<li>If not, then we will need to split the primitive lists based on the average of centroids along the longest axis (get from the extent argument from the bounding box).
+<ol>
+<li>After we iterate over the primitive list and separate them into 2 lists based on their <strong>centroid location along the longest axis</strong> in the bounding box, we recursively build the left and right child of this internal node.</li>
+<li>One extra thing is to deal with an empty left or right child, and we handled this case by assigning one primitive to the empty child.</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<blockquote>
+<p>Show images with normal shading for a few large .dae files that you can only render with BVH acceleration.</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>dragon</th>
+<th>maxplanck</th>
+<th>CBlucy</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><img src="images/task2_dragon.png" alt="dragon"></td>
+<td><img src="images/task2_maxplanck.png" alt="maxplanck"></td>
+<td><img src="images/task2_CBlucy.png" alt="CBlucy"></td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>Compare rendering times on a few scenes with moderately complex geometries with and without BVH acceleration. Present your results in a one-paragraph analysis.</p>
+</blockquote>
+<p>Before implementing the BVH acceleration, the rendering time for cow.dae took us around 4.7 seconds locally on our laptop; after implementing BVH acceleration, it took us 0.047 seconds to render locally.<br>
+Similarly for the dragon.dae, before it took us around 22 seconds to render, after it took us 0.05 seconds to render. The bounding box test helps us avoid a lot of unnecessary intersection computations, which turns out to be much more efficient.</p>
+<h2 class="mume-header" id="task-3-direct-illumination">Task 3: Direct Illumination</h2>
+
+<p>In this task, we implemented direct illumination in the scene using random sampling and importance sampling. The estimation of the irradience received by the intersection point is done using Monte Carlo integration.</p>
+<blockquote>
+<p>Walk through your implementation of the indirect lighting function.</p>
+</blockquote>
+<p>For the direct lighting with <strong>uniform hemisphere sampling</strong>, we did the following:</p>
+<ul>
+<li>For each sample out of all number of lights times number of samples per light, we first sample uniformly the entire upper hemisphere to get one point on it, and cast a ray from the hit point to that point (using the direction vector in world coordinate), which is the <code>w_in</code> (we also set <code>min_t</code> to be <code>EPS_F</code> for numerical precision issues)</li>
+<li>Then we test if the ray has an intersection with any of the light sources, if so then we do an approximation using Monte Carlo Estimator by multiplying together the emission value at the hit point with the w_out given and the <code>w_in</code> sampled, the reflectance at in the <code>w_in</code> direction, the cosine of the angle between <code>w_in</code> (in local coordinates) and the surface normal to, and then divide it by the probability which is uniform over the hemisphere (which is <code>1/2pi</code>).</li>
+<li>Lastly, we normalize by dividing the sum of direct lighting by number of samples taken</li>
+</ul>
+<p>For the direct lighting with <strong>important sampling light</strong>, we did something similar:</p>
+<ul>
+<li>For each light source in all lights in the scene, we sample one ray if it is a point light or sample ns_area_light if it is not; then for each sample, we use the <code>SceneLight::sample_L</code> to sample a ray with hit point <code>p</code>, which we will get back the emitted radiance as well as the w_in we sampled, the distance to the light source, as well as the probability of that ray we sampled</li>
+<li>We make sure the light is not behind the surface at the hit point by making sure the <code>w_in</code> sampled has a non-negative z coordinate</li>
+<li>Then we construct the ray as usual (with origin at the hit-point and the direction in <code>w_in</code> in world coordinate), and test whether it will intersect any primitives in the scene - if it did not intersect any primitives, then we know it reached the light source, where we will add it to the overall direct lighting through monte carlo estimator with exactly same formula in uniform hemisphere sampling just by changing the probability to the probability returned by <code>sample_L</code>; otherwise we disregard it since the ray will be blocked by some other primitives along that direction so no light will be casted to the hit point in that direction</li>
+<li>This time, we normalize the direct lighting for every light source separately and then sum them up to be the final direct lighting at that hit-point</li>
+</ul>
+<blockquote>
+<p>Show some images rendered with both implementations of the direct lighting function</p>
+</blockquote>
+<p>Uniform Sampling:</p>
+<p>Camera rays per pixel = 64, Number of samples per area light = 32<br>
+<img src="images/task3_CBbunny_H_64_32.png" alt="CBBunny"></p>
+<p>Importance Sampling:</p>
+<p>Camera rays per pixel = 64, Number of samples per area light = 32, max depth = 6</p>
+<table>
+<thead>
+<tr>
+<th>Bunny</th>
+<th>Dragon</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><img src="images/task3_ISbunny_64_32.png" alt="Bunny"></td>
+<td><img src="images/task3_dragon_64_32.png" alt="Dragon"></td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>Focus on one particular scene with at least one area light and compare the noise levels in soft shadows when rendering with 1, 4, 16, and 64 light rays (the -l flag) and with 1 sample per pixel (the -s flag) using light sampling, not uniform hemisphere sampling.</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Samples Per Area Light (<code>L</code>)</th>
+<th>Dragon</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td><img src="images/task3_dragon_1_1.png" alt="Dragon"></td>
+</tr>
+<tr>
+<td>4</td>
+<td><img src="images/task3_dragon_1_4.png" alt="Dragon"></td>
+</tr>
+<tr>
+<td>16</td>
+<td><img src="images/task3_dragon_1_16.png" alt="Dragon"></td>
+</tr>
+<tr>
+<td>64</td>
+<td><img src="images/task3_dragon_1_64.png" alt="Dragon"></td>
+</tr>
+</tbody>
+</table>
+<p>We focused on the <code>dragon.dae</code>. It is clear that with a small amount of samples per area light, there is a lot of noise in the soft shadows, which is visible from when samples per area light is 1 and 4.</p>
+<p>But starting at <code>L = 16</code>, the soft shadow starts to appear to be different from the darker shadows that are actually completely blocked by the dragon.</p>
+<p>At <code>L = 64</code>, the noise level has significantly decreased to the point that to the bare eye, it looks more realistic with the soft shadow completely different from the darker shadow underneath the dragon. So as we can tell, more samples per area light will make a better soft shadow.</p>
+<blockquote>
+<p>Compare the results between uniform hemisphere sampling and lighting sampling in a one-paragraph analysis.</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Uniform</th>
+<th>Importance</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><img src="images/task3_CBbunny_H_64_32.png" alt="Bunny"></td>
+<td><img src="images/task3_ISbunny_64_32.png" alt="Bunny"></td>
+</tr>
+</tbody>
+</table>
+<p>As we call tell, with the important sampling light source technique, we get a much better rendered image than that of uniform sampling with the same amount of samples per light area and camera rays per pixel. Uniform hemisphere sampling seems to contain a larger amount of noise since we are taking samples in the entire upper hemisphere (which means we could get unlucky that most of the rays sampled will not land on a light source). However, for the important sampling light sources, we prioritize the probability to sample the rays pointing at light sources, which will likely contribute to the pixel value at that point. Therefore, using important sampling light source technique, we will have a less noisy image.</p>
+<h2 class="mume-header" id="task-4-global-illumination">Task 4: Global Illumination</h2>
+
+<p>In this task, we implemented global illumination in the scene. Although direct illumination is a good approximation of the lighting in a scene, it is not sufficient to capture the full lighting effects.</p>
+<blockquote>
+<p>Walk through your implementation of the indirect lighting function.</p>
+</blockquote>
+<ol>
+<li>To implement global illumination, the first thing I implemented is <code>DiffuseBSDF::sample_f</code> which samples a ray in the hemisphere according to the BRDF function defined by the material. The <code>sample_f</code> function is useful for the next step, and returns the reflectance of the material at the given direction, the probability distribution function (PDF) of the sampled direction, and the sampled direction in local coordinates.</li>
+<li>The I implemented <code>PathTracer::at_least_one_bounce_radience</code>, which is a helper function that computes the radiance of a ray that has at least one bounce.
+<ol>
+<li>Inside the function, I first call <code>PathTracer::one_bounce_radience</code> implemented in the previous task to get the one-bounce lighting <code>L_out</code> at the hit point.</li>
+<li>Depending on Russian Roulette (and max ray depth defined by the program), I may choose to directly return the one-bounce lighting or continue to sample the next bounce.</li>
+<li>If I choose to proceed, I sample a ray <code>next_wo</code> in the hemisphere according to the BRDF function defined by the material at the hit point using <code>DiffuseBSDF::sample_f</code>.</li>
+<li>I recursively call <code>PathTracer::at_least_one_bounce_radience</code> to get the radiance of the ray I just sampled, let&apos;s call that <code>L_out_next</code>. And then I calculate the estimate of the irradiance at the hit point of all next-depth bounces using Monte Carlo Estimator by using the formula <code>Irradience_Est = L_out_next * cosine_theta(next_wo) / pdf / (1 - prob_termination)</code> where <code>prob_termination</code> is the probability of terminating the ray defined by Russian Roulette.
+<ol>
+<li>Since <code>PathTracer::at_least_one_bounce_radience</code> is a recursive function, it will keep calling itself until the ray is terminated or the max ray depth is reached. So this single step effectly returns the estimate of the irradiance at the hit point of all next-depth bounces.</li>
+</ol>
+</li>
+<li>Finally I return <code>L_out + L_out_next</code> as the estimate of the radiance of the ray at the hit point.</li>
+</ol>
+</li>
+<li>Finally, I edit <code>PathTracer::est_radiance_global_illumination</code> to apply the edits I made in the previous two steps into the render pipeline.</li>
+</ol>
+<p>Implementation Notice: I hard-coded <code>prob_termination</code> to <code>0.4</code>.</p>
+<blockquote>
+<p>Show some images rendered with global (direct and indirect) illumination. Use 1024 samples per pixel.</p>
+</blockquote>
+<p>Parameters:</p>
+<ol>
+<li>Samples per pixel = 1024</li>
+<li>Samples per area light = 1</li>
+<li>Max ray depth = 5</li>
+</ol>
+<table>
+<thead>
+<tr>
+<th>Bunny</th>
+<th>Dragon</th>
+<th>Wall-E</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><img src="images/task4_bunny_s1024_m5.png" alt="Bunny"></td>
+<td><img src="images/task4_dragon_s1024_m5.png" alt="Dragon"></td>
+<td><img src="images/task4_wall-e_s1024_m5.png" alt="Wall-E"></td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>Pick one scene and compare rendered views first with only direct illumination, then only indirect illumination. Use 1024 samples per pixel. (You will have to edit PathTracer::at_least_one_bounce_radiance(...) in your code to generate these views.)</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Direct</th>
+<th>Indirect (<code>max_ray_depth = 5</code>)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><img src="images/task4_CBspheres_lambertian_direct.png" alt="CBspheres_direct"></td>
+<td><img src="images/task4_CBspheres_lambertian_indirect.png" alt="CBspheres_indirect"></td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>For CBbunny.dae, compare rendered views with max_ray_depth set to 0, 1, 2, 3, and 100 (the -m flag). Use 1024 samples per pixel.</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th><code>-m</code></th>
+<th>CBbunny</th>
+<th><code>-m</code></th>
+<th>CBbunny</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td><img src="images/task4_CBbunny_s1024_m0.png" alt="CBbunny"></td>
+<td>1</td>
+<td><img src="images/task4_CBbunny_s1024_m1.png" alt="CBbunny"></td>
+</tr>
+<tr>
+<td>2</td>
+<td><img src="images/task4_CBbunny_s1024_m2.png" alt="CBbunny"></td>
+<td>3</td>
+<td><img src="images/task4_CBbunny_s1024_m3.png" alt="CBbunny"></td>
+</tr>
+<tr>
+<td>100</td>
+<td><img src="images/task4_CBbunny_s1024_m100.png" alt="CBbunny"></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>Pick one scene and compare rendered views with various sample-per-pixel rates, including at least 1, 2, 4, 8, 16, 64, and 1024. Use 4 light rays.</p>
+</blockquote>
+<p>Parameters:</p>
+<ol>
+<li>Max ray depth = 5</li>
+<li>Rays per area light = 4</li>
+</ol>
+<table>
+<thead>
+<tr>
+<th><code>-s</code></th>
+<th>CBSpheres</th>
+<th><code>-s</code></th>
+<th>CBSpheres</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td><img src="images/task4_CBspheres_s1_l4_m5.png" alt="CBSpheres"></td>
+<td>2</td>
+<td><img src="images/task4_CBspheres_s2_l4_m5.png" alt="CBSpheres"></td>
+</tr>
+<tr>
+<td>4</td>
+<td><img src="images/task4_CBspheres_s4_l4_m5.png" alt="CBSpheres"></td>
+<td>8</td>
+<td><img src="images/task4_CBspheres_s8_l4_m5.png" alt="CBSpheres"></td>
+</tr>
+<tr>
+<td>16</td>
+<td><img src="images/task4_CBspheres_s16_l4_m5.png" alt="CBSpheres"></td>
+<td>64</td>
+<td><img src="images/task4_CBspheres_s64_l4_m5.png" alt="CBSpheres"></td>
+</tr>
+<tr>
+<td>1024</td>
+<td><img src="images/task4_CBspheres_s1024_l4_m5.png" alt="CBSpheres"></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h2 class="mume-header" id="task-5-adaptive-sampling">Task 5: Adaptive Sampling</h2>
+
+<p>Global illumination works very well in the scene, but it is very slow if samples per pixel is high. In this task, we implemented adaptive sampling to speed up the rendering process.</p>
+<blockquote>
+<p>Explain adaptive sampling. Walk through your implementation of the adaptive sampling.</p>
+</blockquote>
+<p>Adaptive sampling is a technique that dynamically adjusts the number of samples per pixel based on the sample variance of the current pixel. The idea is that the &quot;noise&quot; in the rendered-image is caused by the complexity of ray-tracing the patch of pixels around the noisy pixel. To accurately estimate the noisy pixel we need to take more samples on that pixel. On the other hand, if the pixel is not noisy, we can take fewer samples on that pixel to save computation time. Therefore we use sample variance of the sampled rays for all pixels to estimate the noise level of the pixel. If the sample variance is high, we take more samples on that pixel. If the sample variance is low, we can terminate the sampling on that pixel early on.</p>
+<p>To implement adaptive sampling, I modified the <code>RayTracer::sample_pixel</code> function. I added in two variables <code>s1</code> and <code>s2</code> before the render loop begins. <code>s1</code> is the sum of the radiance of all samples, and <code>s2</code> is the sum of the squared radiance of all samples. Then I modified the render loop to sample the pixel until the sample variance is low enough. For every sample we take, we update <code>s1</code> and <code>s2</code> accordingly.</p>
+<p>The sample variance is only calculated every specific number of samples defined by the <code>samplesPerBatch</code>. Then we compute a 95% confidence interval for the sample variance using the formula <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>&#x3C3;</mi><mn>2</mn></msup><mo>=</mo><mo stretchy="false">(</mo><mi>s</mi><mn>2</mn><mo>&#x2212;</mo><mi>s</mi><msup><mn>1</mn><mn>2</mn></msup><mi mathvariant="normal">/</mi><mi>n</mi><mo stretchy="false">)</mo><mi mathvariant="normal">/</mi><mo stretchy="false">(</mo><mi>n</mi><mo>&#x2212;</mo><mn>1</mn><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">\sigma^2 = (s2 - s1^2 / n) / (n - 1)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8141em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.03588em;">&#x3C3;</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord mathnormal">s</span><span class="mord">2</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">&#x2212;</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1.0641em;vertical-align:-0.25em;"></span><span class="mord mathnormal">s</span><span class="mord"><span class="mord">1</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span><span class="mord">/</span><span class="mord mathnormal">n</span><span class="mclose">)</span><span class="mord">/</span><span class="mopen">(</span><span class="mord mathnormal">n</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">&#x2212;</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">1</span><span class="mclose">)</span></span></span></span> and <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>I</mi><mo>=</mo><mn>1.96</mn><mfrac><mi>&#x3C3;</mi><msqrt><mi>n</mi></msqrt></mfrac></mrow><annotation encoding="application/x-tex">I = 1.96 \frac{\sigma}{\sqrt{n}}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.07847em;">I</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1.2334em;vertical-align:-0.538em;"></span><span class="mord">1.96</span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.6954em;"><span style="top:-2.6259em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord sqrt mtight"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.8059em;"><span class="svg-align" style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord mtight" style="padding-left:0.833em;"><span class="mord mathnormal mtight">n</span></span></span><span style="top:-2.7659em;"><span class="pstrut" style="height:3em;"></span><span class="hide-tail mtight" style="min-width:0.853em;height:1.08em;"><svg xmlns="http://www.w3.org/2000/svg" width="400em" height="1.08em" viewBox="0 0 400000 1080" preserveAspectRatio="xMinYMin slice"><path d="M95,702
+c-2.7,0,-7.17,-2.7,-13.5,-8c-5.8,-5.3,-9.5,-10,-9.5,-14
+c0,-2,0.3,-3.3,1,-4c1.3,-2.7,23.83,-20.7,67.5,-54
+c44.2,-33.3,65.8,-50.3,66.5,-51c1.3,-1.3,3,-2,5,-2c4.7,0,8.7,3.3,12,10
+s173,378,173,378c0.7,0,35.3,-71,104,-213c68.7,-142,137.5,-285,206.5,-429
+c69,-144,104.5,-217.7,106.5,-221
+l0 -0
+c5.3,-9.3,12,-14,20,-14
+H400000v40H845.2724
+s-225.272,467,-225.272,467s-235,486,-235,486c-2.7,4.7,-9,7,-19,7
+c-6,0,-10,-1,-12,-3s-194,-422,-194,-422s-65,47,-65,47z
+M834 80h400000v40h-400000z"/></svg></span></span></span><span class="vlist-s">&#x200B;</span></span><span class="vlist-r"><span class="vlist" style="height:0.2341em;"><span></span></span></span></span></span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.394em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.03588em;">&#x3C3;</span></span></span></span></span><span class="vlist-s">&#x200B;</span></span><span class="vlist-r"><span class="vlist" style="height:0.538em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span></span></span></span>. We terminate the sampling on the pixel if <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>I</mi><mo>&#x2264;</mo><mtext>maxTolerance</mtext><mo>&#x22C5;</mo><mi>&#x3BC;</mi></mrow><annotation encoding="application/x-tex">I \le \text{maxTolerance} \cdot \mu</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8193em;vertical-align:-0.136em;"></span><span class="mord mathnormal" style="margin-right:0.07847em;">I</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">&#x2264;</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6944em;"></span><span class="mord text"><span class="mord">maxTolerance</span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">&#x22C5;</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.625em;vertical-align:-0.1944em;"></span><span class="mord mathnormal">&#x3BC;</span></span></span></span>.</p>
+<blockquote>
+<p>Pick two scenes and render them with at least 2048 samples per pixel. Show a good sampling rate image with clearly visible differences in sampling rate over various regions and pixels. Include both your sample rate image, which shows your how your adaptive sampling changes depending on which part of the image you are rendering, and your noise-free rendered result. Use 1 sample per light and at least 5 for max ray depth.</p>
+</blockquote>
+<p>Parameters:</p>
+<ol>
+<li>Samples per pixel = 2048</li>
+<li>Samples per area light = 1</li>
+<li>Max ray depth = 5</li>
+</ol>
+<table>
+<thead>
+<tr>
+<th>Image</th>
+<th>Sample Rate</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><img src="images/task5_bunny.png" alt="bunny"></td>
+<td><img src="images/task5_bunny_rate.png" alt="bunny_rate"></td>
+</tr>
+<tr>
+<td><img src="images/task5_CBspheres.png" alt="CBSpheres"></td>
+<td><img src="images/task5_CBspheres_rate.png" alt="CBSpheres_rate"></td>
+</tr>
+</tbody>
+</table>
+<h2 class="mume-header" id="credits-and-side-notes">Credits and Side Notes</h2>
+
+<blockquote>
+<p>Webpage hosted at <a href="https://www.quantumcookie.xyz/Opensourced-Study-Notes-Berkeley/CS184/proj3-1-pathtracer-writeup/">quantumcookie.xyz/Opensourced-Study-Notes-Berkeley/CS184/proj3-1-pathtracer-writeup/</a></p>
+</blockquote>
+
+      </div>
+      
+      
+    
+    
+    
+    
+    
+    
+    
+    
+  
+    </body></html>
