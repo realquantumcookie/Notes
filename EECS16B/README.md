@@ -4,6 +4,7 @@ Those are note archives as well as very well-structured final review docs I made
 
 ## Resource List
 
+- [Project Report](Hand-on-lab-report.pdf)
 - [Final Cheatsheet](Annotated/20211216%20Final%20Cheatsheet.pdf)
 - Annotated Notes
   - [Initial Written Notes](Annotated/EECS16B%20Notes.pdf)
