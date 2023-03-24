@@ -4,7 +4,6 @@
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
       
       <link rel="stylesheet" href="../css/katex.min.css">
-      
       <style>
       /**
  * prism.js Github theme based on GitHub's theme.
@@ -253,359 +252,324 @@ pre[data-line] .line-highlight[data-end]:after {
     </head>
     <body for="html-export">
       <div class="mume markdown-preview  ">
-      <h1 class="mume-header" id="-cs184-project-2-meshedit-writeup-">CS184 Project 2 (MeshEdit) Writeup</h1>
+      <h1 class="mume-header" id="cs184-project-3-2-pathtracer-writeup">CS184 Project 3-2 (Pathtracer) Writeup</h1>
 
 <blockquote>
 <p>Spring 2023, Yunhao Cao and Yuqi Zhai</p>
 </blockquote>
-<h2 class="mume-header" id="-overview-">Overview</h2>
+<h2 class="mume-header" id="overview">Overview</h2>
 
-<p>In this project, we implemented a mesh editing tool that allows users to edit a mesh in a 3D space. The tool supports the following operations:</p>
-<ol>
-<li><strong>Bezier Curve/Surface</strong> visualization and editing</li>
-<li><strong>3D Vertex / Edge</strong> visualization and editing</li>
-<li><strong>Vertex Normal</strong> visualization</li>
-<li><strong>Mesh upsampling</strong> using Loop subdivision</li>
-</ol>
-<p>The skeleton code for this project is basically a 99.9% complete 3d engine, we just need to fill in a few functions to make interpolations/editing work.</p>
-<h3 class="mume-header" id="-part-i-bezier-curves-with-1d-de-casteljau-subdivision-">Part I: Bezier Curves with 1D de Casteljau Subdivision</h3>
+<p><img src="images/CBdragon.png" alt></p>
+<p>In this project, we further extended our rendered from <a href="https://www.quantumcookie.xyz/Opensourced-Study-Notes-Berkeley/CS184/proj3-1-pathtracer-writeup/">Project 3-1</a> by adding support for more materials, including diffuse, glass, refractive, and microfacet materials.</p>
+<h2 class="mume-header" id="task-1-mirror-and-glass-materials">Task 1: Mirror and Glass Materials</h2>
 
-<p>De Casteljau&#x2019;s algorithm recursively calculates the Bezier Curve through a series of linear interpolations.</p>
-<ol>
-<li>On each level, we do linear interpolation on the line segments between 2 points available through a predetermined parameter of t to find the new point that we would use to linearly interpolate for the next level.</li>
-<li>Eventually, we will end up with only 1 point, where this point is actually on the Bezier Curve that we want to find. Together with the starting and ending points (in our case of a cubic spline, b0 and b3), we could find the unique cubic function that passes through all three points, which will serve as the Bezier Curve for this section.</li>
-</ol>
-<p>Each step-level of evaluation:</p>
+<p>In this part, we added support for mirror and glass materials. To achieve this, we first implemented a reflect function and returns the reflected ray about the normal with respect to the output ray (since we&apos;re doing inverse ray tracing). Then we also implemented a refraction function based on Snell&apos;s law.</p>
+<p>Parameters:</p>
 <table>
 <thead>
 <tr>
-<th>step</th>
-<th>images</th>
+<th style="text-align:left">Parameter</th>
+<th style="text-align:left">Value</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>1</td>
-<td><img src="images/task1-question2-picture1.png" alt></td>
+<td style="text-align:left"><code>-t</code></td>
+<td style="text-align:left">8</td>
 </tr>
 <tr>
-<td>2</td>
-<td><img src="images/task1-question2-picture2.png" alt></td>
+<td style="text-align:left"><code>-s</code></td>
+<td style="text-align:left">256</td>
 </tr>
 <tr>
-<td>3</td>
-<td><img src="images/task1-question2-picture3.png" alt></td>
+<td style="text-align:left"><code>-l</code></td>
+<td style="text-align:left">4</td>
 </tr>
 <tr>
-<td>4</td>
-<td><img src="images/task1-question2-picture4.png" alt></td>
+<td style="text-align:left"><code>-r</code></td>
+<td style="text-align:left">480 360</td>
 </tr>
 <tr>
-<td>5</td>
-<td><img src="images/task1-question2-picture5.png" alt></td>
-</tr>
-<tr>
-<td>6</td>
-<td><img src="images/task1-question2-picture6.png" alt></td>
-</tr>
-<tr>
-<td>with curve</td>
-<td><img src="images/task1-question2-picture7.png" alt></td>
-</tr>
-<tr>
-<td>hiding intermediate points</td>
-<td><img src="images/task1-question2-picture8.png" alt></td>
+<td style="text-align:left">input</td>
+<td style="text-align:left"><code>dae/sky/CBspheres.dae</code></td>
 </tr>
 </tbody>
 </table>
-<p>Scrolling <code>t</code>:</p>
 <table>
 <thead>
 <tr>
-<th>step</th>
-<th>images</th>
+<th style="text-align:left"><code>m = 0</code></th>
+<th style="text-align:left"><code>m=1</code></th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>before</td>
-<td><img src="images/task1-question2-picture7.png" alt></td>
+<td style="text-align:left"><img src="images/task1_spheres_0.png" alt></td>
+<td style="text-align:left"><img src="images/task1_spheres_1.png" alt></td>
 </tr>
 <tr>
-<td>after</td>
-<td><img src="images/task1-question3-picture1.png" alt></td>
+<td style="text-align:left">since only up to 0 bounces, so the only area that is lit is the light source.</td>
+<td style="text-align:left">By allowing up to 1 bounces, we only have objects that are directly illuminated by the light source.</td>
 </tr>
 </tbody>
 </table>
-<p>Changing control points:</p>
-<table>
-<thead>
-<tr>
-<th>step</th>
-<th>images</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>before</td>
-<td><img src="images/task1-question2-picture7.png" alt></td>
-</tr>
-<tr>
-<td>after</td>
-<td><img src="images/task1-question3-picture2.png" alt></td>
-</tr>
-</tbody>
-</table>
-<h3 class="mume-header" id="-part-ii-bezier-surfaces-with-separable-1d-de-casteljau-">Part II: Bezier Surfaces with Separable 1D de Casteljau</h3>
-
-<p>In this part we implemented Bezier surfaces.</p>
-<ol>
-<li>De Casteljau algorithm could easily be extended to Bezier surfaces by essentially doing the De Casteljau algorithm twice over the surface, once along the row direction, then using the interpolated curves in the row direction do once more to get the column direction, which combined to be the Bezier surface.</li>
-<li>More specifically for each <code>(u,v)</code> , We will interpolate each row in the n x n grid of control points at parameter u specified, which will get us one 3D point per row evaluated by the Bezier curve at parameter <code>u</code>. Then using those <code>n</code> points to do once more the de Casteljau algorithm with parameter <code>v</code> to get the point we want that corresponds to <code>(u, v)</code>.</li>
-</ol>
-<p>Rendering of teapot:</p>
-<p><img src="images/task2-question2-picture1.png" alt></p>
-<h3 class="mume-header" id="-part-iii-area-weighted-vertex-normals-">Part III: Area-Weighted Vertex Normals</h3>
-
-<p>Phong shading provides a better shading for smooth surfaces by taking into account the surface normal at each vertex. In this part, we implemented area-weighted vertex normals.</p>
-<p>We implemented the area-weighted vertex normals through the following steps.</p>
-<ol>
-<li>First we find the vertices of the current face (triangle) that we are trying to calculate the area-weighted face normals. The vertex that we want to get the normal of (call it v0) for should always be one of the vertices, since we want the normals for faces that the vertex is incident to.</li>
-<li>Then the remaining 2 vertices we retrieve by using the vertex of the next halfedge of the halfedge initiated at v0 (call this vertex v1), and by using the vertex of the next halfedge of the next halfedge of the current halfedge starting at v0 (call this vertex v2).</li>
-<li>After that, we constructed 2 vectors, from v1 - v0 and v2 - v1. And we calculate the cross product of the 2 vectors without normalizing.
-<ol>
-<li>We did not use the normal encoded in the Face structure because it is the same as multiplying the normalized normal with the area (only by a factor of 2, since area of a triangle is the norm of the cross product of 2 vectors of the sides divided by 2).</li>
-</ol>
-</li>
-<li>Lastly, we add the cross product to the result 3D vector and normalize at the end.</li>
-</ol>
 <blockquote>
-<p>It is clear that without vertex normals, the teapot appears to have clear boundaries for each triangle mesh. However, with the vertex normals implemented, the teapot looks like a round object.</p>
+<p>In both <code>m = 0</code> and <code>m = 1</code> cases, there is nothing new as what we have implemented in Project 3-1.</p>
 </blockquote>
 <table>
 <thead>
 <tr>
-<th>Surface Normals</th>
-<th>Vertex Normals</th>
+<th style="text-align:left"><code>m = 2</code></th>
+<th style="text-align:left"><code>m = 3</code></th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td><img src="images/task3-question2-picture1.png" alt></td>
-<td><img src="images/task3-question2-picture2.png" alt></td>
+<td style="text-align:left"><img src="images/task1_spheres_2.png" alt></td>
+<td style="text-align:left"><img src="images/task1_spheres_3.png" alt></td>
+</tr>
+<tr>
+<td style="text-align:left">At <code>m = 2</code>, we start to see some interesting multibounce effects that appear only after the implementation of this part. The left mirror material is reflecting the scene that is in front of it, including the black ball on its right, the light above it, and the red and blue walls on both sides. Those effects need 2 bounces of light. However, it is obvious that the right, glass material, ball is still black, since it needs 2 bounces of light to transmit through the glass ball, but it needs one more bounce to be illuminated.</td>
+<td style="text-align:left">Here we have <code>m = 3</code>, and we start to see the right glass ball lit up. With 3 bounces of light, the light transmitted through the glass ball could be visible in the camera with the additional bounce to the light. This is also a new multibounce effect with the implementation of project 3-2.</td>
 </tr>
 </tbody>
 </table>
-<h3 class="mume-header" id="-part-iv-edge-flip-">Part IV: Edge Flip</h3>
+<table>
+<thead>
+<tr>
+<th style="text-align:left"><code>m = 4</code></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left"><img src="images/task1_spheres_4.png" alt></td>
+</tr>
+<tr>
+<td style="text-align:left">Now we have <code>m = 4</code>, and we notice the refracted light on the wall next to the glass ball, a reflection from the lit-up shadow for the glass ball in the depth-3 image.</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th style="text-align:left"><code>m = 5</code></th>
+<th style="text-align:left"><code>m = 100</code></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left"><img src="images/task1_spheres_5.png" alt></td>
+<td style="text-align:left"><img src="images/task1_spheres_100.png" alt></td>
+</tr>
+</tbody>
+</table>
+<p>Lastly, we have <code>m = 5</code> and <code>m = 100</code>. It seems to have no big difference from m = 4, just a bit brighter in all aspects.</p>
+<h2 class="mume-header" id="task-2-microfacet-materials">Task 2: Microfacet Materials</h2>
+
+<p>In this part, we added support for microfacet materials. To achieve this, we first implemented a Fresnel function for the Microfacet materials. Then we also implemented a microfacet distribution function based on the Beckmann model.</p>
+<h3 class="mume-header" id="task-21-cbdragon_microfacet_audae">Task 2.1: <code>CBDragon_microfacet_au.dae</code></h3>
+
+<p>Parameters:</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">Parameter</th>
+<th style="text-align:left">Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left"><code>-t</code></td>
+<td style="text-align:left">8</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>-s</code></td>
+<td style="text-align:left">512</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>-l</code></td>
+<td style="text-align:left">4</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>-m</code></td>
+<td style="text-align:left">5</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>-r</code></td>
+<td style="text-align:left">480 360</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>-a</code></td>
+<td style="text-align:left">64 0.05</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th style="text-align:left"><code>alpha = 0.005</code></th>
+<th style="text-align:left"><code>alpha = 0.05</code></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left"><img src="images/task2_CBdragon_microfacet_au_alpha0.005.png" alt></td>
+<td style="text-align:left"><img src="images/task2_CBdragon_microfacet_au_alpha0.05.png" alt></td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th style="text-align:left"><code>alpha = 0.25</code></th>
+<th style="text-align:left"><code>alpha = 0.5</code></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left"><img src="images/task2_CBdragon_microfacet_au_alpha0.25.png" alt></td>
+<td style="text-align:left"><img src="images/task2_CBdragon_microfacet_au_alpha0.5.png" alt></td>
+</tr>
+</tbody>
+</table>
+<p>Decreasing the <code>alpha</code> value decreases the roughness of the material, and the dragon&apos;s skin becomes smoother. The dragon&apos;s skin is more reflective when <code>alpha</code> is smaller, and the dragon&apos;s skin is more transparent when <code>alpha</code> is larger.</p>
+<h3 class="mume-header" id="task-22-cbbunny_microfacet_cudae">Task 2.2: <code>CBbunny_microfacet_cu.dae</code></h3>
+
+<table>
+<thead>
+<tr>
+<th style="text-align:left">Parameter</th>
+<th style="text-align:left">Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left"><code>-t</code></td>
+<td style="text-align:left">8</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>-s</code></td>
+<td style="text-align:left">64</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>-l</code></td>
+<td style="text-align:left">1</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>-m</code></td>
+<td style="text-align:left">5</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>-r</code></td>
+<td style="text-align:left">480 360</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>-a</code></td>
+<td style="text-align:left">64 0.05 (Note that since batch size is 64, adaptive sampling is effectively disabled)</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th style="text-align:left"><code>-H</code> (Hemisphere Sampling)</th>
+<th style="text-align:left">Importance Sampling</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left"><img src="images/task2_CBbunny_microfacet_cu_H.png" alt></td>
+<td style="text-align:left"><img src="images/task2_CBbunny_microfacet_cu_noH.png" alt></td>
+</tr>
+</tbody>
+</table>
+<p>It is clearly that using importance sampling decreases noise significantly without affecting the computation time.</p>
+<h3 class="mume-header" id="task-23-another-material">Task 2.3: Another Material</h3>
+
+<p>Element: <a href="https://refractiveindex.info/?shelf=main&amp;book=Cr&amp;page=Johnson">Chromium(CR)</a></p>
+<p><img src="images/task2_Chromium_crystals_and_1cm3_cube.jpg" alt></p>
+<p>Material Properties:</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">Color(Wavelength)</th>
+<th style="text-align:left"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>&#x3B7;</mi></mrow><annotation encoding="application/x-tex">\eta</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.625em;vertical-align:-0.1944em;"></span><span class="mord mathnormal" style="margin-right:0.03588em;">&#x3B7;</span></span></span></span> - Refractive index</th>
+<th style="text-align:left"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>k</mi></mrow><annotation encoding="application/x-tex">k</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6944em;"></span><span class="mord mathnormal" style="margin-right:0.03148em;">k</span></span></span></span> - Extinction coefficient</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">Red(614nm)</td>
+<td style="text-align:left">0.21646</td>
+<td style="text-align:left">3.30</td>
+</tr>
+<tr>
+<td style="text-align:left">Green(549nm)</td>
+<td style="text-align:left">0.42833</td>
+<td style="text-align:left">3.3300</td>
+</tr>
+<tr>
+<td style="text-align:left">Blue(466nm)</td>
+<td style="text-align:left">1.3284</td>
+<td style="text-align:left">3.2150</td>
+</tr>
+</tbody>
+</table>
+<p>Parameters:</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">Parameter</th>
+<th style="text-align:left">Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left"><code>-t</code></td>
+<td style="text-align:left">8</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>-s</code></td>
+<td style="text-align:left">512</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>-l</code></td>
+<td style="text-align:left">4</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>-m</code></td>
+<td style="text-align:left">5</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>-r</code></td>
+<td style="text-align:left">480 360</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>-a</code></td>
+<td style="text-align:left">64 0.05</td>
+</tr>
+</tbody>
+</table>
+<p>Output:</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left"><code>alpha = 0.2</code></th>
+<th style="text-align:left"><code>alpha = 0.5</code></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left"><img src="images/task2_CBdragon_microfacet_cr_alpha0.2.png" alt></td>
+<td style="text-align:left"><img src="images/task2_CBdragon_microfacet_cr_alpha0.5.png" alt></td>
+</tr>
+</tbody>
+</table>
+<p>Looks pretty cool!</p>
+<h2 class="mume-header" id="credits-and-side-notes">Credits and Side Notes</h2>
 
 <blockquote>
-<p>We followed closely by the steps outlined in the spec, where we listed all mesh elements from halfedges, edges, vertices, to faces, number them in a way that we could visualize more clearly, and perform the flip.</p>
-</blockquote>
-<p><img src="images/task4-question1-picture1.jpeg" alt></p>
-<ol>
-<li>We check whether both faces involved are not boundaries, through calling is_boundary() for the face mesh.</li>
-<li>Then we begin the flip by modifying the halfedges 0 to 5 first by resetting the next, twin, vertex, face, and edge according to the graph we drew where I linked below.</li>
-<li>After that, we modify the halfedges associated with each vertex. We move on to modify the halfedges associated with edges and last for the faces.</li>
-<li>We did not use any interesting implementations, and the debugging tricks I used are mainly through check_for function and the graph we drew on our notebook to begin with (going over the assignments one by one to make sure the pointers are pointing to the correct mesh element).</li>
-</ol>
-<table>
-<thead>
-<tr>
-<th>Before</th>
-<th>After</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><img src="images/task4-question2-picture1.png" alt></td>
-<td><img src="images/task4-question2-picture2.png" alt></td>
-</tr>
-<tr>
-<td><img src="images/task4-question2-picture1.png" alt></td>
-<td><img src="images/task4-question2-picture3.png" alt></td>
-</tr>
-</tbody>
-</table>
-<p>The debugging journey was a tough one. First we fell into the pitfall where we thought similarly to the last few tasks, we have to create a new EdgeIter instance to return, which ends up with weird overlapping happening on the teapot. Then after carefully examining the spec, we noticed that and changed that.</p>
-<p>After that, we failed on the point where I did not update the vertices and faces halfedges, and when I do flips on the teapot, there may appear some new edges after flipping (check_for returns weird number of meshes for the edge), where those new edges with black color filling in will disappear after 4 flips. Then we add in the full assignments of halfedges to all faces and edges (before we thought the halfedges assigned will not change, so we did not bother to reassign), the whole edge flip is complete. In order to make sure, we did flipping multiple times and it seems to be fine.</p>
-<h3 class="mume-header" id="-part-v-edge-split-">Part V: Edge Split</h3>
-
-<p>In this part, we are asked to implement the edge split operation: selecting an edge and spliting it into two edges, while preserving the mesh connectivity.</p>
-<ol>
-<li>We implemented this by first checking whether the edge is a boundary edge. If it is, then we process it with a special rule described in the EC section</li>
-<li>When we split one edge into two, we need to create a new vertex in the middle, the originall edge splits into two edges to connect the new vertex to two vertices that the edge is previously connected to.</li>
-<li>We also need to add in two more edges to connect the new vertex to two top vertices of the two faces that the edge is incident to.</li>
-<li>Then we need to add in two more faces to account for the original two faces splitting.</li>
-<li>Finally we add in corresponding halfedges into the mesh</li>
-</ol>
-<p>Before and After Edge Splits</p>
-<table>
-<thead>
-<tr>
-<th>Before</th>
-<th>After</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><img src="images/task5_before.png" alt></td>
-<td><img src="images/task5_aftersplit.png" alt></td>
-</tr>
-</tbody>
-</table>
-<p>Edge Splits + Flip</p>
-<table>
-<thead>
-<tr>
-<th>Before</th>
-<th>Split</th>
-<th>Flip</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><img src="images/task5_before_split_flip.png" alt></td>
-<td><img src="images/task5_after_split_before_flip.png" alt></td>
-<td><img src="images/task5_after_split_flip.png" alt></td>
-</tr>
-</tbody>
-</table>
-<p>Eventful Journey:</p>
-<ol>
-<li>It is extremely important for this part to be implemented correctly since the next part heavily depends on this part. I made sure that all halfedges have twins in the inverse direction, and all pointer relaitonships are correct between vertices, halfedges, edges, and faces.</li>
-</ol>
-<h4 class="mume-header" id="-ec-splitting-on-boundary-edge-">EC: Splitting on boundary edge</h4>
-
-<ol>
-<li>This case is actually relatively simpler than the general case, because instead of splitting two face into four faces, we only need to split one face into two faces.</li>
-<li>One thing special in the implementation is that we need to check which side of the halfedge lying on the splitting edge is inside the mesh and which is outside. Then we just draw out the diagram and figure out relationships between vertices, edges, halfedges, and faces before and after the split.</li>
-<li>Once we figured out that, we can simply add two new edges, four new halfedges, and one new face to the mesh.</li>
-</ol>
-<table>
-<thead>
-<tr>
-<th>Before</th>
-<th>After</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><img src="images/task5_ec_before.png" alt></td>
-<td><img src="images/task5_ec_after.png" alt></td>
-</tr>
-</tbody>
-</table>
-<h3 class="mume-header" id="-part-vi-loop-subdivision-for-mesh-upsampling-">Part VI: Loop Subdivision for Mesh Upsampling</h3>
-
-<p>In this part, we implemented the Loop subdivision algorithm for mesh upsampling. The algorithm calculates new positions for existing vertices and creates new vertices in the middle of each edge.</p>
-<ol>
-<li>I implemented the subloop algorithm by first iterating through the mesh and calculating the new position for each old and new vertex. For the new position of the new vertex, I store it in its corresponding splitting edge&apos;s <code>newPosition</code> attribute.</li>
-<li>Then I iterate through the mesh and start dividing each edge. The challenging point here is that we need to make sure we don&apos;t divide on new edges otherwise we will end up in an infinite loop.</li>
-<li>Then I iterate through the mesh again and flip new edges that connects an old vertex with a new vertex.</li>
-<li>Finally I update the position of all vertices in the mesh</li>
-</ol>
-<p>Debugging thoughts:</p>
-<ol>
-<li>Once I was able to think about the algorithm throughly I was able to fix every bug I encountered. The tips on the project website was extremely helpful. I also have a screenshot of a bug I encountered.</li>
-</ol>
-<p><img src="images/task6-bug.png" alt="Task 6 Bug"></p>
-<p>Some observations:</p>
-<p>Beetle</p>
-<table>
-<thead>
-<tr>
-<th>Before</th>
-<th>After</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><img src="images/task6_beetle_1.png" alt></td>
-<td><img src="images/task6_beetle_2.png" alt></td>
-</tr>
-</tbody>
-</table>
-<p>Icosahedron</p>
-<table>
-<thead>
-<tr>
-<th>Before</th>
-<th>After</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><img src="images/task6_icosahedron_1.png" alt></td>
-<td><img src="images/task6_icosahedron_2.png" alt></td>
-</tr>
-</tbody>
-</table>
-<p>I think one important thing to notice is that on sharp corners after the split the corner will be more prominent than other corners. Depending on the number of neighbours a sharp corner has, the corner will be more or less prominent.</p>
-<p>Subdivisions on cube</p>
-<table>
-<thead>
-<tr>
-<th>Step</th>
-<th>Image</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>1</td>
-<td><img src="images/task6_cube_1.png" alt></td>
-</tr>
-<tr>
-<td>2</td>
-<td><img src="images/task6_cube_2.png" alt></td>
-</tr>
-<tr>
-<td>3</td>
-<td><img src="images/task6_cube_3.png" alt></td>
-</tr>
-<tr>
-<td>4</td>
-<td><img src="images/task6_cube_4.png" alt></td>
-</tr>
-<tr>
-<td>5</td>
-<td><img src="images/task6_cube_5.png" alt></td>
-</tr>
-</tbody>
-</table>
-<p>Preprocess Ideas:</p>
-<blockquote>
-<p>I think the asymmetric behavior of the subdivision algorithm is due to the fact that the edges on each surface of the cube is not symmetric, and our algorithm depends on the position of neighbouring vertices to calculate the new position of the vertex. So I did exactly that to make the subdivision symmetric</p>
-</blockquote>
-<table>
-<thead>
-<tr>
-<th>Step</th>
-<th>Image</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>1</td>
-<td><img src="images/task6_cube_preprocess_1.png" alt></td>
-</tr>
-<tr>
-<td>2</td>
-<td><img src="images/task6_cube_preprocess_2.png" alt></td>
-</tr>
-<tr>
-<td>3</td>
-<td><img src="images/task6_cube_preprocess_3.png" alt></td>
-</tr>
-<tr>
-<td>4</td>
-<td><img src="images/task6_cube_preprocess_4.png" alt></td>
-</tr>
-</tbody>
-</table>
-<h3 class="mume-header" id="-credit-and-site-notes-">Credit and site notes:</h3>
-
-<blockquote>
-<p>Webpage hosted at <a href="https://quantumcookie.xyz/Opensourced-Study-Notes-Berkeley/CS184/proj2-meshedit-writeup">quantumcookie.xyz/Opensourced-Study-Notes-Berkeley/CS184/proj2-meshedit-writeup</a></p>
+<p>Webpage hosted at <a href="https://quantumcookie.xyz/Opensourced-Study-Notes-Berkeley/CS184/proj3-2-pathtracer-writeup/">quantumcookie.xyz/Opensourced-Study-Notes-Berkeley/CS184/proj3-2-pathtracer-writeup/</a></p>
 </blockquote>
 
       </div>

@@ -6,3 +6,4 @@
   - [Project 1 Writeup](proj1-rasterizer-writeup/)
   - [Project 2 Writuep](proj2-meshedit-writeup/)
   - [Project 3-1 Writeup](proj3-1-pathtracer-writeup/)
+  - [Project 3-2 Writuep](proj3-2-pathtracer-writeup/)
