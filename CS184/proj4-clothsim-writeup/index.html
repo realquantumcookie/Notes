@@ -1,0 +1,585 @@
+<!DOCTYPE html><html><head>
+      <title>CS184 Project 4 ClothSim Writeup</title>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      
+      <link rel="stylesheet" href="../css/katex.min.css">
+      
+      <style>
+      /**
+ * prism.js Github theme based on GitHub's theme.
+ * @author Sam Clarke
+ */
+code[class*="language-"],
+pre[class*="language-"] {
+  color: #333;
+  background: none;
+  font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace;
+  text-align: left;
+  white-space: pre;
+  word-spacing: normal;
+  word-break: normal;
+  word-wrap: normal;
+  line-height: 1.4;
+
+  -moz-tab-size: 8;
+  -o-tab-size: 8;
+  tab-size: 8;
+
+  -webkit-hyphens: none;
+  -moz-hyphens: none;
+  -ms-hyphens: none;
+  hyphens: none;
+}
+
+/* Code blocks */
+pre[class*="language-"] {
+  padding: .8em;
+  overflow: auto;
+  /* border: 1px solid #ddd; */
+  border-radius: 3px;
+  /* background: #fff; */
+  background: #f5f5f5;
+}
+
+/* Inline code */
+:not(pre) > code[class*="language-"] {
+  padding: .1em;
+  border-radius: .3em;
+  white-space: normal;
+  background: #f5f5f5;
+}
+
+.token.comment,
+.token.blockquote {
+  color: #969896;
+}
+
+.token.cdata {
+  color: #183691;
+}
+
+.token.doctype,
+.token.punctuation,
+.token.variable,
+.token.macro.property {
+  color: #333;
+}
+
+.token.operator,
+.token.important,
+.token.keyword,
+.token.rule,
+.token.builtin {
+  color: #a71d5d;
+}
+
+.token.string,
+.token.url,
+.token.regex,
+.token.attr-value {
+  color: #183691;
+}
+
+.token.property,
+.token.number,
+.token.boolean,
+.token.entity,
+.token.atrule,
+.token.constant,
+.token.symbol,
+.token.command,
+.token.code {
+  color: #0086b3;
+}
+
+.token.tag,
+.token.selector,
+.token.prolog {
+  color: #63a35c;
+}
+
+.token.function,
+.token.namespace,
+.token.pseudo-element,
+.token.class,
+.token.class-name,
+.token.pseudo-class,
+.token.id,
+.token.url-reference .token.variable,
+.token.attr-name {
+  color: #795da3;
+}
+
+.token.entity {
+  cursor: help;
+}
+
+.token.title,
+.token.title .token.punctuation {
+  font-weight: bold;
+  color: #1d3e81;
+}
+
+.token.list {
+  color: #ed6a43;
+}
+
+.token.inserted {
+  background-color: #eaffea;
+  color: #55a532;
+}
+
+.token.deleted {
+  background-color: #ffecec;
+  color: #bd2c00;
+}
+
+.token.bold {
+  font-weight: bold;
+}
+
+.token.italic {
+  font-style: italic;
+}
+
+
+/* JSON */
+.language-json .token.property {
+  color: #183691;
+}
+
+.language-markup .token.tag .token.punctuation {
+  color: #333;
+}
+
+/* CSS */
+code.language-css,
+.language-css .token.function {
+  color: #0086b3;
+}
+
+/* YAML */
+.language-yaml .token.atrule {
+  color: #63a35c;
+}
+
+code.language-yaml {
+  color: #183691;
+}
+
+/* Ruby */
+.language-ruby .token.function {
+  color: #333;
+}
+
+/* Markdown */
+.language-markdown .token.url {
+  color: #795da3;
+}
+
+/* Makefile */
+.language-makefile .token.symbol {
+  color: #795da3;
+}
+
+.language-makefile .token.variable {
+  color: #183691;
+}
+
+.language-makefile .token.builtin {
+  color: #0086b3;
+}
+
+/* Bash */
+.language-bash .token.keyword {
+  color: #0086b3;
+}
+
+/* highlight */
+pre[data-line] {
+  position: relative;
+  padding: 1em 0 1em 3em;
+}
+pre[data-line] .line-highlight-wrapper {
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-color: transparent;
+  display: block;
+  width: 100%;
+}
+
+pre[data-line] .line-highlight {
+  position: absolute;
+  left: 0;
+  right: 0;
+  padding: inherit 0;
+  margin-top: 1em;
+  background: hsla(24, 20%, 50%,.08);
+  background: linear-gradient(to right, hsla(24, 20%, 50%,.1) 70%, hsla(24, 20%, 50%,0));
+  pointer-events: none;
+  line-height: inherit;
+  white-space: pre;
+}
+
+pre[data-line] .line-highlight:before, 
+pre[data-line] .line-highlight[data-end]:after {
+  content: attr(data-start);
+  position: absolute;
+  top: .4em;
+  left: .6em;
+  min-width: 1em;
+  padding: 0 .5em;
+  background-color: hsla(24, 20%, 50%,.4);
+  color: hsl(24, 20%, 95%);
+  font: bold 65%/1.5 sans-serif;
+  text-align: center;
+  vertical-align: .3em;
+  border-radius: 999px;
+  text-shadow: none;
+  box-shadow: 0 1px white;
+}
+
+pre[data-line] .line-highlight[data-end]:after {
+  content: attr(data-end);
+  top: auto;
+  bottom: .4em;
+}html body{font-family:"Helvetica Neue",Helvetica,"Segoe UI",Arial,freesans,sans-serif;font-size:16px;line-height:1.6;color:#333;background-color:#fff;overflow:initial;box-sizing:border-box;word-wrap:break-word}html body>:first-child{margin-top:0}html body h1,html body h2,html body h3,html body h4,html body h5,html body h6{line-height:1.2;margin-top:1em;margin-bottom:16px;color:#000}html body h1{font-size:2.25em;font-weight:300;padding-bottom:.3em}html body h2{font-size:1.75em;font-weight:400;padding-bottom:.3em}html body h3{font-size:1.5em;font-weight:500}html body h4{font-size:1.25em;font-weight:600}html body h5{font-size:1.1em;font-weight:600}html body h6{font-size:1em;font-weight:600}html body h1,html body h2,html body h3,html body h4,html body h5{font-weight:600}html body h5{font-size:1em}html body h6{color:#5c5c5c}html body strong{color:#000}html body del{color:#5c5c5c}html body a:not([href]){color:inherit;text-decoration:none}html body a{color:#08c;text-decoration:none}html body a:hover{color:#00a3f5;text-decoration:none}html body img{max-width:100%}html body>p{margin-top:0;margin-bottom:16px;word-wrap:break-word}html body>ul,html body>ol{margin-bottom:16px}html body ul,html body ol{padding-left:2em}html body ul.no-list,html body ol.no-list{padding:0;list-style-type:none}html body ul ul,html body ul ol,html body ol ol,html body ol ul{margin-top:0;margin-bottom:0}html body li{margin-bottom:0}html body li.task-list-item{list-style:none}html body li>p{margin-top:0;margin-bottom:0}html body .task-list-item-checkbox{margin:0 .2em .25em -1.8em;vertical-align:middle}html body .task-list-item-checkbox:hover{cursor:pointer}html body blockquote{margin:16px 0;font-size:inherit;padding:0 15px;color:#5c5c5c;background-color:#f0f0f0;border-left:4px solid #d6d6d6}html body blockquote>:first-child{margin-top:0}html body blockquote>:last-child{margin-bottom:0}html body hr{height:4px;margin:32px 0;background-color:#d6d6d6;border:0 none}html body table{margin:10px 0 15px 0;border-collapse:collapse;border-spacing:0;display:block;width:100%;overflow:auto;word-break:normal;word-break:keep-all}html body table th{font-weight:bold;color:#000}html body table td,html body table th{border:1px solid #d6d6d6;padding:6px 13px}html body dl{padding:0}html body dl dt{padding:0;margin-top:16px;font-size:1em;font-style:italic;font-weight:bold}html body dl dd{padding:0 16px;margin-bottom:16px}html body code{font-family:Menlo,Monaco,Consolas,'Courier New',monospace;font-size:.85em !important;color:#000;background-color:#f0f0f0;border-radius:3px;padding:.2em 0}html body code::before,html body code::after{letter-spacing:-0.2em;content:"\00a0"}html body pre>code{padding:0;margin:0;font-size:.85em !important;word-break:normal;white-space:pre;background:transparent;border:0}html body .highlight{margin-bottom:16px}html body .highlight pre,html body pre{padding:1em;overflow:auto;font-size:.85em !important;line-height:1.45;border:#d6d6d6;border-radius:3px}html body .highlight pre{margin-bottom:0;word-break:normal}html body pre code,html body pre tt{display:inline;max-width:initial;padding:0;margin:0;overflow:initial;line-height:inherit;word-wrap:normal;background-color:transparent;border:0}html body pre code:before,html body pre tt:before,html body pre code:after,html body pre tt:after{content:normal}html body p,html body blockquote,html body ul,html body ol,html body dl,html body pre{margin-top:0;margin-bottom:16px}html body kbd{color:#000;border:1px solid #d6d6d6;border-bottom:2px solid #c7c7c7;padding:2px 4px;background-color:#f0f0f0;border-radius:3px}@media print{html body{background-color:#fff}html body h1,html body h2,html body h3,html body h4,html body h5,html body h6{color:#000;page-break-after:avoid}html body blockquote{color:#5c5c5c}html body pre{page-break-inside:avoid}html body table{display:table}html body img{display:block;max-width:100%;max-height:100%}html body pre,html body code{word-wrap:break-word;white-space:pre}}.markdown-preview{width:100%;height:100%;box-sizing:border-box}.markdown-preview .pagebreak,.markdown-preview .newpage{page-break-before:always}.markdown-preview pre.line-numbers{position:relative;padding-left:3.8em;counter-reset:linenumber}.markdown-preview pre.line-numbers>code{position:relative}.markdown-preview pre.line-numbers .line-numbers-rows{position:absolute;pointer-events:none;top:1em;font-size:100%;left:0;width:3em;letter-spacing:-1px;border-right:1px solid #999;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}.markdown-preview pre.line-numbers .line-numbers-rows>span{pointer-events:none;display:block;counter-increment:linenumber}.markdown-preview pre.line-numbers .line-numbers-rows>span:before{content:counter(linenumber);color:#999;display:block;padding-right:.8em;text-align:right}.markdown-preview .mathjax-exps .MathJax_Display{text-align:center !important}.markdown-preview:not([for="preview"]) .code-chunk .btn-group{display:none}.markdown-preview:not([for="preview"]) .code-chunk .status{display:none}.markdown-preview:not([for="preview"]) .code-chunk .output-div{margin-bottom:16px}.markdown-preview .md-toc{padding:0}.markdown-preview .md-toc .md-toc-link-wrapper .md-toc-link{display:inline;padding:.25rem 0}.markdown-preview .md-toc .md-toc-link-wrapper .md-toc-link p,.markdown-preview .md-toc .md-toc-link-wrapper .md-toc-link div{display:inline}.markdown-preview .md-toc .md-toc-link-wrapper.highlighted .md-toc-link{font-weight:800}.scrollbar-style::-webkit-scrollbar{width:8px}.scrollbar-style::-webkit-scrollbar-track{border-radius:10px;background-color:transparent}.scrollbar-style::-webkit-scrollbar-thumb{border-radius:5px;background-color:rgba(150,150,150,0.66);border:4px solid rgba(150,150,150,0.66);background-clip:content-box}html body[for="html-export"]:not([data-presentation-mode]){position:relative;width:100%;height:100%;top:0;left:0;margin:0;padding:0;overflow:auto}html body[for="html-export"]:not([data-presentation-mode]) .markdown-preview{position:relative;top:0}@media screen and (min-width:914px){html body[for="html-export"]:not([data-presentation-mode]) .markdown-preview{padding:2em calc(50% - 457px + 2em)}}@media screen and (max-width:914px){html body[for="html-export"]:not([data-presentation-mode]) .markdown-preview{padding:2em}}@media screen and (max-width:450px){html body[for="html-export"]:not([data-presentation-mode]) .markdown-preview{font-size:14px !important;padding:1em}}@media print{html body[for="html-export"]:not([data-presentation-mode]) #sidebar-toc-btn{display:none}}html body[for="html-export"]:not([data-presentation-mode]) #sidebar-toc-btn{position:fixed;bottom:8px;left:8px;font-size:28px;cursor:pointer;color:inherit;z-index:99;width:32px;text-align:center;opacity:.4}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] #sidebar-toc-btn{opacity:1}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc{position:fixed;top:0;left:0;width:300px;height:100%;padding:32px 0 48px 0;font-size:14px;box-shadow:0 0 4px rgba(150,150,150,0.33);box-sizing:border-box;overflow:auto;background-color:inherit}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc::-webkit-scrollbar{width:8px}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc::-webkit-scrollbar-track{border-radius:10px;background-color:transparent}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc::-webkit-scrollbar-thumb{border-radius:5px;background-color:rgba(150,150,150,0.66);border:4px solid rgba(150,150,150,0.66);background-clip:content-box}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc a{text-decoration:none}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc .md-toc{padding:0 16px}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc .md-toc .md-toc-link-wrapper .md-toc-link{display:inline;padding:.25rem 0}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc .md-toc .md-toc-link-wrapper .md-toc-link p,html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc .md-toc .md-toc-link-wrapper .md-toc-link div{display:inline}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc .md-toc .md-toc-link-wrapper.highlighted .md-toc-link{font-weight:800}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .markdown-preview{left:300px;width:calc(100% -  300px);padding:2em calc(50% - 457px -  300px/2);margin:0;box-sizing:border-box}@media screen and (max-width:1274px){html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .markdown-preview{padding:2em}}@media screen and (max-width:450px){html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .markdown-preview{width:100%}}html body[for="html-export"]:not([data-presentation-mode]):not([html-show-sidebar-toc]) .markdown-preview{left:50%;transform:translateX(-50%)}html body[for="html-export"]:not([data-presentation-mode]):not([html-show-sidebar-toc]) .md-sidebar-toc{display:none}
+/* Please visit the URL below for more information: */
+/*   https://shd101wyy.github.io/markdown-preview-enhanced/#/customize-css */
+
+      </style>
+    </head>
+    <body for="html-export">
+      <div class="mume markdown-preview  ">
+      <h1 class="mume-header" id="cs184-project-4-clothsim-writeup">CS184 Project 4 (Clothsim) Writeup</h1>
+
+<blockquote>
+<p>Spring 2023, Yunhao Cao and Yuqi Zhai</p>
+</blockquote>
+<h2 class="mume-header" id="overview">Overview</h2>
+
+<p style="text-align:center"><img src="img/clothsim-mirror.png" style="max-width: 500px; width: 100%; height: auto;"></p>
+<p>In this projet, we implemented a cloth simulator using the mass-spring system. The cloth is represented by a grid of vertices, and each vertex is connected to its neighbors by springs. The simulation is based on the Verlet integration method. We also implemented shaders to render the cloth and the environment.</p>
+<h3 class="mume-header" id="table-of-contents">Table of Contents</h3>
+
+<ul>
+<li><a href="#cs184-project-4-clothsim-writeup">CS184 Project 4 (Clothsim) Writeup</a>
+<ul>
+<li><a href="#overview">Overview</a>
+<ul>
+<li><a href="#table-of-contents">Table of Contents</a></li>
+</ul>
+</li>
+<li><a href="#task-1-masses-and-springs">Task 1: Masses and springs</a></li>
+<li><a href="#task-2-simulation-via-numerical-integration">Task 2: Simulation via numerical integration</a>
+<ul>
+<li><a href="#task-211-changing-k_s">Task 2.1.1: Changing <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>K</mi><mi mathvariant="normal">_</mi><mi>s</mi></mrow><annotation encoding="application/x-tex">K\_s</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.9933em;vertical-align:-0.31em;"></span><span class="mord mathnormal" style="margin-right:0.07153em;">K</span><span class="mord" style="margin-right:0.02778em;">_</span><span class="mord mathnormal">s</span></span></span></span></a></li>
+<li><a href="#task-212-changing-density">Task 2.1.2: Changing <code>density</code></a></li>
+<li><a href="#task-213-changing-damping">Task 2.1.3: Changing <code>damping</code></a></li>
+<li><a href="#task-22-show-a-screeshot-of-pinned4json">Task 2.2: Show a screeshot of <code>pinned4.json</code></a></li>
+</ul>
+</li>
+<li><a href="#task-3-handling-collisions-with-other-objects">Task 3: Handling collisions with other objects</a></li>
+<li><a href="#task-4-handling-self-collisions">Task 4: Handling self-collisions</a></li>
+<li><a href="#task-5-shaders">Task 5: Shaders</a></li>
+<li><a href="#credits-and-side-notes">Credits and Side Notes</a></li>
+</ul>
+</li>
+</ul>
+<h2 class="mume-header" id="task-1-masses-and-springs">Task 1: Masses and springs</h2>
+
+<p>There are 3 types of springs that we use in simulation:</p>
+<ol>
+<li>Structural</li>
+<li>Shearing</li>
+<li>Bending</li>
+</ol>
+<p>The first two offer <strong>isometric</strong> resistance to stretching and compression within the plane of the cloth. The bending springs provide resistance to deformation in the direction perpendicular to the plane.</p>
+<p>To not allow springs to compress to much, we leave out a <strong>rest length</strong> for each spring.</p>
+<blockquote>
+<p>Take some screenshots of scene/pinned2.json from a viewing angle where you can clearly see the cloth wireframe to show the structure of your point masses and springs.</p>
+</blockquote>
+<p><img src="img/task1_part1.png" alt="Task1_1"></p>
+<blockquote>
+<p>Show us what the wireframe looks like (1) without any shearing constraints, (2) with only shearing constraints, and (3) with all constraints.</p>
+</blockquote>
+<p>(1) without any shearing constraints:</p>
+<p><img src="img/task1_part2_no_shearing.png" alt="Task1_2_1"></p>
+<p>(2) with only shearing constraints:</p>
+<p><img src="img/task1_part2_only_shearing.png" alt="Task1_2_2"></p>
+<p>(3) with all constraints:</p>
+<p><img src="img/task1_part2_all_constraints.png" alt="Task1_2_3"></p>
+<h2 class="mume-header" id="task-2-simulation-via-numerical-integration">Task 2: Simulation via numerical integration</h2>
+
+<p>In this part, we implemented a basic physics simulation of the cloth using the Verlet integration method. This includes external forces, such as gravity, and internal forces between springs.</p>
+<blockquote>
+<p>Experiment with some the parameters in the simulation. To do so, pause the simulation at the start with P, modify the values of interest, and then resume by pressing P again. You can also restart the simulation at any time from the cloth&apos;s starting position by pressing R.</p>
+</blockquote>
+<h3 class="mume-header" id="task-211-changing-k_s">Task 2.1.1: Changing <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>K</mi><mi>s</mi></msub></mrow><annotation encoding="application/x-tex">K_s</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.07153em;">K</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.1514em;"><span style="top:-2.55em;margin-left:-0.0715em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">s</span></span></span></span><span class="vlist-s">&#x200B;</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span></h3>
+
+<p>We will change <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>K</mi><mi>s</mi></msub></mrow><annotation encoding="application/x-tex">K_s</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.07153em;">K</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.1514em;"><span style="top:-2.55em;margin-left:-0.0715em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">s</span></span></span></span><span class="vlist-s">&#x200B;</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span> first.</p>
+<table>
+<thead>
+<tr>
+<th><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>K</mi><mi>s</mi></msub></mrow><annotation encoding="application/x-tex">K_s</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.07153em;">K</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.1514em;"><span style="top:-2.55em;margin-left:-0.0715em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">s</span></span></span></span><span class="vlist-s">&#x200B;</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span> (N/m)</th>
+<th>Result</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>50</td>
+<td><img src="img/task2_ks%3D50.png" alt="Task2_1_1_1"></td>
+</tr>
+<tr>
+<td>5000</td>
+<td><img src="img/task2_ks%3D5000_density%3D15_damping%3D0.2%25.png" alt="Task2_1_1_2"></td>
+</tr>
+<tr>
+<td>105000</td>
+<td><img src="img/task2_ks%3D105000.png" alt="Task2_1_1_3"></td>
+</tr>
+</tbody>
+</table>
+<p>Starting from at rest, with a low <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>K</mi><mi>s</mi></msub></mrow><annotation encoding="application/x-tex">K_s</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.07153em;">K</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.1514em;"><span style="top:-2.55em;margin-left:-0.0715em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">s</span></span></span></span><span class="vlist-s">&#x200B;</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span> constant, we can see that the cloth will be more collapsed once it reaches the steady state. The cloth appears to be more crumbled together and being more stretched. On the other hand, with a high <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>K</mi><mi>s</mi></msub></mrow><annotation encoding="application/x-tex">K_s</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.07153em;">K</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.1514em;"><span style="top:-2.55em;margin-left:-0.0715em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">s</span></span></span></span><span class="vlist-s">&#x200B;</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span> constant, the cloth appears to be more stiff, as there is little collapse at the top of the cloth compared to the default 5000 N/m <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>K</mi><mi>s</mi></msub></mrow><annotation encoding="application/x-tex">K_s</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.07153em;">K</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.1514em;"><span style="top:-2.55em;margin-left:-0.0715em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">s</span></span></span></span><span class="vlist-s">&#x200B;</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>.</p>
+<h3 class="mume-header" id="task-212-changing-density">Task 2.1.2: Changing <code>density</code></h3>
+
+<table>
+<thead>
+<tr>
+<th><code>density</code> (<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>g</mi><mi mathvariant="normal">/</mi><msup><mrow><mi>c</mi><mi>m</mi></mrow><mn>2</mn></msup></mrow><annotation encoding="application/x-tex">g/{cm}^2</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.0641em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.03588em;">g</span><span class="mord">/</span><span class="mord"><span class="mord"><span class="mord mathnormal">c</span><span class="mord mathnormal">m</span></span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span></span></span></span>)</th>
+<th>Result</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td><img src="img/task2_density%3D1.png" alt="Task2_1_2_1"></td>
+</tr>
+<tr>
+<td>15</td>
+<td><img src="img/task2_ks%3D5000_density%3D15_damping%3D0.2%25.png" alt="Task2_1_2_2"></td>
+</tr>
+<tr>
+<td>1500</td>
+<td><img src="img/task2_density%3D1500.png" alt="Task2_1_2_3"></td>
+</tr>
+</tbody>
+</table>
+<p>Change in density appears to have the opposite trend compared to change in Ks constant. With a higher density, the cloth appears to be more stretched at the end of simulation due to it being heavier compared to the default simulation; with a smaller density, the cloth appears to be much lighter, with merely no collapse on the top of the cloth.</p>
+<h3 class="mume-header" id="task-213-changing-damping">Task 2.1.3: Changing <code>damping</code></h3>
+
+<table>
+<thead>
+<tr>
+<th><code>damping</code></th>
+<th>Result</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td><img src="img/task2_damping%3D0.0%25.png" alt="Task2_1_3_1"> <br> <img src="img/task2_damping%3D0.0%25_picture2.png" alt="Task2_1_3_2"></td>
+</tr>
+<tr>
+<td>0.2</td>
+<td><img src="img/task2_ks%3D5000_density%3D15_damping%3D0.2%25.png" alt="Task2_1_3_3"></td>
+</tr>
+<tr>
+<td>1.0</td>
+<td><img src="img/task2_damping%3D1.0%25.png" alt="Task2_1_3_4"></td>
+</tr>
+</tbody>
+</table>
+<p>At the default damping of 0.2%, the cloth will swing back and forth a couple of times before it reaches a stop. With a low damping percentage like 0.0% that we experimented with, the cloth will swing back and forth infinitely since there is no loss in the energy during each swing. On the other hand, with a high damping like 1.0%, the cloth will gradually fall to the stop position without any swinging back and forth.</p>
+<h3 class="mume-header" id="task-22-show-a-screeshot-of-pinned4json">Task 2.2: Show a screeshot of <code>pinned4.json</code></h3>
+
+<blockquote>
+<p>Show us a screenshot of your shaded cloth from scene/pinned4.json in its final resting state! If you choose to use different parameters than the default ones, please list them.</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Wireframe</th>
+<th>Normal</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><img src="img/task2_part2_wireframe.png" alt="Task2_2_1"></td>
+<td><img src="img/task2_part2_texture.png" alt="Task2_2_2"></td>
+</tr>
+</tbody>
+</table>
+<h2 class="mume-header" id="task-3-handling-collisions-with-other-objects">Task 3: Handling collisions with other objects</h2>
+
+<p>To simulate collisions with other primitive objects, we used shape defintion of their geometries and determined if the vertices crossed the boundary of the object. If so, we would push the vertices back to the boundary.</p>
+<blockquote>
+<p>Show us screenshots of your shaded cloth from scene/sphere.json in its final resting state on the sphere using the default ks = 5000 as well as with ks = 500 and ks = 50000. Describe the differences in the results.</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th><code>ks</code></th>
+<th>Result</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>500</td>
+<td><img src="img/task3_ks%3D500.png" alt="Task3_1_1"></td>
+</tr>
+<tr>
+<td>5000</td>
+<td><img src="img/task3_ks%3D5000.png" alt="Task3_1_1"></td>
+</tr>
+<tr>
+<td>50000</td>
+<td><img src="img/task3_ks%3D50000.png" alt="Task3_1_1"></td>
+</tr>
+</tbody>
+</table>
+<p>Compared to the default <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>K</mi><mi>s</mi></msub></mrow><annotation encoding="application/x-tex">K_s</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.07153em;">K</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.1514em;"><span style="top:-2.55em;margin-left:-0.0715em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">s</span></span></span></span><span class="vlist-s">&#x200B;</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span> constant, a smaller <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>K</mi><mi>s</mi></msub></mrow><annotation encoding="application/x-tex">K_s</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.07153em;">K</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.1514em;"><span style="top:-2.55em;margin-left:-0.0715em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">s</span></span></span></span><span class="vlist-s">&#x200B;</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span> constant will result in a more stretched way such that the cloth follows exactly the shape of the underlying sphere without any wrinkles on the primary area of interaction. With a higher <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>K</mi><mi>s</mi></msub></mrow><annotation encoding="application/x-tex">K_s</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.07153em;">K</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.1514em;"><span style="top:-2.55em;margin-left:-0.0715em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">s</span></span></span></span><span class="vlist-s">&#x200B;</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span> constant, we could see there are significantly more wrinkles on the cloth when it falls on the sphere, maintaining a bit more structural integrity or being more stiff in this situation.</p>
+<blockquote>
+<p>Show us a screenshot of your shaded cloth lying peacefully at rest on the plane. If you haven&apos;t by now, feel free to express your colorful creativity with the cloth! (You will need to complete the shaders portion first to show custom colors.)</p>
+</blockquote>
+<p><img src="img/task3_part2.png" alt="Task3_2"></p>
+<h2 class="mume-header" id="task-4-handling-self-collisions">Task 4: Handling self-collisions</h2>
+
+<p>To handle self-collisions, we used the same method as in Task 3, but we used the cloth&apos;s own vertices as the boundary of the object. We also had to optimize this algorithm to avoid checking every single vertex against every other vertex, which would be very inefficient. We used a grid to store the vertices and only check vertices that are close to each other.</p>
+<blockquote>
+<p>Show us at least 3 screenshots that document how your cloth falls and folds on itself, starting with an early, initial self-collision and ending with the cloth at a more restful state (even if it is still slightly bouncy on the ground).</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Step</th>
+<th>Result</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td><img src="img/task4_1_1.png" alt="Task4_1"></td>
+</tr>
+<tr>
+<td>2</td>
+<td><img src="img/task4_1_2.png" alt="Task4_2"></td>
+</tr>
+<tr>
+<td>3</td>
+<td><img src="img/task4_1_3.png" alt="Task4_3"></td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>Vary the <code>density</code> as well as <code>ks</code> and describe with words and screenshots how they affect the behavior of the cloth as it falls on itself.</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th><code>ks</code></th>
+<th><code>density = 1</code></th>
+<th><code>density = 15</code></th>
+<th><code>density = 1500</code></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>5000</td>
+<td><img src="img/task4_ks%3D5000_density%3D1.png" alt="Task4_2_1"></td>
+<td><img src="img/task4_ks%3D5000_density%3D15.png" alt="Task4_2_2"></td>
+<td><img src="img/task4_ks%3D5000_density%3D1500.png" alt="Task4_2_3"></td>
+</tr>
+<tr>
+<td>500</td>
+<td><img src="img/task4_ks%3D500_density%3D1.png" alt="Task4_5_1"></td>
+<td><img src="img/task4_ks%3D500_density%3D15.png" alt="Task4_5_2"></td>
+<td><img src="img/task4_ks%3D500_density%3D1500.png" alt="Task4_5_3"></td>
+</tr>
+<tr>
+<td>50</td>
+<td><img src="img/task4_ks%3D50_density%3D1.png" alt="Task4_6_1"></td>
+<td><img src="img/task4_ks%3D50_density%3D15.png" alt="Task4_6_2"></td>
+<td><img src="img/task4_ks%3D50_density%3D1500.png" alt="Task4_6_3"></td>
+</tr>
+</tbody>
+</table>
+<p>Looks like varying <code>density</code> will cause the cloth to fall quicker. The <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>K</mi><mi>s</mi></msub></mrow><annotation encoding="application/x-tex">K_s</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.07153em;">K</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.1514em;"><span style="top:-2.55em;margin-left:-0.0715em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">s</span></span></span></span><span class="vlist-s">&#x200B;</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span> constant also affects the behavior of the cloth as it falls on itself. With a higher <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>K</mi><mi>s</mi></msub></mrow><annotation encoding="application/x-tex">K_s</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.07153em;">K</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.1514em;"><span style="top:-2.55em;margin-left:-0.0715em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">s</span></span></span></span><span class="vlist-s">&#x200B;</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span> constant, the cloth will be more stiff and will not be able to fall as quickly as the default simulation. With a lower <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>K</mi><mi>s</mi></msub></mrow><annotation encoding="application/x-tex">K_s</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.07153em;">K</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.1514em;"><span style="top:-2.55em;margin-left:-0.0715em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">s</span></span></span></span><span class="vlist-s">&#x200B;</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span> constant, the cloth will be more flexible and will fall quicker.</p>
+<h2 class="mume-header" id="task-5-shaders">Task 5: Shaders</h2>
+
+<blockquote>
+<p>Explain in your own words what is a shader program and how vertex and fragment shaders work together to create lighting and material effects.</p>
+</blockquote>
+<p>Shaders are programs that run on the GPU to perform operations on the vertices and fragments of the objects. Vertex shaders are used to transform the position of vertices of the objects into the screen space. Fragment shaders takes input from the output of a vertex shader and are used to determine the color of the vertices on the screen.</p>
+<blockquote>
+<p>Explain the Blinn-Phong shading model in your own words. Show a screenshot of your Blinn-Phong shader outputting only the ambient component, a screen shot only outputting the diffuse component, a screen shot only outputting the specular component, and one using the entire Blinn-Phong model.</p>
+</blockquote>
+<p>The Blinn-Phong shading model is a shading model that takes into account the ambient, diffuse, and specular components of the lighting. The ambient component is the light that is received by the object regardless of the direction of the light (it acts as a lighting offset to make sure that the scene is illuminated). The diffuse component is the light that is reflected from the object in the direction of the light. The specular component is the highlight that is reflected from the object in the direction of the light to the viewer.</p>
+<table>
+<thead>
+<tr>
+<th>Ambient</th>
+<th>Diffuse</th>
+<th>Specular</th>
+<th>Blinn-Phong</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><img src="img/task5_2_ambient.png" alt="Task5_2_ambient"></td>
+<td><img src="img/task5_2_diffuse.png" alt="Task5_2_diffuse"></td>
+<td><img src="img/task5_2_specular.png" alt="Task5_2_specular"></td>
+<td><img src="img/task5_2_complete.png" alt="Task5_2_blinnphong"></td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>Show a screenshot of your texture mapping shader using your own custom texture by modifying the textures in /textures/.</p>
+</blockquote>
+<p><img src="img/task5_3.png" alt="Task5_3"></p>
+<blockquote>
+<p>Show a screenshot of bump mapping on the cloth and on the sphere. Show a screenshot of displacement mapping on the sphere. Use the same texture for both renders. You can either provide your own texture or use one of the ones in the textures directory, BUT choose one that&apos;s not the default texture_2.png. Compare the two approaches and resulting renders in your own words. Compare how your the two shaders react to the sphere by changing the sphere mesh&apos;s coarseness by using -o 16 -a 16 and then -o 128 -a 128.</p>
+</blockquote>
+<p>Let&apos;s look at the bump mapping on the cloth</p>
+<p><img src="img/task5_4_cloth.png" alt="Cloth Bump"></p>
+<p>Then let&apos;s look at the bump mapping on the sphere</p>
+<table>
+<thead>
+<tr>
+<th><code>o = 16, a = 16</code></th>
+<th><code>o = 128, a = 128</code></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><img src="img/task5_4_sphere_16.png" alt="Sphere Bump 1"></td>
+<td><img src="img/task5_4_sphere_128.png" alt="Sphere Bump 2"></td>
+</tr>
+</tbody>
+</table>
+<p>We see that although the two parameter sets are similar, with the higher resolution sphere, we see more detail(in terms of vertex displacement) in the bump mapping. The bump mapping on the sphere is more pronounced with the higher resolution sphere while the bump mapping on the lower resolution sphere is more closer to the Normal-only mapping.</p>
+<blockquote>
+<p>Show a screenshot of your mirror shader on the cloth and on the sphere.</p>
+</blockquote>
+<p><img src="img/clothsim-mirror.png" alt="Task5_5"></p>
+<h2 class="mume-header" id="credits-and-side-notes">Credits and Side Notes</h2>
+
+<blockquote>
+<p>Webpage hosted at <a href="https://www.quantumcookie.xyz/Opensourced-Study-Notes-Berkeley/CS184/proj4-clothsim-writeup/">quantumcookie.xyz/Opensourced-Study-Notes-Berkeley/CS184/proj4-clothsim-writeup/</a></p>
+</blockquote>
+
+      </div>
+      
+      
+    
+    
+    
+    
+    
+    
+    
+    
+  
+    </body></html>
