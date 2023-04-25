@@ -1,17 +1,9 @@
 <!DOCTYPE html><html><head>
-      <title>CS184 Final Project Proposal</title>
+      <title>CS184 Final Project Milestone</title>
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
       
       <link rel="stylesheet" href="../css/katex.min.css">
-      
-      
-      
-      
-      
-      
-      
-      
       
       <style>
       /**
@@ -261,63 +253,67 @@ pre[data-line] .line-highlight[data-end]:after {
     </head>
     <body for="html-export">
       <div class="mume markdown-preview  ">
-      <h1 class="mume-header" id="cs184-clothing-minecraft">CS184: Clothing Minecraft</h1>
+      <h1 class="mume-header" id="cs184-milestone-report">CS184 Milestone Report</h1>
 
-<p>Our project is a Minecraft game mod written with the minecraft forge api that provides physically-accurate clothing materials (and one demo cloth) inside the game.</p>
 <blockquote>
 <p>Team: Yunhao Cao(<a href="https://github.com/realquantumcookie">@realquantumcookie</a>), Martin(Yuqi) Zhai (<a href="https://github.com/yuq1-zhai">@yuq1-zhai</a>), Jacky Kwok(<a href="https://github.com/jackykwok2024">@jackykwok2024</a>), Athena Leong (<a href="https://github.com/athenaleong">@athenaleong</a>).</p>
 </blockquote>
-<h2 class="mume-header" id="problem-description">Problem Description:</h2>
+<p>We have a <a href="https://drive.google.com/file/d/15f9gLjS_jgI9GKjCrClD_H0z8Xk-ng6F/view?usp=sharing">video</a> accompanying this milestone report.</p>
+<h2 class="mume-header" id="summary-of-what-we-have-accomplished-so-far">Summary of What we have accomplished so far</h2>
 
-<p>Despite the vast variety of mods available for Minecraft, including shaders, items, and game mechanics, there is a lack of mods that focus on the implementation of physics in the game. Currently, Minecraft has limited physics support for objects such as blocks, liquids, and projectiles. However, there are very few mods that simulate physics accurately for other objects, such as clothing and other non-rigid bodies. This lack of physics mods limits the potential for players to explore and create more realistic gameplay experiences in Minecraft, particularly for those interested in the application of physics to gaming environments. Therefore, we propose to develop a Minecraft mod that simulates physically accurate clothing using the Minecraft Forge API.</p>
-<h2 class="mume-header" id="goals-and-deliverables">Goals and Deliverables:</h2>
+<ul>
+<li>We have determined to simulate <strong>a piece of cape (cloak)</strong> as our goal inside the minecraft environment that is physically accurate, which is achieved mainly by an extension of Project 4: Clothism onto the cape.
+<ul>
+<li>This is due to the fact that Minecraft Modding API is extremely complicated and getting the information about the position of the cape already took us a lot of time to write code with.</li>
+</ul>
+</li>
+<li>We have familiarized ourselves with the Minecraft Forge API and settled our project to be based on Minecraft version 1.19.3 and 44.1.23. We have finished the setup for implementing the piece of cloth of our choice.</li>
+<li>We wrote a new renderer that replaces the default renderer for the cape (named as CapeRenderer as the interface, ForgeCapeRenderer as the class implementing the interface). This allows us to customize the rendering pipeline through designing a different mesh and manipulating each mesh through poseStack (a class that is used to determine the physical location of each mesh of interest).</li>
+<li>In the original Minecraft game, a cape is simply a piece of blocky mesh. We wrote our customized mesh that divides this whole piece of blocky mesh into a grid of <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>16</mn><mo>&#xD7;</mo><mn>10</mn></mrow><annotation encoding="application/x-tex">16 \times 10</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7278em;vertical-align:-0.0833em;"></span><span class="mord">16</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">&#xD7;</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">10</span></span></span></span> cubes in a row major order where each could be manipulated through poseStackModify function before we pass them into the real renderer.</li>
+<li>After finishing the render injection code, we went ahead and created an abstract class for Physics calculations of the cape. To do a sanity check on the renderer we wrote a vanilla version of the &quot;physics engine&quot; (determining the physical location of each mesh we created) through transformations mainly through rotation with respect to local coordinates and ease sine functions that will make the result more visually-appealing (as opposed to pure linear interpolation).</li>
+<li>After finishing the vanilla &quot;physics simulator&quot;, we wrote a half-complete Physics simulator (have tested standing still). Further testing is required as the physical simulation part is not finished yet.
+<ul>
+<li>This simulator have built-in point mass and spring system with structural, shearing, and bending constraints in place just like we had in Project 4.</li>
+</ul>
+</li>
+</ul>
+<h2 class="mume-header" id="reflect-on-the-progress">Reflect on the progress</h2>
 
-<p>Our primary goal is to develop a Minecraft mod that implements one physically-accurate clothing material in the game. The mod will simulate the behavior of clothing based on real-world physics, including factors such as gravity, wind, and friction. We will measure the quality of deliverables by collecting feedback from users on how the mod looks, feels and performs within the game.</p>
-<p>We plan to deliver the following:</p>
 <ul>
-<li>A Minecraft mod that implements one physically-accurate clothing material, with support for popular Minecraft versions.</li>
-<li>A set of screenshots and videos showcasing the physically-accurate clothing materials in action and demonstrating the behavior of different materials.</li>
-</ul>
-<p>We hope to achieve the following:</p>
+<li>So far, we have modified our schedule as needed, to focus on the more important task at hand
 <ul>
-<li>A few more different clothes for the same character.<br>
-Let user freely design their clothes (&#x201C;modding the mod&#x201D;) by defining a common cloth file format</li>
+<li>Since there is no wind available and the collision detection is really difficult to implement in the minecraft world with a piece of cape and extensive time needed to implement the shaders, we will adjust the cape length to mainly have it interact with the player alone and focus mainly on reproducing a more realistic cape than a piece of hardboard on the back of the player.</li>
+<li>The basic setup, understanding the Forge API, and framework construction took more time than expected, primarily due to lack of API documentations and tutorials for many mojang official functions and variable bindings.</li>
 </ul>
-<h2 class="mume-header" id="schedule">Schedule:</h2>
+</li>
+<li>We have finished the basic portion of the project and during the next week before the final presentation, we will add in the physical simulation portion, and have our renderer properly working with the physically simulated cape.</li>
+</ul>
+<h2 class="mume-header" id="updated-schedule">Updated Schedule</h2>
+
+<p>Schedule:<br>
+Week 1:</p>
+<ul>
+<li>Familiarize with Minecraft Forge API and mod development</li>
+<li>Set up the development environment and figure out how to test and debug our codes for the cloth</li>
+</ul>
+<p>Week 2:</p>
+<ul>
+<li>Add meshed cape to the player model</li>
+<li>Vanilla simulation of the cape</li>
+</ul>
+<p>Week 3:</p>
+<ul>
+<li>Handling mass-spring systems (self-collision, wind, etc.)</li>
+</ul>
+<p>Week 4:</p>
+<ul>
+<li>Possible addition of implementing a smooth vertex-controlled mesh of cloak instead of a grid of cube meshes.</li>
+</ul>
+<h2 class="mume-header" id="notes">Notes</h2>
 
 <blockquote>
-<p>Followed similar schedule to project4</p>
+<p>Webpage hosted at <a href="https://www.quantumcookie.xyz/Opensourced-Study-Notes-Berkeley/CS184/final-proj-milestone/">quantumcookie.xyz/Opensourced-Study-Notes-Berkeley/CS184/final-proj-milestone/</a></p>
 </blockquote>
-<table>
-<thead>
-<tr>
-<th>Week</th>
-<th>Items</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Week 1</td>
-<td>Familiarize with Minecraft Forge API and mod development <br> Set up the development environment and figure out how to test and debug our codes for the cloth</td>
-</tr>
-<tr>
-<td>Week 2</td>
-<td>Handling collisions with other objects and itself</td>
-</tr>
-<tr>
-<td>Week 3</td>
-<td>Handling shape changes due to wind and other accelerations (such as air resistance) <br> Test and refine the cloth simulation to ensure that it interacts appropriately with other objects in the game world, including blocks and other entities.</td>
-</tr>
-<tr>
-<td>Week 4</td>
-<td>Implement a shader to enhance the visual appearance of the cloth and make it look more realistic and natural.</td>
-</tr>
-</tbody>
-</table>
-<h2 class="mume-header" id="resources">Resources:</h2>
-
-<p>MicrosoftForge: <a href="https://docs.minecraftforge.net/en/latest/">https://docs.minecraftforge.net/en/latest/</a> (official mode construction api)<br>
-MCreator: <a href="https://mcreator.net/">https://mcreator.net/</a> (an open source software to create modes in minecraft)</p>
 
       </div>
       

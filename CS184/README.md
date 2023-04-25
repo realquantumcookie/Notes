@@ -9,3 +9,4 @@
   - [Project 3-2 Writuep](proj3-2-pathtracer-writeup/)
   - [Project 4 Writeup](proj4-clothsim-writeup/)
   - [Final Project Proposal](final-proj-proposal/)
+  - [Final Project Milestone](final-proj-milestone/)
