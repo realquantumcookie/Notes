@@ -1,0 +1,360 @@
+<!DOCTYPE html><html><head>
+      <title>CS184 ClothingMC Final Project Report</title>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      
+      <link rel="stylesheet" href="../css/katex.min.css">
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      <style>
+      /**
+ * prism.js Github theme based on GitHub's theme.
+ * @author Sam Clarke
+ */
+code[class*="language-"],
+pre[class*="language-"] {
+  color: #333;
+  background: none;
+  font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace;
+  text-align: left;
+  white-space: pre;
+  word-spacing: normal;
+  word-break: normal;
+  word-wrap: normal;
+  line-height: 1.4;
+
+  -moz-tab-size: 8;
+  -o-tab-size: 8;
+  tab-size: 8;
+
+  -webkit-hyphens: none;
+  -moz-hyphens: none;
+  -ms-hyphens: none;
+  hyphens: none;
+}
+
+/* Code blocks */
+pre[class*="language-"] {
+  padding: .8em;
+  overflow: auto;
+  /* border: 1px solid #ddd; */
+  border-radius: 3px;
+  /* background: #fff; */
+  background: #f5f5f5;
+}
+
+/* Inline code */
+:not(pre) > code[class*="language-"] {
+  padding: .1em;
+  border-radius: .3em;
+  white-space: normal;
+  background: #f5f5f5;
+}
+
+.token.comment,
+.token.blockquote {
+  color: #969896;
+}
+
+.token.cdata {
+  color: #183691;
+}
+
+.token.doctype,
+.token.punctuation,
+.token.variable,
+.token.macro.property {
+  color: #333;
+}
+
+.token.operator,
+.token.important,
+.token.keyword,
+.token.rule,
+.token.builtin {
+  color: #a71d5d;
+}
+
+.token.string,
+.token.url,
+.token.regex,
+.token.attr-value {
+  color: #183691;
+}
+
+.token.property,
+.token.number,
+.token.boolean,
+.token.entity,
+.token.atrule,
+.token.constant,
+.token.symbol,
+.token.command,
+.token.code {
+  color: #0086b3;
+}
+
+.token.tag,
+.token.selector,
+.token.prolog {
+  color: #63a35c;
+}
+
+.token.function,
+.token.namespace,
+.token.pseudo-element,
+.token.class,
+.token.class-name,
+.token.pseudo-class,
+.token.id,
+.token.url-reference .token.variable,
+.token.attr-name {
+  color: #795da3;
+}
+
+.token.entity {
+  cursor: help;
+}
+
+.token.title,
+.token.title .token.punctuation {
+  font-weight: bold;
+  color: #1d3e81;
+}
+
+.token.list {
+  color: #ed6a43;
+}
+
+.token.inserted {
+  background-color: #eaffea;
+  color: #55a532;
+}
+
+.token.deleted {
+  background-color: #ffecec;
+  color: #bd2c00;
+}
+
+.token.bold {
+  font-weight: bold;
+}
+
+.token.italic {
+  font-style: italic;
+}
+
+
+/* JSON */
+.language-json .token.property {
+  color: #183691;
+}
+
+.language-markup .token.tag .token.punctuation {
+  color: #333;
+}
+
+/* CSS */
+code.language-css,
+.language-css .token.function {
+  color: #0086b3;
+}
+
+/* YAML */
+.language-yaml .token.atrule {
+  color: #63a35c;
+}
+
+code.language-yaml {
+  color: #183691;
+}
+
+/* Ruby */
+.language-ruby .token.function {
+  color: #333;
+}
+
+/* Markdown */
+.language-markdown .token.url {
+  color: #795da3;
+}
+
+/* Makefile */
+.language-makefile .token.symbol {
+  color: #795da3;
+}
+
+.language-makefile .token.variable {
+  color: #183691;
+}
+
+.language-makefile .token.builtin {
+  color: #0086b3;
+}
+
+/* Bash */
+.language-bash .token.keyword {
+  color: #0086b3;
+}
+
+/* highlight */
+pre[data-line] {
+  position: relative;
+  padding: 1em 0 1em 3em;
+}
+pre[data-line] .line-highlight-wrapper {
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-color: transparent;
+  display: block;
+  width: 100%;
+}
+
+pre[data-line] .line-highlight {
+  position: absolute;
+  left: 0;
+  right: 0;
+  padding: inherit 0;
+  margin-top: 1em;
+  background: hsla(24, 20%, 50%,.08);
+  background: linear-gradient(to right, hsla(24, 20%, 50%,.1) 70%, hsla(24, 20%, 50%,0));
+  pointer-events: none;
+  line-height: inherit;
+  white-space: pre;
+}
+
+pre[data-line] .line-highlight:before, 
+pre[data-line] .line-highlight[data-end]:after {
+  content: attr(data-start);
+  position: absolute;
+  top: .4em;
+  left: .6em;
+  min-width: 1em;
+  padding: 0 .5em;
+  background-color: hsla(24, 20%, 50%,.4);
+  color: hsl(24, 20%, 95%);
+  font: bold 65%/1.5 sans-serif;
+  text-align: center;
+  vertical-align: .3em;
+  border-radius: 999px;
+  text-shadow: none;
+  box-shadow: 0 1px white;
+}
+
+pre[data-line] .line-highlight[data-end]:after {
+  content: attr(data-end);
+  top: auto;
+  bottom: .4em;
+}html body{font-family:"Helvetica Neue",Helvetica,"Segoe UI",Arial,freesans,sans-serif;font-size:16px;line-height:1.6;color:#333;background-color:#fff;overflow:initial;box-sizing:border-box;word-wrap:break-word}html body>:first-child{margin-top:0}html body h1,html body h2,html body h3,html body h4,html body h5,html body h6{line-height:1.2;margin-top:1em;margin-bottom:16px;color:#000}html body h1{font-size:2.25em;font-weight:300;padding-bottom:.3em}html body h2{font-size:1.75em;font-weight:400;padding-bottom:.3em}html body h3{font-size:1.5em;font-weight:500}html body h4{font-size:1.25em;font-weight:600}html body h5{font-size:1.1em;font-weight:600}html body h6{font-size:1em;font-weight:600}html body h1,html body h2,html body h3,html body h4,html body h5{font-weight:600}html body h5{font-size:1em}html body h6{color:#5c5c5c}html body strong{color:#000}html body del{color:#5c5c5c}html body a:not([href]){color:inherit;text-decoration:none}html body a{color:#08c;text-decoration:none}html body a:hover{color:#00a3f5;text-decoration:none}html body img{max-width:100%}html body>p{margin-top:0;margin-bottom:16px;word-wrap:break-word}html body>ul,html body>ol{margin-bottom:16px}html body ul,html body ol{padding-left:2em}html body ul.no-list,html body ol.no-list{padding:0;list-style-type:none}html body ul ul,html body ul ol,html body ol ol,html body ol ul{margin-top:0;margin-bottom:0}html body li{margin-bottom:0}html body li.task-list-item{list-style:none}html body li>p{margin-top:0;margin-bottom:0}html body .task-list-item-checkbox{margin:0 .2em .25em -1.8em;vertical-align:middle}html body .task-list-item-checkbox:hover{cursor:pointer}html body blockquote{margin:16px 0;font-size:inherit;padding:0 15px;color:#5c5c5c;background-color:#f0f0f0;border-left:4px solid #d6d6d6}html body blockquote>:first-child{margin-top:0}html body blockquote>:last-child{margin-bottom:0}html body hr{height:4px;margin:32px 0;background-color:#d6d6d6;border:0 none}html body table{margin:10px 0 15px 0;border-collapse:collapse;border-spacing:0;display:block;width:100%;overflow:auto;word-break:normal;word-break:keep-all}html body table th{font-weight:bold;color:#000}html body table td,html body table th{border:1px solid #d6d6d6;padding:6px 13px}html body dl{padding:0}html body dl dt{padding:0;margin-top:16px;font-size:1em;font-style:italic;font-weight:bold}html body dl dd{padding:0 16px;margin-bottom:16px}html body code{font-family:Menlo,Monaco,Consolas,'Courier New',monospace;font-size:.85em !important;color:#000;background-color:#f0f0f0;border-radius:3px;padding:.2em 0}html body code::before,html body code::after{letter-spacing:-0.2em;content:"\00a0"}html body pre>code{padding:0;margin:0;font-size:.85em !important;word-break:normal;white-space:pre;background:transparent;border:0}html body .highlight{margin-bottom:16px}html body .highlight pre,html body pre{padding:1em;overflow:auto;font-size:.85em !important;line-height:1.45;border:#d6d6d6;border-radius:3px}html body .highlight pre{margin-bottom:0;word-break:normal}html body pre code,html body pre tt{display:inline;max-width:initial;padding:0;margin:0;overflow:initial;line-height:inherit;word-wrap:normal;background-color:transparent;border:0}html body pre code:before,html body pre tt:before,html body pre code:after,html body pre tt:after{content:normal}html body p,html body blockquote,html body ul,html body ol,html body dl,html body pre{margin-top:0;margin-bottom:16px}html body kbd{color:#000;border:1px solid #d6d6d6;border-bottom:2px solid #c7c7c7;padding:2px 4px;background-color:#f0f0f0;border-radius:3px}@media print{html body{background-color:#fff}html body h1,html body h2,html body h3,html body h4,html body h5,html body h6{color:#000;page-break-after:avoid}html body blockquote{color:#5c5c5c}html body pre{page-break-inside:avoid}html body table{display:table}html body img{display:block;max-width:100%;max-height:100%}html body pre,html body code{word-wrap:break-word;white-space:pre}}.markdown-preview{width:100%;height:100%;box-sizing:border-box}.markdown-preview .pagebreak,.markdown-preview .newpage{page-break-before:always}.markdown-preview pre.line-numbers{position:relative;padding-left:3.8em;counter-reset:linenumber}.markdown-preview pre.line-numbers>code{position:relative}.markdown-preview pre.line-numbers .line-numbers-rows{position:absolute;pointer-events:none;top:1em;font-size:100%;left:0;width:3em;letter-spacing:-1px;border-right:1px solid #999;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}.markdown-preview pre.line-numbers .line-numbers-rows>span{pointer-events:none;display:block;counter-increment:linenumber}.markdown-preview pre.line-numbers .line-numbers-rows>span:before{content:counter(linenumber);color:#999;display:block;padding-right:.8em;text-align:right}.markdown-preview .mathjax-exps .MathJax_Display{text-align:center !important}.markdown-preview:not([for="preview"]) .code-chunk .btn-group{display:none}.markdown-preview:not([for="preview"]) .code-chunk .status{display:none}.markdown-preview:not([for="preview"]) .code-chunk .output-div{margin-bottom:16px}.markdown-preview .md-toc{padding:0}.markdown-preview .md-toc .md-toc-link-wrapper .md-toc-link{display:inline;padding:.25rem 0}.markdown-preview .md-toc .md-toc-link-wrapper .md-toc-link p,.markdown-preview .md-toc .md-toc-link-wrapper .md-toc-link div{display:inline}.markdown-preview .md-toc .md-toc-link-wrapper.highlighted .md-toc-link{font-weight:800}.scrollbar-style::-webkit-scrollbar{width:8px}.scrollbar-style::-webkit-scrollbar-track{border-radius:10px;background-color:transparent}.scrollbar-style::-webkit-scrollbar-thumb{border-radius:5px;background-color:rgba(150,150,150,0.66);border:4px solid rgba(150,150,150,0.66);background-clip:content-box}html body[for="html-export"]:not([data-presentation-mode]){position:relative;width:100%;height:100%;top:0;left:0;margin:0;padding:0;overflow:auto}html body[for="html-export"]:not([data-presentation-mode]) .markdown-preview{position:relative;top:0}@media screen and (min-width:914px){html body[for="html-export"]:not([data-presentation-mode]) .markdown-preview{padding:2em calc(50% - 457px + 2em)}}@media screen and (max-width:914px){html body[for="html-export"]:not([data-presentation-mode]) .markdown-preview{padding:2em}}@media screen and (max-width:450px){html body[for="html-export"]:not([data-presentation-mode]) .markdown-preview{font-size:14px !important;padding:1em}}@media print{html body[for="html-export"]:not([data-presentation-mode]) #sidebar-toc-btn{display:none}}html body[for="html-export"]:not([data-presentation-mode]) #sidebar-toc-btn{position:fixed;bottom:8px;left:8px;font-size:28px;cursor:pointer;color:inherit;z-index:99;width:32px;text-align:center;opacity:.4}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] #sidebar-toc-btn{opacity:1}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc{position:fixed;top:0;left:0;width:300px;height:100%;padding:32px 0 48px 0;font-size:14px;box-shadow:0 0 4px rgba(150,150,150,0.33);box-sizing:border-box;overflow:auto;background-color:inherit}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc::-webkit-scrollbar{width:8px}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc::-webkit-scrollbar-track{border-radius:10px;background-color:transparent}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc::-webkit-scrollbar-thumb{border-radius:5px;background-color:rgba(150,150,150,0.66);border:4px solid rgba(150,150,150,0.66);background-clip:content-box}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc a{text-decoration:none}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc .md-toc{padding:0 16px}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc .md-toc .md-toc-link-wrapper .md-toc-link{display:inline;padding:.25rem 0}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc .md-toc .md-toc-link-wrapper .md-toc-link p,html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc .md-toc .md-toc-link-wrapper .md-toc-link div{display:inline}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc .md-toc .md-toc-link-wrapper.highlighted .md-toc-link{font-weight:800}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .markdown-preview{left:300px;width:calc(100% -  300px);padding:2em calc(50% - 457px -  300px/2);margin:0;box-sizing:border-box}@media screen and (max-width:1274px){html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .markdown-preview{padding:2em}}@media screen and (max-width:450px){html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .markdown-preview{width:100%}}html body[for="html-export"]:not([data-presentation-mode]):not([html-show-sidebar-toc]) .markdown-preview{left:50%;transform:translateX(-50%)}html body[for="html-export"]:not([data-presentation-mode]):not([html-show-sidebar-toc]) .md-sidebar-toc{display:none}
+/* Please visit the URL below for more information: */
+/*   https://shd101wyy.github.io/markdown-preview-enhanced/#/customize-css */
+
+      </style>
+    </head>
+    <body for="html-export">
+      <div class="mume markdown-preview  ">
+      <h1 class="mume-header" id="cs184-final-project---clothingmc">CS184 Final Project - ClothingMC</h1>
+
+<blockquote>
+<p>Team: Yunhao Cao(<a href="https://github.com/realquantumcookie">@realquantumcookie</a>), Martin(Yuqi) Zhai (<a href="https://github.com/yuq1-zhai">@yuq1-zhai</a>), Jacky Kwok(<a href="https://github.com/jackykwok2024">@jackykwok2024</a>), Athena Leong (<a href="https://github.com/athenaleong">@athenaleong</a>).</p>
+</blockquote>
+<h2 class="mume-header" id="abstract">Abstract</h2>
+
+<p>This final project is an extension of Project 4 &#x201C;Clothism&#x201D; and Lecture 19 &#x201C;Physical Simulation&#x201D; where we wrote a physical-simulation based cape mod for Minecraft. In this mod, we rewrote the rendering pipeline for the capes starting from building the meshed to creating the uv mapping and finally to translating and rotating the so-called &#x201C;pose&#x201D; for each mesh to the desired location via coordinates generated from physical simulations.</p>
+<h2 class="mume-header" id="technical-approach">Technical Approach</h2>
+
+<p>First of all, we created a 2D mesh for the cape, from one entire cape in the default minecraft environment into 10<em>16 small cube meshes, where each uv mapping is offsetted from the left of the cape. We chose 10</em>16 primarily because the front side of the cape is 10*16 pixels in size, and we would like each mesh to control exactly one pixel of interest. (Referenced from <a href="http://LittleSkin.cn">LittleSkin.cn</a> for the exact size of the capes available there, figure 1)</p>
+<table>
+<thead>
+<tr>
+<th>Cape Pattern</th>
+<th>Visualization</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><img src="images/infinite%20cape.png" width="160px" height="100px"></td>
+<td><img src="images/infinite%20cape%20wear.png" alt="Wearing the Cape"></td>
+</tr>
+</tbody>
+</table>
+<p>Then there are 2 different simulation approaches in determining the global coordinates of the meshes at each time step: the first one is pure interpolation and the second one is pure physical simulation.</p>
+<p>In the first simulation approach (the main result before milestone), we wrote the cape simulation based on vanilla vertex manipulation. The milestone result has no physics simulation code within and is only a demo of what minecraft simulation can do. A lot of variables we received from minecraft are one variable timed between two time intervals so we have to find a delta to be able to interpolate it linearly. To demonstrate a simple motion of the cape, we read in the magnitudes of the speed of the player which is moving in global coordinates. Then, we used linear interpolation to get the immediate body rotation or the directional vector that the character is facing, which we used to define the global to local coordinates transformation matrix (a pure 3D rotational matrix from Lecture 4 &#x201C;Transforms&#x201D; without homogeneous coordinates, figure 2). To read the cloak&#x2019;s relative position with respect to the player&#x2019;s body we need to do a second linear interpolation. Then we use that to transform the x, y, z coordinates of the current mesh in the cape relative to the player&#x2019;s current position into player&#x2019;s local coordinates with default x, y, z axis direction in minecraft. We rotate the player&#x2019;s coordinate again to get the local coordinate of the cape mesh and modify the pose of the cape according to the information above (referred to minecraft WaveyCapes Mod for some hints and some definitions of the Minecraft API&#x2019;s). In the version we have for the milestone report, the cape is only modified to &#x201C;rotate up&#x201D; when the player is going forward.</p>
+<p>Here&apos;s a video of what the cape looks like in our milestone report</p>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/mmr3WPmszEQ" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+<p><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><msub><mi>R</mi><mi>&#x3B8;</mi></msub><mo>=</mo><mrow><mo fence="true">[</mo><mtable rowspacing="0.16em" columnalign="center center" columnspacing="1em"><mtr><mtd><mstyle scriptlevel="0" displaystyle="false"><mrow><mi>cos</mi><mo>&#x2061;</mo><mi>&#x3B8;</mi></mrow></mstyle></mtd><mtd><mstyle scriptlevel="0" displaystyle="false"><mrow><mo>&#x2212;</mo><mi>sin</mi><mo>&#x2061;</mo><mi>&#x3B8;</mi></mrow></mstyle></mtd></mtr><mtr><mtd><mstyle scriptlevel="0" displaystyle="false"><mrow><mi>sin</mi><mo>&#x2061;</mo><mi>&#x3B8;</mi></mrow></mstyle></mtd><mtd><mstyle scriptlevel="0" displaystyle="false"><mrow><mi>cos</mi><mo>&#x2061;</mo><mi>&#x3B8;</mi></mrow></mstyle></mtd></mtr></mtable><mo fence="true">]</mo></mrow></mrow><annotation encoding="application/x-tex">R_{\theta} = \begin{bmatrix}
+\cos \theta &amp;-\sin \theta \\
+\sin \theta &amp;\cos \theta
+\end{bmatrix}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.00773em;">R</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361em;"><span style="top:-2.55em;margin-left:-0.0077em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.02778em;">&#x3B8;</span></span></span></span></span><span class="vlist-s">&#x200B;</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:2.4em;vertical-align:-0.95em;"></span><span class="minner"><span class="mopen delimcenter" style="top:0em;"><span class="delimsizing size3">[</span></span><span class="mord"><span class="mtable"><span class="col-align-c"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.45em;"><span style="top:-3.61em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mop">cos</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">&#x3B8;</span></span></span><span style="top:-2.41em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mop">sin</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">&#x3B8;</span></span></span></span><span class="vlist-s">&#x200B;</span></span><span class="vlist-r"><span class="vlist" style="height:0.95em;"><span></span></span></span></span></span><span class="arraycolsep" style="width:0.5em;"></span><span class="arraycolsep" style="width:0.5em;"></span><span class="col-align-c"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.45em;"><span style="top:-3.61em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">&#x2212;</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mop">sin</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">&#x3B8;</span></span></span><span style="top:-2.41em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mop">cos</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">&#x3B8;</span></span></span></span><span class="vlist-s">&#x200B;</span></span><span class="vlist-r"><span class="vlist" style="height:0.95em;"><span></span></span></span></span></span></span></span><span class="mclose delimcenter" style="top:0em;"><span class="delimsizing size3">]</span></span></span></span></span></span></span></p>
+<p>For the second simulation approach, which is also the main focus in this project, we utilized a physical simulation approach to determine the offset and rotation needed for each mesh. The first step is applying the translation and rotation of the player computed from a similar way in the interpolation approach (through linear interpolation of the x, y, z, and distance traveled of the player) the first row of the cape, where we fixed to be pinned (so the cape is connected to the player through the first row). Then we call the simulate function in the simulation class, where we will perform the simulation similar to Project 4. We started with building the point-mass and spring system (implemented in the similar way as we did in Project 4, where we have a total of 10*16 point masses and built mainly the structural and bending constraints within those point masses). A thing to notice is that for convenience and consistency of coding, we put the point that is higher up in the cape or to the left side of the cape as the first point of the spring, i.e. pointA, and the other one which is lower or to the right to be pointB. Then we wrote the entire physical simulation just as we did in Clothism. We first computed the force enacting on the point mass through Hooke&#x2019;s law for spring forces and gravitational forces (applyMotions and applyGravity). Then we also tried to handle collisions in the cape itself and against the player. However, we did not do it in the way that is similar to Project 4, where we added in a collide function for the objects that we would likely collide with, since this will take a lot of time to process and the efficiency of our code did not allow us to do so. Therefore, we only worked with preventing collision with the player through limiting the z coordinate of the cape not to less than the player&#x2019;s z coordinate, which is not working exactly as we wanted (the cape seems to shrink a bit when it encounters the player, but nevertheless, the cape did not pass through the player). Lastly, we constrained the length of each spring to be no more than 10% more than the rest-length of the spring, which we always pushed upward the lower point since we are iterating from top to bottom. This concludes the physical simulation. Following from that, we used the relative motion of the end coordinate for point-mass against the point fixed on the shoulder as the translation to that exact mesh. The rotation is determined from interpolation of the current mesh and the mesh directly above it. After applying those 2 changes to the pose, the renderer will render the mesh at the desired position with the help from physical simulations.</p>
+<p>Here&apos;s our final result of the cape mod</p>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/N6vc39MjxgE" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+<h2 class="mume-header" id="problems-encountered">Problems Encountered</h2>
+
+<ol>
+<li>The coordinate system of Minecraft is extremely complicated and documentation for it is really, really bad.
+<ol>
+<li>Player yaw rotation in world axis does not follow right hand rule</li>
+<li>We had to translate between 3 different coordinate frames, the world, player, and our mesh.</li>
+<li>We were able to find some references but we would later find out that those references actually give us wrong information, which causes hours of debugging efforts to be wasted. We had to use some hacks (see image below) to be able to debug the coordinate system.</li>
+<li>[Debugging coordinate frame using mesh.jpg]</li>
+<li>We tackled this problem by trial and error by guessing and changing one coordinate at a time</li>
+</ol>
+</li>
+<li>Spring system we encountered severe problems.
+<ol>
+<li>We first wrote the exact same code to constrain the spring lengths to be no more than 110% of the rest-length of the spring, and we updated the position of the spring in a order that is from left to right and top to bottom, which will drag down the points on the last row and move up the points in this row and result in a huge gap in between each rows. The way we tackled this problem is mainly to always move the bottom point upwards to enforce the 10% difference instead of moving top point down and bottom point up.</li>
+<li>The sequence that we added in for the 2 points for each spring is reversed for some springs, which resulted in a weird elongated spring in some places and shrunk spring in other places. We tackled this problem by carefully making the order of points the same for all constraints.</li>
+<li>Once we add in shearing constraints, the cape, for some reason, will appear to be slanted (like a trapezoid instead of a rectangle). Sadly, we did not find a way to tackle this problem at this stage, so we commented out the shearing constraints.</li>
+</ol>
+</li>
+<li>Modding in Minecraft is harder than we think!
+<ol>
+<li>A major contributor to this issue is the fact that Microsoft forces all modding development kits to use their official &#x201C;Minecraft Java Bindings&#x201D; by default, but the problem related to this binding is that it is obfuscated with member function arguments which makes a lot of function calls extremely hard to read and implement</li>
+<li>[Minecraft binding API example.jpg]</li>
+<li>We tackled this problem by reading many different examples of mod codes on the internet, trying to reverse-engineer the meaning of different functions.</li>
+</ol>
+</li>
+</ol>
+<h2 class="mume-header" id="lessons-learned">Lessons Learned</h2>
+
+<ol>
+<li>A good documentation really helps. Due to the bad documentation of the Forge API as well as the Minecraft classes and functions, it is hard for us to get our hands on changing codes in the direction that we wanted. This bad experience helps us learn the importance of good documentation, which we should also document the meaning of each functional call in comments that will help us to go back and understand the codes easily.</li>
+<li>Developing a good architecture is extremely important. We somehow rushed into doing the project without really looking into developing a good architecture to fill in. A lot of classes and interfaces were developed a lot later into the project when we released we are missing something that is used extensively in different function calls. Next time, it would be the best and completely not a waste of time to develop the overall architecture of our code first.</li>
+<li>Need to research first and draw the schedules after. According to our proposed schedule in the beginning of the project, we should be able to finish most of the things we listed after week 2, which is a complete underestimation of workload. We underestimated the difficulty to get the project started by understanding the APIs, setting up the environments, as well as understanding the game logic and its classes. Next time, when we are planning the schedule, we need to research a bit before planning and have a good estimation of the workload for each step before actual planning happens.</li>
+</ol>
+<h2 class="mume-header" id="credits">Credits</h2>
+
+<ol>
+<li><a href="https://minecraft.fandom.com/wiki/Coordinates">https://minecraft.fandom.com/wiki/Coordinates</a></li>
+<li><a href="https://minecraftcapes.net/">https://minecraftcapes.net/</a></li>
+<li><a href="https://docs.minecraftforge.net/en/1.19.x/">https://docs.minecraftforge.net/en/1.19.x/</a></li>
+<li><a href="https://www.curseforge.com/minecraft/mc-mods/waveycape">https://www.curseforge.com/minecraft/mc-mods/waveycape</a></li>
+<li><a href="https://www.curseforge.com/minecraft/mc-mods/physics-mod">https://www.curseforge.com/minecraft/mc-mods/physics-mod</a></li>
+</ol>
+<h2 class="mume-header" id="contributions-from-each-team-member">Contributions from each Team Member</h2>
+
+<p>Martin Zhai and Yunhao Cao focused mainly on the architecture and interpolation based method (mainly focusing on the stuff we presented on the milestone report). They together wrote the renderer for both simulation approaches and drafted up the classes, interfaces, and injectors for the project. Athena Leong and Jacky Kwok focused mainly on the physical simulation portion, where they wrote the force calculations, constraining the spring lengths, and applying motions.</p>
+<p>All team members joined in debugging at the end stage for physical simulations, recorded the final project videos, and wrote the final deliverables.</p>
+
+      </div>
+      
+      
+    
+    
+    
+    
+    
+    
+    
+    
+  
+    </body></html>

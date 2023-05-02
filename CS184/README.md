@@ -10,3 +10,4 @@
   - [Project 4 Writeup](proj4-clothsim-writeup/)
   - [Final Project Proposal](final-proj-proposal/)
   - [Final Project Milestone](final-proj-milestone/)
+  - [Final Project Report](final-proj-report/)
