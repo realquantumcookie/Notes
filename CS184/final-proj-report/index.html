@@ -319,7 +319,11 @@ pre[data-line] .line-highlight[data-end]:after {
 <li>Player yaw rotation in world axis does not follow right hand rule</li>
 <li>We had to translate between 3 different coordinate frames, the world, player, and our mesh.</li>
 <li>We were able to find some references but we would later find out that those references actually give us wrong information, which causes hours of debugging efforts to be wasted. We had to use some hacks (see image below) to be able to debug the coordinate system.</li>
-<li>[Debugging coordinate frame using mesh.jpg]</li>
+<li><img src="images/debugging%20coordinate.png" alt="Debugging Coordinates">
+<ol>
+<li>Debugging coordinates using meshes</li>
+</ol>
+</li>
 <li>We tackled this problem by trial and error by guessing and changing one coordinate at a time</li>
 </ol>
 </li>
@@ -333,7 +337,7 @@ pre[data-line] .line-highlight[data-end]:after {
 <li>Modding in Minecraft is harder than we think!
 <ol>
 <li>A major contributor to this issue is the fact that Microsoft forces all modding development kits to use their official &#x201C;Minecraft Java Bindings&#x201D; by default, but the problem related to this binding is that it is obfuscated with member function arguments which makes a lot of function calls extremely hard to read and implement</li>
-<li>[Minecraft binding API example.jpg]</li>
+<li><img src="images/api.png" alt="Binding API"></li>
 <li>We tackled this problem by reading many different examples of mod codes on the internet, trying to reverse-engineer the meaning of different functions.</li>
 </ol>
 </li>
